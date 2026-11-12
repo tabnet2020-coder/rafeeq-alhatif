@@ -1,0 +1,19 @@
+{
+  "name": "رفيق الهاتف — المساعد الرقمي المبسّط",
+  "short_name": "رفيق الهاتف",
+  "description": "مبادرة مجتمعية مجانية لشرح استخدام الهاتف والتطبيقات والأذونات للمبتدئين وكبار السن",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#115e59",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
