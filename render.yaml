@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: rafeeq-alhatif-web
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: rafeeq-alhatif-db
+          property: connectionString
+
+databases:
+  - name: rafeeq-alhatif-db
+    databaseName: rafeeq_alhatif
+    user: rafeeq_user
+    plan: free
