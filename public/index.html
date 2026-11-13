@@ -51,9 +51,11 @@
       100% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
     }
   </style>
-  <link rel="manifest" href="manifest.json" />
+  <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#115e59" />
-  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
 </head>
 <body id="appBody" class="scale-normal min-h-screen flex flex-col transition-colors duration-200">
 
@@ -62,7 +64,7 @@
     <div class="max-w-6xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-sm border-b border-teal-800">
       <div class="flex flex-wrap items-center gap-2">
         <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-400 text-slate-900 font-bold text-xs">♥</span>
-        <span class="font-semibold">مبادرة «رفيق الهاتف» المجتمعية — تصميم: <strong class="text-amber-300">عمر الطابوني</strong> (<a href="mailto:Tabent2020@gmail.com" class="underline hover:text-amber-200" dir="ltr">Tabent2020@gmail.com</a>)</span>
+        <span class="font-semibold">مبادرة «رفيق الهاتف» المجتمعية — مجاني بالكامل بدون إعلانات أو تسجيل دخول</span>
       </div>
       <div class="flex flex-wrap items-center gap-2">
         <span class="text-teal-200 text-xs">حجم الخط:</span>
@@ -70,15 +72,19 @@
         <button id="btnFontLarge" type="button" class="px-2.5 py-1 rounded bg-teal-800 hover:bg-teal-600 font-bold text-sm transition">كبير +</button>
         <button id="btnFontXLarge" type="button" class="px-2.5 py-1 rounded bg-teal-800 hover:bg-teal-600 font-bold text-base transition">كبير جداً ++</button>
         <button id="btnContrast" type="button" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-amber-300 font-semibold text-xs border border-amber-400/40 transition">تباين مريح للعين</button>
+        <button id="btnInstallApp" type="button" class="px-3 py-1 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs shadow transition flex items-center gap-1">
+          <span>📲</span><span>تثبيت التطبيق على الهاتف</span>
+        </button>
+        <button id="btnOpenAdminAuth" type="button" class="px-2.5 py-1 rounded-lg bg-teal-950 hover:bg-slate-800 text-teal-200 font-bold text-xs border border-teal-700 transition flex items-center gap-1">
+          <span>🔐</span><span id="adminBtnLabel">دخول المشرف</span>
+        </button>
       </div>
     </div>
 
     <!-- Main App Header & Device Detector Bar -->
     <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-400 to-emerald-600 flex items-center justify-center shadow-inner text-2xl font-extrabold text-slate-900">
-          📱
-        </div>
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAADAFBMVEVmn+SeYVnhXdzvnfSgk6BdZZ4lcOJpIF6jo98ULqSeZ5rlmCeeI2UqX6JmWWmfYzWl5vrZm5UALKQcj97Xl2KjKpnVcVsAKJcOrfNbFyaRHSPRUCQALZ8k0/mvWt3cS6w1Tm2aM84sFl8AGnEjHCZaV9rqz10Io9YAAP//1ixb5frgNZrc5+IMLs4GouYA//9dOcxfJacAZq0DdO8Aa9W1jDRjSTydYF5bj68AdHs1h7HPPBQYACEPm7vSw7sdxudVqv9L1OgBIcUAZOWihEazxK3JPcj///8AJn4AJX9ePkp0UF5cVIFV//+q//8AAAD8p3T6mGgCGWlRxvz8t4n2h1YCZ+sFdvAAWNVzJhA1tfwMh/YTlvgDInMBKYvseEkBWektqPyyFmiQCFDO1/tHufsAOKqSNRcBRrL9xJZSGAvu5/nWKockKkpQAS7KWS+vSCbq2O8EZdMAR9X8k1xzBkkpIzbTt88LBA/MI3nRyfABCVZrAjnX5P0uAi+FKxH9sXy0x/UlmfhRFWwCNJj3qofz9f7QaUYUpfu1VTMvAxArM1XTdlLUZDgMxP41xPxyI475yKswFG3wi2UIVLlu1vysd241CErEHHHmx9LoaThV1f1oGXaLKZIEFFkAS+RNClFmHAilDFrZw9ilPBnQh28AJoYAO8ssOG2P5fzPp7KOOSS2iIply/uOV0ywZlDLlo6PSDK3l61OG4yrQh3bs65OKCpwOCmUFG7JqsnnuKwwGY37xy10RTiZaWe2g3itue7mNJIRt/xuG4mM2vtLOUluSkU0R4kXFiodJ0qOuPfSOKkCC2OVptb01NAbAihFCQmVZVlTaKdzVUymEV3jzOeRElnuV84yFhVQJqmHl8qoa2f+1K8pGyqvqdTYMZRSNS5qebCRyPusOLBVIhnSpZbucj35qCcAInoNc9h1hbmtWkz4uDAniexLWZNx5/zRuu1UIZVvKaePDGiOKaiTNKzwaOcPGoUAVaoAf/9OElhVRktuKSeRGIyvJozLmqm3artiAAABAHRSTlP/8P/+/P/y//7u////+/3//v8b6v///14O////ofX//////w3//v9fAf/z///unQH//hqwVf//vP8D//8FG/+bA6ydE////wFjkL29uwMDAP/+//7///7+/v7+/v7//v/+/v////7+/v7///7////+/v/+/v///////////////////f/+/v/+/f7////+/v7////+//7///////7////+//7///7/pv7//v///v///v/+///+//////////////////3//////////////////////////////v///////////v//////t//////+//z//////////wMC////////N6ydyQAAJmdJREFUeNqdmwlAk2e2/gOyy6qIglatS2uX6Xannc5+567/nQQSMWwRiESIZEGQGAgQEWIgGUAUZBFRoEVANhWECtgquNUFXOu+VJ2qVWtrF3X0Puf9sqF2Zu7/iCFseX7vOec957xfEl7oc/bTFLr911ff+uNLfy4u/vP/r73kYH98dcrv8Jj/75+fV+M9+4233w4Nfe/Vt1566e7rd+9Wh0dGxsWtWrUq2tGiOIt+oa3i7DMy8Be/VH33rr+//93X//Tqe3j4f/47AD9Bfspbf37p9bvhkaugFEE232oLf8bm241+3wHPAhMZvpYg/vRqaOh/vv23AKYw+derI7lVRkSMBWAECzh7VtmBwMFBDu4ort78pv/rQPi/834O4Ndvh76H1Rc7qL9A+Rl7nuJ5hLhIGDEA4U9Y5NsvBsBPXv3spcioCIu6o9sX/A171hNjo7AqjiySM0LY/MfZob9/EcAULP+lP0ePcfsYcTe3+fP/ESdEWAiY/oo4RwCG4P/670OnPA8whZa/6gXiSy3yPI8Der2e5/YihOf0QfBC/cjiyOK1b9591U7Ac9D/s93zC+3ybrRytwNSqa6ATPcChoXP68MF0StWWPTtAMVk4f4OBDyr/i8/+yxqjDrnezfegQN6fMilarVUq5VK5WDgzV/4jANseWDXJwJH+UUwDqC42N/fRsCz63Ort4hvWLoUvl/ooZNKpWrISqX3LlzI0JLBFf48Hi/Vpp86fyHPhfecflSUA8AiZuHh4RzB5tetBAzgp9D3Vn3GLZ9TZ/Lw/QG5VAtVtVytzejVyuVy5gatVC7XSQ/YMjJ1odsrr7zm8px+VLRFf5HVwsOtCDYCAnh7ynsTP4uyO5/pL3Wby9PrtBkZJ9Rq9YmM3gy1OqO5uZ4gCAFOwZqZF1JTF7q88srtwOf1o6PH6IdbjUWh+D0snAOYEvqWg/4G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" alt="شعار تطبيق رفيق الهاتف Tabony" class="w-14 h-14 rounded-2xl shadow-md border-2 border-amber-400/70 object-cover shrink-0 max-w-full h-auto" />
         <div>
           <h1 class="text-xl md:text-2xl font-extrabold tracking-tight flex items-center gap-2">
             <span>رفيق الهاتف</span>
@@ -175,7 +181,7 @@
           </div>
         </div>
         <div class="flex items-center gap-2 shrink-0">
-          <button id="btnSpeakTip" type="button" class="px-3 py-2 rounded-xl bg-amber-200 hover:bg-amber-300 text-slate-900 font-bold text-xs md:text-sm transition flex items-center gap-1.5">
+          <button id="btnSpeakTip" type="button" class="voice-action-btn px-3 py-2 rounded-xl bg-amber-200 hover:bg-amber-300 text-slate-900 font-bold text-xs md:text-sm transition flex items-center gap-1.5">
             <span>🔊</span><span>استمع للتلميح</span>
           </button>
           <button id="btnNextTip" type="button" class="px-3 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-amber-400 font-bold text-xs md:text-sm transition">
@@ -193,7 +199,7 @@
             </h2>
             <p class="text-xs md:text-sm text-slate-600 hc-muted">اكتب سؤالك كما تتحدث (مثلاً: «كيف نبعث موقعي في الواتس» أو «طريقة عمل ايميل جوجل» أو «حذف برنامج»)</p>
           </div>
-          <button id="btnVoiceSearch" type="button" class="self-start md:self-auto px-4 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-300 font-bold text-xs md:text-sm transition flex items-center gap-2">
+          <button id="btnVoiceSearch" type="button" class="voice-action-btn self-start md:self-auto px-4 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-300 font-bold text-xs md:text-sm transition flex items-center gap-2">
             <span>🎤</span><span id="voiceBtnLabel">تجربة السؤال الصوتي السريع</span>
           </button>
         </div>
@@ -284,7 +290,7 @@
               <h3 id="simCoachTitle" class="text-lg font-extrabold text-slate-900"></h3>
               <p id="simCoachInstruction" class="text-sm text-slate-700 leading-relaxed"></p>
               <div class="pt-2 flex items-center gap-2">
-                <button id="btnSpeakSim" type="button" class="px-3 py-1.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition">🔊 قراءة الخطوة صوتياً</button>
+                <button id="btnSpeakSim" type="button" class="voice-action-btn px-3 py-1.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition">🔊 قراءة الخطوة صوتياً</button>
                 <button id="btnResetSim" type="button" class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-xs transition">إعادة التدريب ↻</button>
               </div>
             </div>
@@ -466,9 +472,85 @@
         </div>
 
       </div>
+
+      <!-- Admin Management Panel (Visible when Admin is logged in, or prompts login) -->
+      <div class="hc-card bg-white rounded-3xl p-6 shadow-md border-2 border-teal-600/30 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3">
+          <div>
+            <span id="adminStatusPill" class="text-xs font-extrabold bg-slate-100 text-slate-700 px-3 py-1 rounded-full">🔒 وضع الزائر (للتعديل أو الحذف سجل دخول المشرف)</span>
+            <h3 class="text-lg font-extrabold text-slate-900 hc-muted mt-1">⚙️ بوابة المشرف: مراجعة وتعديل أو حذف الشروحات المضافة</h3>
+            <p class="text-xs md:text-sm text-slate-600 hc-muted">تتيح لك هذه اللوحة تعديل أي خطأ إملائي أو خطوة في أي شرح أو إزالته نهائياً من الموقع وقاعدة البيانات المشتركة.</p>
+          </div>
+          <button type="button" id="btnToggleAdminPanel" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 font-extrabold text-xs md:text-sm transition flex items-center gap-2">
+            <span>🔐</span><span id="adminPanelActionText">تسجيل دخول المشرف لتفعيل التعديل والحذف</span>
+          </button>
+        </div>
+
+        <div id="adminGuidesManagerList" class="space-y-2.5">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
     </section>
 
   </main>
+
+  <!-- Admin Login & Edit Guide Modal -->
+  <div id="adminModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border-2 border-teal-600 space-y-4 text-slate-900 my-8">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+        <h3 id="adminModalTitle" class="font-extrabold text-lg text-teal-950">🔐 بوابة دخول المشرف</h3>
+        <button id="btnCloseAdminModal" type="button" class="text-slate-500 hover:text-slate-900 font-bold text-sm px-2.5 py-1 rounded-lg bg-slate-100">إغلاق ✕</button>
+      </div>
+
+      <!-- View 1: Admin Password Form -->
+      <form id="adminLoginForm" class="space-y-4">
+        <p class="text-xs md:text-sm text-slate-600">أدخل رمز مرور المشرف لتفعيل أزرار <strong>تعديل الشروحات (✏️)</strong> و<strong>حذف الشروحات الخاطئة (🗑️)</strong> في الموقع بالكامل (الرمز الافتراضي للمصمم: <code>2020</code> أو <code>Tabent2020</code>):</p>
+        <div>
+          <label for="adminPassInput" class="block text-xs font-bold text-slate-700 mb-1">كلمة مرور المشرف</label>
+          <input id="adminPassInput" type="password" placeholder="أدخل رمز المشرف..." class="w-full rounded-xl border-2 border-slate-300 px-3.5 py-2.5 text-sm font-bold focus:border-teal-600 focus:outline-none" />
+        </div>
+        <div id="adminLoginError" class="hidden text-xs font-bold text-rose-700 bg-rose-50 border border-rose-200 rounded-xl p-2.5">رمز المرور غير صحيح، يرجى المحاولة مرة أخرى.</div>
+        <div class="flex justify-end gap-2">
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-extrabold text-sm transition">🔓 دخول وتفعيل صلاحيات التعديل والحذف</button>
+        </div>
+      </form>
+
+      <!-- View 2: Edit Existing Guide Form -->
+      <form id="adminEditGuideForm" class="hidden space-y-3.5">
+        <input id="editGuideId" type="hidden" />
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="sm:col-span-2">
+            <label for="editGuideTitle" class="block text-xs font-bold text-slate-700 mb-1">عنوان الشرح</label>
+            <input id="editGuideTitle" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-bold" />
+          </div>
+          <div>
+            <label for="editGuideCat" class="block text-xs font-bold text-slate-700 mb-1">القسم</label>
+            <select id="editGuideCat" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-bold">
+              <option value="apps">📲 التطبيقات والتحديثات</option>
+              <option value="accounts">📧 الحسابات والجيميل</option>
+              <option value="daily">💬 واتساب ودرايف وكروم</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="editGuideShortDesc" class="block text-xs font-bold text-slate-700 mb-1">الوصف المختصر</label>
+          <input id="editGuideShortDesc" type="text" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-semibold" />
+        </div>
+        <div>
+          <label for="editGuideWhy" class="block text-xs font-bold text-slate-700 mb-1">فائدة هذه الميزة للمبتدئ</label>
+          <input id="editGuideWhy" type="text" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-semibold" />
+        </div>
+        <div>
+          <label for="editGuideStepsText" class="block text-xs font-bold text-slate-700 mb-1">الخطوات التفصيلية (كل خطوة في سطر بالصيغة: عنوان الخطوة | الشرح المفصل | مكان الضغط | نصيحة للمبتدئ)</label>
+          <textarea id="editGuideStepsText" rows="6" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-semibold leading-relaxed"></textarea>
+        </div>
+        <div class="flex items-center justify-between gap-2 pt-2">
+          <button type="button" id="btnDeleteGuideInsideEdit" class="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs transition">🗑️ حذف هذا الشرح نهائياً</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-extrabold text-sm transition">💾 حفظ التعديلات وتحديث الشرح</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Share / System Shortcut Preview Modal -->
   <div id="actionModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
@@ -534,42 +616,146 @@
         'عند مشاركة موقعك في واتساب مع مندوب توصيل، اختر «إرسال موقعك الحالي» لمرة واحدة بدلاً من «الموقع المباشر» المستمر.'
       ];
 
-      // Core 10 Guides (Addressing every item in the user's document)
+      // Core 10 Comprehensive Beginner Guides (Tailored for Samsung, Xiaomi, iPhone, and Stock Android)
       const INITIAL_GUIDES = [
         {
           id: 'g1',
           cat: 'accounts',
           icon: '📧',
-          title: 'طريقة إنشاء إيميل جوجل (حساب Gmail جديد)',
-          shortDesc: 'إنشاء حساب جوجل رسمي لتشغيل المتجر وحفظ الأسماء والصور بأمان.',
-          keywords: 'انشاء ايميل جوجل حساب جديد جيميل قوقل بريد الكتروني عمل ايميل',
+          title: '1. طريقة إنشاء إيميل جوجل (حساب Gmail جديد خطوة بخطوة)',
+          shortDesc: 'دليل مفصل للمبتدئين لإنشاء حساب جوجل رسمي لتشغيل المتجر وحفظ الأسماء والصور بأمان تام.',
+          keywords: 'انشاء ايميل جوجل حساب جديد جيميل قوقل بريد الكتروني عمل ايميل فتح حساب سوق بلاي',
           intentLabel: 'فتح شاشة إضافة حساب في الهاتف',
           intentAction: 'android.settings.ADD_ACCOUNT_SETTINGS',
-          whyNote: 'حساب جوجل هو مفتاح هاتفك؛ بدونه لا يمكنك تحميل البرامج من المتجر أو استرجاع أرقامك إذا ضاع الهاتف.',
+          whyNote: 'حساب جوجل (الإيميل) هو المفتاح الأساسي لهاتفك؛ بدونه لن تستطيع تحميل البرامج من المتجر، وهو الذي يحفظ أرقام هواتفك وصورك لتسترجعها إذا ضاع الهاتف أو اشتريت هاتفاً جديداً.',
           stepsByDevice: {
             samsung: [
-              { title: 'افتح تطبيق «الضبط» (الإعدادات ⚙️)', detail: 'ابحث عن أيقونة الترس في شاشة هاتفك واضغط عليها، ثم انزل لأسفل حتى تجد «الحسابات والنسخ الاحتياطي».', screenHint: 'اضغط على: الحسابات والنسخ الاحتياطي ← إدارة الحسابات' },
-              { title: 'اختر «إضافة حساب» ثم اضغط على «Google»', detail: 'ستظهر لك قائمة بأنواع الحسابات، اضغط على شعار Google الملون وانتظر ثواني.', screenHint: 'اضغط على: + إضافة حساب ← Google' },
-              { title: 'اضغط على «إنشاء حساب» (Create Account)', detail: 'تجدها أسفل الشاشة؛ اختر «للاستخدام الشخصي» ثم اكتب اسمك الأول واسم العائلة.', screenHint: 'لا تكتب شيئاً في مربع البريد العلوي، بل اضغط «إنشاء حساب» بالأسفل' },
-              { title: 'أدخل تاريخ الميلاد واختر عنوان الإيميل وكلمة المرور', detail: 'اختر أحد العناوين المقترحة السهلة، ثم اكتب كلمة مرور من 8 خانات واحفظها في ورقة آمنة في منزلك.', screenHint: 'نصيحة: اكتب كلمة المرور في دفتر خاص حتى لا تنساها' }
+              {
+                title: 'الدخول إلى «الضبط ⚙️» (إعدادات هاتف سامسونج)',
+                detail: 'ابحث في شاشة هاتفك عن أيقونة اسمها «الضبط» وتكون على شكل ترس رمادي أو أزرق ⚙️ واضغط عليها بلمسة واحدة. بعد أن تفتح القائمة، اسحب الشاشة بإصبعك للأعلى للنزول إلى منتصف القائمة حتى ترى خيار «الحسابات والنسخ الاحتياطي».',
+                screenHint: 'الشاشة الرئيسية ← أيقونة الضبط ⚙️ ← الحسابات والنسخ الاحتياطي',
+                beginnerTip: 'إذا لم تجد أيقونة الضبط، اسحب شاشة الهاتف من الأعلى للأسفل وستجد رمز الترس الصغير ⚙️ في الزاوية العلوية.'
+              },
+              {
+                title: 'فتح «إدارة الحسابات» ثم اختيار «إضافة حساب»',
+                detail: 'داخل شاشة الحسابات والنسخ الاحتياطي، اضغط على السطر الأول «إدارة الحسابات». انظر الآن إلى أسفل الشاشة وستجد زراً مكتوباً عليه «+ إضافة حساب»؛ اضغط عليه ثم اختر من القائمة كلمة «Google» الملونة.',
+                screenHint: 'إدارة الحسابات ← + إضافة حساب ← شعار Google الملون',
+                beginnerTip: 'قد يطلب منك الهاتف إدخال رمز قفل الشاشة المعتاد أو بصمة إصبعك للتأكد من أنك صاحب الهاتف، وهذا إجراء أمني طبيعي.'
+              },
+              {
+                title: 'الضغط على «إنشاء حساب» وليس مربع البريد العلوي',
+                detail: 'ستظهر لك صفحة مكتوب فيها «تسجيل الدخول». انتبه: لا تكتب أي شيء في المربع العلوي لأنك تريد حساباً جديداً! انظر إلى أسفل الشاشة واضغط على جملة «إنشاء حساب»، ثم اختر من القائمة الصغيرة «للاستخدام الشخصي».',
+                screenHint: 'أسفل الشاشة: اضغط «إنشاء حساب» ← اختر «للاستخدام الشخصي»',
+                beginnerTip: 'المربع العلوي مخصص فقط لمن يملك إيميلاً قديماً، أما المبتدئ فيضغط دائماً على «إنشاء حساب» بالأسفل.'
+              },
+              {
+                title: 'كتابة اسمك وتاريخ ميلادك واختيار عنوان الإيميل السهل',
+                detail: 'اكتب اسمك الأول واسم العائلة (بالعربية أو الإنجليزية) ثم اضغط «التالي». في الشاشة التي تليها اختر اليوم والشهر والسنة لميلادك والنوع ثم اضغط «التالي». سيعرض عليك جوجل عنوانين جاهزين للإيميل بحروف إنجليزية؛ اضغط على الدائرة بجانب العنوان الأسهل لك.',
+                screenHint: 'اكتب الاسم ← تاريخ الميلاد ← اختر أول عنوان إيميل مقترح من القائمة',
+                beginnerTip: 'اختيار عنوان مقترح من جوجل يوفر عليك عناء البحث عن اسم غير مستخدم من قبل.'
+              },
+              {
+                title: 'تعيين كلمة المرور وحفظها في ورقة خارجية آمنة',
+                detail: 'اكتب الآن كلمة مرور خاصة بك تتكون من 8 خانات على الأقل (أحرف إنجليزية وأرقام معاً مثل: Omar2026). بعد كتابتها، أحضر ورقة وقلماً واكتب الإيميل وكلمة المرور فيها واحتفظ بها في مكان آمن بالمنزل، ثم اضغط «التالي» ثم «أوافق» بالأسفل.',
+                screenHint: 'اكتب كلمة المرور (8 خانات) ← اضغط التالي ← اضغط أوافق',
+                beginnerTip: 'مبروك! أصبح لديك الآن إيميل رسمي مفعل على هاتفك ويعمل به متجر البرامج تلقائياً.'
+              }
             ],
             xiaomi: [
-              { title: 'افتح «الإعدادات ⚙️» ثم «الحسابات والمزامنة»', detail: 'انزل في قائمة الإعدادات حتى تجد خيار الحسابات والمزامنة (Accounts & Sync).', screenHint: 'الإعدادات ← الحسابات والمزامنة' },
-              { title: 'اضغط «إضافة حساب» بالأسفل ثم اختر «Google»', detail: 'اختر شعار Google من القائمة.', screenHint: 'اضغط على شعار Google' },
-              { title: 'اضغط «إنشاء حساب» واختر «لنفسي»', detail: 'أدخل اسمك وتاريخ ميلادك، ثم اختر عنوان بريد مقترحاً.', screenHint: 'اختر عنواناً مقترحاً من القائمة لتجنب تكرار الأسماء' },
-              { title: 'عيّن كلمة مرور قوية ووافق على البنود', detail: 'اكتب كلمة المرور مرتين للتأكيد ثم اضغط «موافق» لإتمام إنشاء الحساب.', screenHint: 'تم تفعيل حسابك بنجاح!' }
+              {
+                title: 'فتح «الإعدادات ⚙️» في هاتف شاومي أو ريدمي',
+                detail: 'اضغط على أيقونة «الإعدادات ⚙️» في شاشة هاتفك، ثم اسحب الشاشة للأعلى للنزول إلى الثلث الأخير من القائمة حتى تجد خيار «الحسابات والمزامنة» (Accounts & Sync).',
+                screenHint: 'الإعدادات ⚙️ ← انزل للأسفل ← الحسابات والمزامنة',
+                beginnerTip: 'أيقونة الحسابات والمزامنة في هواتف شاومي تكون غالباً باللون الأزرق أو الأخضر.'
+              },
+              {
+                title: 'الضغط على «إضافة حساب» بالأسفل ثم اختيار «Google»',
+                detail: 'انظر إلى آخر الشاشة بالأسفل واضغط على زر «+ إضافة حساب»، ثم من قائمة الشركات اختر شعار «Google» الملون وانتظر ثواني حتى تفتح صفحة جوجل.',
+                screenHint: 'أسفل الشاشة: + إضافة حساب ← اختر Google',
+                beginnerTip: 'إذا طلب منك الهاتف نقش القفل أو البصمة، أدخلها للمتابعة.'
+              },
+              {
+                title: 'بدء التسجيل عبر زر «إنشاء حساب»',
+                detail: 'تجاوز مربع الكتابة العلوي، واضغط على كلمة «إنشاء حساب» الموجودة في أسفل الشاشة، ثم اختر «لنفسي» أو «للاستخدام الشخصي» واكتب اسمك الأول واسم العائلة.',
+                screenHint: 'اضغط «إنشاء حساب» بالأسفل ← اختر «للاستخدام الشخصي»',
+                beginnerTip: 'يمكنك كتابة اسمك باللغة العربية بكل سهولة وسيظهر لأصدقائك عند مراسلتهم.'
+              },
+              {
+                title: 'إدخال تاريخ الميلاد واختيار عنوان Gmail جاهز',
+                detail: 'أدخل يوم وشهر وسنة الميلاد (يجب أن يكون العمر أكثر من 13 عاماً) واضغط «التالي»، ثم اختر أحد عناوين الإيميل الجاهزة التي يقترحها عليك النظام بالضغط على الدائرة بجانبه.',
+                screenHint: 'أدخل تاريخ الميلاد ← اختر عنوان بريد مقترحاً ← التالي',
+                beginnerTip: 'صوّر الشاشة أو اكتب عنوان الإيميل الذي اخترته في دفتر خاص بك.'
+              },
+              {
+                title: 'إنشاء كلمة السر والموافقة النهائية',
+                detail: 'اكتب كلمة سر قوية تجمع بين حروف إنجليزية وأرقام (لا تقل عن 8 خانات)، ثم اضغط «التالي» وانزل لأسفل صفحة الشروط واضغط على الزر الأزرق «أوافق».',
+                screenHint: 'اكتب كلمة السر ← التالي ← أوافق',
+                beginnerTip: 'تم تفعيل حسابك في هاتف شاومي بنجاح تام!'
+              }
             ],
             iphone: [
-              { title: 'افتح «الإعدادات ⚙️» ثم «البريد» (Mail)', detail: 'من قائمة إعدادات الآيفون، اضغط على البريد ثم «الحسابات».', screenHint: 'الإعدادات ← البريد ← الحسابات' },
-              { title: 'اضغط «إضافة حساب» واختر «Google»', detail: 'سيفتح لك نافذة تسجيل الدخول الرسمية من جوجل.', screenHint: 'اضغط على شعار Google' },
-              { title: 'اضغط على «إنشاء حساب» أسفل الشاشة', detail: 'أدخل اسمك وتاريخ ميلادك واختر عنوان Gmail يناسبك.', screenHint: 'اضغط «إنشاء حساب» بالأسفل' },
-              { title: 'أدخل كلمة المرور ورقم الهاتف للتأكيد', detail: 'ستصلك رسالة نصية بها كود أمان، أدخله ليصبح حسابك جاهزاً.', screenHint: 'احفظ كلمة المرور في مكان آمن' }
+              {
+                title: 'فتح «الإعدادات ⚙️» في الآيفون ثم قسم «البريد»',
+                detail: 'من شاشة الآيفون الرئيسية، اضغط على أيقونة «الإعدادات ⚙️» الرمادية، ثم انزل قليلاً واضغط على خيار «البريد» (Mail) أو «تطبيقات ← البريد» في تحديثات iOS الحديثة.',
+                screenHint: 'الإعدادات ⚙️ ← البريد (Mail) ← الحسابات (Accounts)',
+                beginnerTip: 'يمكنك أيضاً إنشاء الحساب مباشرة من داخل تطبيق Gmail أو متصفح سفاري.'
+              },
+              {
+                title: 'اختيار «إضافة حساب» ثم الضغط على شعار «Google»',
+                detail: 'داخل صفحة الحسابات، اضغط على «إضافة حساب» (Add Account)، ثم اضغط على كلمة «Google» الملونة، واضغط «متابعة» في الرسالة الصغيرة التي تستأذنك لفتح صفحة google.com.',
+                screenHint: 'إضافة حساب ← Google ← اضغط متابعة',
+                beginnerTip: 'نافذة «يرغب الإعدادات في استخدام google.com» هي نافذة أمان رسمية من آبل، اضغط «متابعة» بأمان.'
+              },
+              {
+                title: 'الضغط على «إنشاء حساب» أسفل الشاشة',
+                detail: 'عند ظهور شاشة تسجيل الدخول، اترك المربع العلوي فارغاً واضغط على «إنشاء حساب» في الأسفل، ثم اختر «للاستخدام الشخصي» واكتب اسمك واسم العائلة.',
+                screenHint: 'أسفل الشاشة: إنشاء حساب ← للاستخدام الشخصي',
+                beginnerTip: 'اضغط زر «التالي» الأزرق بعد كتابة الاسم.'
+              },
+              {
+                title: 'تحديد تاريخ الميلاد واختيار عنوان الإيميل المقترح',
+                detail: 'حدد يوم وشهر وسنة ميلادك والجنس ثم اضغط «التالي». اختر واحداً من عناوين البريد الجاهزة التي يعرضها جوجل أمامك لتنتقل لخطوة كلمة السر.',
+                screenHint: 'تاريخ الميلاد ← اختر عنوان Gmail مقترحاً ← التالي',
+                beginnerTip: 'العنوان المقترح يكون جاهزاً ومضمون القبول فوراً.'
+              },
+              {
+                title: 'كتابة كلمة السر وتفعيل المزامنة على الآيفون',
+                detail: 'اكتب كلمة سر من 8 أحرف وأرقام واحفظها في ورقة خارجية، ثم اضغط «التالي» و«أوافق». بعد العودة لشاشة الآيفون، اضغط على كلمة «حفظ» (Save) في أعلى الشاشة.',
+                screenHint: 'اكتب كلمة السر ← أوافق ← اضغط «حفظ» بأعلى شاشة الآيفون',
+                beginnerTip: 'الآن سيظهر بريدك الجديد داخل تطبيق البريد في الآيفون تلقائياً.'
+              }
             ],
             android_stock: [
-              { title: 'افتح «الإعدادات ⚙️» ثم «كلمات المرور والحسابات»', detail: 'انزل لأسفل الإعدادات واضغط على قسم الحسابات.', screenHint: 'الإعدادات ← الحسابات' },
-              { title: 'اضغط «إضافة حساب» ثم «Google»', detail: 'اختر Google من القائمة لبدء خطوات التسجيل.', screenHint: 'اضغط + إضافة حساب' },
-              { title: 'اختر «إنشاء حساب» ثم «للاستخدام الشخصي»', detail: 'اكتب اسمك وتاريخ ميلادك واختر عنوان إيميل مقترحاً.', screenHint: 'اختر عنواناً مقترحاً بسهولة' },
-              { title: 'أنشئ كلمة المرور واحفظها جيداً', detail: 'اكتب كلمة سر لا تقل عن 8 أحرف وأرقام ثم اضغط التالي.', screenHint: 'اكتب كلمة السر في مفكرتك الورقية' }
+              {
+                title: 'فتح «الإعدادات ⚙️» ثم «كلمات المرور والحسابات»',
+                detail: 'افتح تطبيق «الإعدادات ⚙️» في هاتفك، وانزل للأسفل حتى تجد قسم «كلمات المرور والحسابات» (أو «الحسابات» فقط) واضغط عليه.',
+                screenHint: 'الإعدادات ⚙️ ← كلمات المرور والحسابات',
+                beginnerTip: 'تأكد من أن هاتفك متصل بشبكة الواي فاي أو بيانات الهاتف قبل البدء.'
+              },
+              {
+                title: 'الضغط على «+ إضافة حساب» ثم اختيار «Google»',
+                detail: 'انزل إلى نهاية الشاشة واضغط على «+ إضافة حساب»، ثم اختر شعار «Google» الملون من القائمة.',
+                screenHint: '+ إضافة حساب ← Google',
+                beginnerTip: 'أدخل رمز قفل الشاشة إذا طُلب منك ذلك.'
+              },
+              {
+                title: 'اختيار «إنشاء حساب» للمستخدم الجديد',
+                detail: 'في شاشة جوجل، اضغط على كلمة «إنشاء حساب» بالأسفل واختر «للاستخدام الشخصي»، ثم اكتب اسمك الأول واسم العائلة.',
+                screenHint: 'إنشاء حساب ← للاستخدام الشخصي ← اكتب الاسم',
+                beginnerTip: 'لا تضغط على مربع البريد العلوي لأنه مخصص للحسابات القديمة فقط.'
+              },
+              {
+                title: 'إدخال تاريخ الميلاد واختيار الإيميل المقترح',
+                detail: 'أدخل تاريخ ميلادك الصحيح، ثم اختر عنوان إيميل جاهزاً من الاقتراحات المعروضة أمامك واضغط «التالي».',
+                screenHint: 'تاريخ الميلاد ← اختر عنواناً مقترحاً ← التالي',
+                beginnerTip: 'دوّن عنوان الإيميل في ورقة خارجية حتى يسهل عليك تذكره.'
+              },
+              {
+                title: 'تعيين كلمة المرور وإتمام التسجيل',
+                detail: 'اكتب كلمة مرور من 8 أحرف إنجليزية وأرقام، ثم اضغط «التالي» وانزل لأسفل الصفحة واضغط «أوافق» لتفعيل الحساب.',
+                screenHint: 'كلمة المرور ← التالي ← أوافق',
+                beginnerTip: 'تم إنشاء إيميلك بنجاح ويمكنك الآن تحميل أي تطبيق من المتجر!'
+              }
             ]
           }
         },
@@ -577,18 +763,140 @@
           id: 'g2',
           cat: 'daily',
           icon: '☁️',
-          title: 'كيف تستفيد من جوجل درايف (Google Drive) لحفظ ملفاتك',
-          shortDesc: 'حفظ الصور والمستندات الهامة في الخزنة السحابية لاسترجاعها من أي هاتف.',
-          keywords: 'جوجل درايف قوقل درايف حفظ الصور الملفات سحابة نسخ احتياطي drive',
+          title: '2. كيف تستفيد من جوجل درايف (Google Drive) لحفظ صورك وملفاتك',
+          shortDesc: 'شرح مبسط لرفع الصور والمستندات المهمة إلى الخزنة السحابية وحمايتها من الضياع.',
+          keywords: 'جوجل درايف قوقل درايف حفظ الصور الملفات سحابة نسخ احتياطي drive تخزين رفع ملف',
           intentLabel: 'فتح تطبيق Google Drive',
           intentAction: 'com.google.android.apps.docs',
-          whyNote: 'يمنحك جوجل درايف 15 جيجابايت مجاناً لحفظ صور الهوية، التقارير الطبية، والذكريات حتى لا تضيع إذا تعطل الهاتف.',
+          whyNote: 'جوجل درايف هو خزنة مجانية على الإنترنت تعطيك 15 جيجابايت؛ إذا حفظت فيها صورة جواز السفر أو التقارير الطبية أو صور العائلة، فلن تضيع أبداً حتى لو تعطل الهاتف أو فُقد.',
           stepsByDevice: {
             samsung: [
-              { title: 'افتح تطبيق «Drive» (المثلث الملون)', detail: 'تجد أيقونته على شكل مثلث أخضر وأصفر وأزرق داخل مجلد تطبيقات Google.', screenHint: 'ابحث عن مجلد Google ← تطبيق Drive' },
-              { title: 'اضغط على زر العلامة الملونة «+ جديد» أسفل الشاشة', detail: 'ستظهر لك قائمة صغيرة تحتوي على خيارات الرفع والإنشاء.', screenHint: 'اضغط الزر العائم (+) في أسفل اليسار أو اليمين' },
-              { title: 'اختر «تحميـل» (Upload) لرفع صورة أو ملف', detail: 'اختر الصورة أو الملف من هاتفك، وسيتم رفعه فوراً إلى خزنتك السحابية الخاصة.', screenHint: 'اضغط على: تحميل (Upload)' },
-              { title: 'تنظيم الملفات داخل مجلد خاص', detail: 'يمكنك الضغط على «+ جديد» ثم «مجلد» وتسميته مثلاً (مستندات العائلة) لترتيب ملفاتك.', screenHint: 'ملفاتك الآن محفوظة حتى لو غيرت هاتفك!' }
+              {
+                title: 'البحث عن تطبيق «Drive» (المثلث الملون) وفتحه',
+                detail: 'اسحب شاشة هاتفك للأعلى لفتح قائمة البرامج، وابحث عن مجلد اسمه «Google». اضغط عليه وستجد بداخله أيقونة على شكل مثلث ملون (أخضر وأصفر وأزرق) مكتوب تحتها «Drive»؛ اضغط عليها.',
+                screenHint: 'قائمة التطبيقات ← مجلد Google ← تطبيق Drive',
+                beginnerTip: 'تطبيق Drive مثبت مسبقاً في جميع هواتف سامسونج ولا يحتاج لتحميل.'
+              },
+              {
+                title: 'التعرف على زر الإضافة الملون «+ جديد»',
+                detail: 'بعد فتح التطبيق، انظر إلى الزاوية السفلية (اليسرى أو اليمنى) من الشاشة، ستجد زراً كبيراً وبارزاً بداخله علامة زائد ملونة «+ جديد»؛ اضغط عليه بلمسة واحدة.',
+                screenHint: 'أسفل الشاشة: اضغط على الزر العائم «+ جديد»',
+                beginnerTip: 'هذا الزر «+» هو المسؤول عن إضافة أي صورة أو ملف أو مجلد داخل خزنتك.'
+              },
+              {
+                title: 'إنشاء مجلد مرتب لتنظيم ملفاتك (خطوة اختيارية مفيدة)',
+                detail: 'من القائمة التي ظهرت بعد الضغط على (+)، اضغط على الخيار الأول «مجلد» (Folder)، واكتب اسماً واضحاً مثل «مستندات مهمة» أو «صور العائلة» ثم اضغط «إنشاء»، واضغط على المجلد لفتحه.',
+                screenHint: 'قائمة (+) ← مجلد ← اكتب اسم المجلد ← إنشاء',
+                beginnerTip: 'وضع الملفات داخل مجلد مسمّى يسهّل عليك العثور عليها بعد شهور أو سنوات.'
+              },
+              {
+                title: 'رفع صورة أو ملف من الهاتف عبر خيار «تحميـل»',
+                detail: 'اضغط مرة أخرى على زر «+ جديد» بالأسفل، وهذه المرة اختر كلمة «تحميـل» (Upload) التي بجانبها سهم يشير للأعلى ⬆️. ستفتح لك صور وملفات هاتفك؛ اضغط على الصورة أو الملف الذي تريد حفظه.',
+                screenHint: 'زر (+ جديد) ← تحميـل (Upload ⬆️) ← اختر الصورة من هاتفك',
+                beginnerTip: 'انتظر ثواني قليلة حتى يكتمل شريط التحميل وتظهر الصورة أمامك داخل التطبيق.'
+              },
+              {
+                title: 'فتح الملف أو مشاركته في أي وقت',
+                detail: 'بمجرد ظهور الصورة داخل Drive، فهي محفوظة بأمان على حسابك! يمكنك الضغط على النقاط الثلاث (⋮) بجانب أي ملف لاختيار «تنزيل» لاسترجاعه لهاتفك أو «مشاركة» لإرساله لشخص آخر.',
+                screenHint: 'النقاط الثلاث بجانب الملف (⋮) ← تنزيل أو مشاركة',
+                beginnerTip: 'حتى لو مسحت الصورة من الاستوديو لتوفير مساحة بالهاتف، ستبقى نسختها محفوظة هنا في Drive.'
+              }
+            ],
+            xiaomi: [
+              {
+                title: 'فتح مجلد Google ثم تطبيق «Drive» على شاومي',
+                detail: 'ابحث في شاشة هاتف شاومي عن مجلد «Google»، واضغط بداخله على أيقونة المثلث الملون «Drive».',
+                screenHint: 'مجلد Google ← تطبيق Drive',
+                beginnerTip: 'تأكد من أنك أنشأت حساب جوجل أولاً حتى يفتح التطبيق معك مباشرة.'
+              },
+              {
+                title: 'الضغط على زر «+ جديد» في أسفل الشاشة',
+                detail: 'اضغط على الزر الدائري أو المستطيل الذي يحمل علامة «+» الملونة في الزاوية السفلية من شاشة التطبيق.',
+                screenHint: 'أسفل الشاشة: زر «+ جديد»',
+                beginnerTip: 'ستنبثق لك قائمة بيضاء من أسفل الشاشة بها 6 خيارات.'
+              },
+              {
+                title: 'اختيار «تحميـل» (Upload) لاختيار صورة أو مستند',
+                detail: 'اضغط على خيار «تحميـل» (بجانبه رمز سهم للأعلى ⬆️). ستفتح لك شاشة الملفات الأخيرة في هاتف شاومي؛ اختر «المعرض» أو «الصور» واضغط على الصورة المطلوبة.',
+                screenHint: 'اختر «تحميـل ⬆️» ← حدد الصورة أو المستند',
+                beginnerTip: 'يفضل رفع الملفات الكبيرة وأنت متصل بشبكة الواي فاي (Wi-Fi).'
+              },
+              {
+                title: 'استخدام ميزة «مسح ضوئي 📷» لتصوير الأوراق الرسمية',
+                detail: 'بجوار زر (+ جديد) توجد أيقونة كاميرا صغيرة؛ إذا ضغطت عليها ووجهت الكاميرا نحو ورقة رسمية أو وصفة طبية، سيقوم التطبيق بقصها وتوضيحها وحفظها كملف PDF نظيف تلقائياً!',
+                screenHint: 'أيقونة الكاميرا أسفل الشاشة ← صوّر المستند ← حفظ',
+                beginnerTip: 'هذه الميزة رائعة لحفظ الفواتير والبطاقات الشخصية والروشتات الطبية بوضوح عالٍ.'
+              },
+              {
+                title: 'التأكد من حفظ الملف في تبويب «الملفات»',
+                detail: 'اضغط على كلمة «الملفات» (Files) في الشريط السفلي للتطبيق لترى جميع صورك ومجلداتك المحفوظة في السحابة مرتبة أمامك.',
+                screenHint: 'الشريط السفلي ← تبويب «الملفات»',
+                beginnerTip: 'كل ما يظهر في هذه الشاشة محفوظ في بريدك الإلكتروني ولا يضيع أبداً.'
+              }
+            ],
+            iphone: [
+              {
+                title: 'تحميل أو فتح تطبيق «Google Drive» من متجر App Store',
+                detail: 'على جهاز الآيفون، إذا لم يكن تطبيق «Google Drive» موجوداً على شاشتك، افتح متجر «App Store» الأزرق وابحث عن Google Drive وحمّله مجاناً، ثم افتحه وسجل الدخول بإيميلك.',
+                screenHint: 'افتح تطبيق Google Drive على الآيفون',
+                beginnerTip: 'التطبيق مجاني تماماً ويعمل على الآيفون بنفس كفاءة الأندرويد.'
+              },
+              {
+                title: 'الضغط على علامة «+» الملونة أسفل الشاشة',
+                detail: 'داخل تطبيق Drive في الآيفون، اضغط على الدائرة التي تحمل علامة «+» الملونة في أسفل الشاشة.',
+                screenHint: 'أسفل الشاشة: زر (+) الملون',
+                beginnerTip: 'ستظهر لك قائمة خيارات الإضافة والرفع.'
+              },
+              {
+                title: 'اختيار «تحميل» ثم «الصور والفيديوهات»',
+                detail: 'اضغط على «تحميل» (Upload) ثم اختر «الصور والفيديوهات» (Photos and Videos). اسمح للتطبيق بالوصول لصورك، ثم حدد الصور التي تريد حفظها واضغط «تحميل» بأعلى الشاشة.',
+                screenHint: 'تحميل ← الصور والفيديوهات ← حدد الصورة ← اضغط تحميل',
+                beginnerTip: 'يمكنك اختيار عدة صور دفعة واحدة لرفعها معاً.'
+              },
+              {
+                title: 'تفعيل النسخ الاحتياطي لجهات الاتصال والتقويم في الآيفون',
+                detail: 'يمكنك الضغط على الخطوط الثلاثة (☰) بأعلى التطبيق ← الإعدادات ← النسخ الاحتياطي، لحفظ نسخة من أرقام هواتفك وصورك في حساب جوجل.',
+                screenHint: 'القائمة (☰) بالأعلى ← الإعدادات ← النسخ الاحتياطي',
+                beginnerTip: 'مفيد جداً إذا أردت نقل أرقامك وصورك من آيفون إلى هاتف آخر بسهولة.'
+              },
+              {
+                title: 'الوصول لملفاتك في أي وقت من قسم «ملفاتي»',
+                detail: 'اضغط على أيقونة «الملفات» في أسفل يمين أو يسار الشاشة لاستعراض كل ما رفعته وفتحه بلمسة واحدة.',
+                screenHint: 'الشريط السفلي ← الملفات (Files)',
+                beginnerTip: 'جميع ملفاتك هنا مشفرة ومحفوظة بأمان.'
+              }
+            ],
+            android_stock: [
+              {
+                title: 'فتح تطبيق «Drive» من قائمة تطبيقات الهاتف',
+                detail: 'اسحب الشاشة للأعلى لفتح قائمة التطبيقات واضغط على أيقونة «Drive» ذات المثلث الملون.',
+                screenHint: 'قائمة التطبيقات ← Drive',
+                beginnerTip: 'التطبيق يأتي مثبتاً بشكل أساسي مع نظام أندرويد.'
+              },
+              {
+                title: 'الضغط على زر «+ جديد» أسفل الشاشة',
+                detail: 'انظر لأسفل الشاشة واضغط على زر «+ جديد» لفتح قائمة الأوامر.',
+                screenHint: 'أسفل الشاشة ← + جديد',
+                beginnerTip: 'يمكنك من هنا إنشاء مجلد جديد أو رفع ملف مباشرة.'
+              },
+              {
+                title: 'اختيار «تحميـل» واختيار الملف أو الصورة',
+                detail: 'اضغط على كلمة «تحميـل» (Upload)، ثم اختر الصورة أو المستند من ذاكرة هاتفك.',
+                screenHint: '+ جديد ← تحميـل ← اختر الصورة',
+                beginnerTip: 'سيبدأ شريط الرفع فوراً ويحفظ الملف في حسابك.'
+              },
+              {
+                title: 'تصوير المستندات الورقية وحفظها كملف PDF',
+                detail: 'اضغط على أيقونة الكاميرا الصغيرة فوق زر (+ جديد) لتصوير أي ورقة رسمية وحفظها بوضوح داخل خزنتك.',
+                screenHint: 'أيقونة الكاميرا 📷 ← التقط الصورة ← حفظ',
+                beginnerTip: 'يقوم التطبيق بتعديل إضاءة الورقة تلقائياً لتصبح واضحة كأنها مسحوبة بسكانر.'
+              },
+              {
+                title: 'استعراض الملفات المحفوظة ومشاركتها',
+                detail: 'من تبويب «الملفات» بالأسفل، يمكنك فتح أي ملف أو الضغط على النقاط الثلاث (⋮) بجانبه لمشاركته أو تنزيله.',
+                screenHint: 'تبويب الملفات ← النقاط الثلاث (⋮) بجانب الملف',
+                beginnerTip: 'ملفاتك آمنة وتفتح من أي هاتف أو كمبيوتر بمجرد كتابة إيميلك.'
+              }
             ]
           }
         },
@@ -596,24 +904,140 @@
           id: 'g3',
           cat: 'daily',
           icon: '📍',
-          title: 'طريقة مشاركة الموقع على الواتساب (WhatsApp Location)',
-          shortDesc: 'إرسال مكانك الحالي بالضبط للأهل أو لمندوب التوصيل بضغطة زر.',
-          keywords: 'مشاركة الموقع على الوتس واتساب ارسال موقعي اللوكيشن الخريطة عنواني',
+          title: '3. طريقة مشاركة الموقع على الواتساب (WhatsApp Location)',
+          shortDesc: 'خطوات مفصلة لإرسال عنوانك ومكانك الحالي بدقة للأهل أو لمندوب التوصيل بلمسة زر.',
+          keywords: 'مشاركة الموقع على الوتس واتساب ارسال موقعي اللوكيشن الخريطة عنواني نبعث موقعي ابعت اللوكيشن مكان',
           intentLabel: 'فتح تطبيق واتساب للتطبيق العملي',
           intentAction: 'com.whatsapp',
-          whyNote: 'تغنيك عن وصف العنوان الطويل؛ وتذكر أن «الموقع الحالي» يرسل مكانك لمرة واحدة بينما «الموقع المباشر» يتحرك معك.',
+          whyNote: 'بدلاً من التعب في وصف الشارع والمعالم المحيطة بك، يرسل الواتساب نقطة خريطة دقيقة تصل بالطرف الآخر إلى باب مكانك مباشرة.',
           stepsByDevice: {
             samsung: [
-              { title: 'افتح محادثة الشخص في تطبيق «واتساب»', detail: 'ادخل إلى الدردشة مع الشخص الذي تريد إرسال موقعك إليه.', screenHint: 'افتح محادثة واتساب المطلوبة' },
-              { title: 'اضغط على رمز «مشبك الورق 📎» بجانب مربع الكتابة', detail: 'في هواتف أندرويد ستجد رمز مشبك الورق في أسفل الشاشة (وفي الآيفون علامة +).', screenHint: 'اضغط على أيقونة المشبك 📎' },
-              { title: 'اختر أيقونة «الموقع 📍» الخضراء', detail: 'إذا طلب منك الهاتف تفعيل خدمة الموقع (GPS)، اضغط «موافق» أو «أثناء استخدام التطبيق».', screenHint: 'اضغط على: الموقع (Location)' },
-              { title: 'اضغط على «إرسال موقعك الحالي بدقة»', detail: 'انتظر ثانيتين حتى يستقر المؤشر ثم اضغط «إرسال موقعك الحالي» ليصل الطرف الآخر فوراً.', screenHint: 'اختر: إرسال موقعك الحالي (Send your current location)' }
+              {
+                title: 'فتح محادثة الشخص المطلوب في تطبيق «واتساب»',
+                detail: 'افتح تطبيق واتساب الأخضر، واضغط على اسم الشخص أو مندوب التوصيل الذي تريد أن ترسل له مكانك، كما تفعل تماماً عندما تريد كتابة رسالة عادية له.',
+                screenHint: 'تطبيق واتساب ← اضغط على اسم الشخص لفتح المحادثة',
+                beginnerTip: 'تأكد من أنك داخل صفحة المحادثة الخاصة بالشخص الصحيح قبل الإرسال.'
+              },
+              {
+                title: 'الضغط على رمز «مشبك الورق 📎» بجانب مربع الكتابة',
+                detail: 'انظر إلى أسفل الشاشة داخل المستطيل الأبيض الذي تكتب فيه الرسائل؛ ستجد بجانب أيقونة الكاميرا رمزاً يشبه «مشبك الورق المعدني 📎»، اضغط عليه بلمسة واحدة.',
+                screenHint: 'أسفل الشاشة داخل شريط الكتابة: اضغط رمز المشبك 📎',
+                beginnerTip: 'لا تضغط على رمز الميكروفون الأخضر، بل اضغط على رمز المشبك 📎 الذي يفتح قائمة المرفقات.'
+              },
+              {
+                title: 'اختيار الدائرة الخضراء المكتوب تحتها «الموقع 📍»',
+                detail: 'ستظهر لك لوحة بها عدة دوائر ملونة (مستند، كاميرا، معرض، صوت، موقع). اضغط على الدائرة الخضراء التي بداخلها علامة دبوس الخريطة ومكتوب تحتها «الموقع».',
+                screenHint: 'من لوحة الأيقونات: اضغط على «الموقع 📍»',
+                beginnerTip: 'إذا ظهرت لك رسالة تسألك عن تشغيل خدمة الموقع (GPS) أو السماح لواتساب، اضغط «أثناء استخدام التطبيق» ثم «موافق».'
+              },
+              {
+                title: 'الانتظار 3 ثوانٍ ثم الضغط على «إرسال موقعك الحالي»',
+                detail: 'ستفتح أمامك خريطة صغيرة وتحتها خياران: «مشاركة الموقع المباشر» و«إرسال موقعك الحالي بدقة تصل إلى...». انتظر 3 ثوانٍ حتى يقل رقم الأمتار، ثم اضغط على «إرسال موقعك الحالي».',
+                screenHint: 'اضغط على السطر: «إرسال موقعك الحالي بدقة تصل إلى...»',
+                beginnerTip: 'الفرق المهم: «موقعك الحالي» يرسل مكانك الثابت الآن فقط (وهو الأفضل للمنازل والتوصيل)، أما «الموقع المباشر» فيتحرك معك إذا كنت تمشي في الطريق.'
+              },
+              {
+                title: 'التأكد من ظهور مربع الخريطة الصغير داخل المحادثة',
+                detail: 'بمجرد الضغط، ستُغلق شاشة الخريطة وتجد رسالة على شكل خريطة صغيرة قد أُرسلت للشخص وعليها علامة الصح! هكذا وصل موقعك بنجاح تام.',
+                screenHint: 'تظهر الخريطة المرسلة داخل شاشة الدردشة فوراً',
+                beginnerTip: 'يمكنك تجربة هذه الخطوات عملياً الآن في تبويب «وضع التدريب الآمن» بأعلى التطبيق!'
+              }
+            ],
+            xiaomi: [
+              {
+                title: 'فتح الدردشة مع الشخص في تطبيق واتساب',
+                detail: 'افتح تطبيق واتساب على هاتف شاومي وادخل إلى محادثة الشخص الذي تريد إرسال عنوانك له.',
+                screenHint: 'واتساب ← افتح محادثة الشخص المطلوب',
+                beginnerTip: 'يفضل أن تكون قريباً من نافذة أو مكان مفتوح ليلتقط الهاتف إشارة القمر الصناعي بسرعة.'
+              },
+              {
+                title: 'الضغط على أيقونة «مشبك الورق 📎» أسفل الشاشة',
+                detail: 'في شريط الكتابة السفلي بجوار رمز الكاميرا، اضغط على رمز المشبك 📎 لفتح قائمة الإرفاق.',
+                screenHint: 'شريط الكتابة بالأسفل ← رمز المشبك 📎',
+                beginnerTip: 'تجنب الضغط المطول، لمسة واحدة خفيفة تكفي لفتح القائمة.'
+              },
+              {
+                title: 'الضغط على أيقونة «الموقع 📍» وتفعيل الـ GPS إذا طُلب',
+                detail: 'اضغط على أيقونة «الموقع» الخضراء. إذا ظهرت رسالة تطلب تفعيل الموقع الجغرافي في شاومي، اضغط «موافق» (OK) لتشغيل الـ GPS تلقائياً.',
+                screenHint: 'اختر «الموقع 📍» ← اضغط موافق لتفعيل الموقع',
+                beginnerTip: 'تفعيل الموقع ضروري لكي يعرف الهاتف أين تقف الآن على الخريطة.'
+              },
+              {
+                title: 'الضغط على «إرسال موقعك الحالي»',
+                detail: 'تحت الخريطة مباشرة، اضغط على سطر «إرسال موقعك الحالي بدقة تصل إلى...» ليتم إرسال نقطة مكانك فوراً.',
+                screenHint: 'اضغط: «إرسال موقعك الحالي»',
+                beginnerTip: 'لا تختر أسماء المحلات الظاهرة في الأسفل بل اضغط على «إرسال موقعك الحالي» ليكون مكانك أنت بالضبط.'
+              },
+              {
+                title: 'اكتمال الإرسال في المحادثة',
+                detail: 'ستعود تلقائياً لشاشة الدردشة وترى بطاقة الخريطة مرسلة أمامك.',
+                screenHint: 'تم إرسال الخريطة بنجاح ✅',
+                beginnerTip: 'الطرف الآخر سيضغط على الخريطة وتفتح عنده الاتجاهات إليك مباشرة.'
+              }
             ],
             iphone: [
-              { title: 'افتح محادثة الشخص في تطبيق «واتساب»', detail: 'ادخل إلى الدردشة المطلوبة.', screenHint: 'افتح محادثة واتساب' },
-              { title: 'اضغط على علامة «+» بجوار مربع كتابة الرسالة', detail: 'توجد في أسفل الشاشة بجانب شريط الكتابة.', screenHint: 'اضغط على زر (+)' },
-              { title: 'اختر «الموقع 📍» من القائمة', detail: 'اسمح لواتساب بالوصول للموقع أثناء استخدام التطبيق.', screenHint: 'اضغط على: الموقع' },
-              { title: 'اضغط «إرسال موقعك الحالي»', detail: 'سيتم إرسال خريطة بمكانك الدقيق للطرف الآخر فوراً.', screenHint: 'اختر: إرسال موقعك الحالي' }
+              {
+                title: 'فتح محادثة الشخص في تطبيق واتساب على الآيفون',
+                detail: 'افتح تطبيق واتساب على الآيفون واضغط على المحادثة التي تريد إرسال الموقع فيها.',
+                screenHint: 'واتساب ← افتح المحادثة المطلوبة',
+                beginnerTip: 'في الآيفون تختلف شكل أيقونة الإرفاق عن هواتف الأندرويد كما سنوضح في الخطوة التالية.'
+              },
+              {
+                title: 'الضغط على علامة الزائد «+» بجانب مربع الكتابة',
+                detail: 'انظر إلى أسفل شاشة الآيفون بجوار مربع كتابة الرسالة؛ لن تجد رمز مشبك، بل ستجد علامة زائد «+» كبيرة، اضغط عليها بلمسة واحدة.',
+                screenHint: 'أسفل الشاشة بجانب مربع الكتابة: اضغط علامة «+»',
+                beginnerTip: 'علامة «+» في واتساب الآيفون هي التي تجمع الصور والمستندات والموقع.'
+              },
+              {
+                title: 'اختيار «الموقع 📍» من القائمة المنبثقة',
+                detail: 'من القائمة التي ظهرت أمامك، اضغط على كلمة «الموقع» (Location). إذا سألك الآيفون عن السماح بالوصول للموقع، اختر «السماح أثناء استخدام التطبيق».',
+                screenHint: 'قائمة (+) ← اختر «الموقع 📍»',
+                beginnerTip: 'إذا كان الموقع مغلقاً من إعدادات الآيفون، سيفتح لك زر ينقلك لتشغيله ثم تعود لواتساب.'
+              },
+              {
+                title: 'الضغط على «إرسال موقعك الحالي»',
+                detail: 'انتظر ثواني حتى تظهر النقطة الزرقاء في الخريطة، ثم اضغط على خيار «إرسال موقعك الحالي» (Send Your Current Location).',
+                screenHint: 'تحت الخريطة: اضغط «إرسال موقعك الحالي»',
+                beginnerTip: 'اختر «إرسال موقعك الحالي» لإرسال مكانك لمرة واحدة بأمان.'
+              },
+              {
+                title: 'التحقق من وصول الخريطة في المحادثة',
+                detail: 'ستظهر صورة خريطة صغيرة داخل المحادثة، وبذلك انتهت الخطوات بنجاح!',
+                screenHint: 'الخريطة ظهرت داخل المحادثة ✅',
+                beginnerTip: 'لن يتمكن الطرف الآخر من تتبع حركتك لاحقاً طالما اخترت «إرسال موقعك الحالي».'
+              }
+            ],
+            android_stock: [
+              {
+                title: 'فتح محادثة الشخص في تطبيق واتساب',
+                detail: 'افتح تطبيق واتساب وادخل إلى محادثة الشخص المطلوب.',
+                screenHint: 'واتساب ← المحادثة المطلوبة',
+                beginnerTip: 'تأكد من اتصال الهاتف بالإنترنت.'
+              },
+              {
+                title: 'الضغط على رمز «مشبك الورق 📎» بالأسفل',
+                detail: 'اضغط على أيقونة المشبك 📎 الموجودة داخل مستطيل الكتابة السفلي.',
+                screenHint: 'شريط الكتابة السفلي ← رمز المشبك 📎',
+                beginnerTip: 'رمز المشبك يقع بجوار أيقونة الكاميرا مباشرة.'
+              },
+              {
+                title: 'اختيار أيقونة «الموقع 📍»',
+                detail: 'اضغط على الدائرة الخضراء «الموقع» ووافق على تشغيل خدمة الموقع إذا ظهرت رسالة تنبيه.',
+                screenHint: 'لوحة المرفقات ← الموقع 📍',
+                beginnerTip: 'اختر دائماً «أثناء استخدام التطبيق» عند طلب إذن الموقع.'
+              },
+              {
+                title: 'الضغط على «إرسال موقعك الحالي»',
+                detail: 'انتظر ثانيتين لتحديد الدقة ثم اضغط على «إرسال موقعك الحالي بدقة تصل إلى...».',
+                screenHint: 'اضغط: إرسال موقعك الحالي',
+                beginnerTip: 'تجنب الضغط على أسماء الأماكن المجاورة في الأسفل حتى يرسل مكانك الدقيق.'
+              },
+              {
+                title: 'تم إرسال الموقع بنجاح',
+                detail: 'ستظهر الخريطة فوراً داخل رسائل المحادثة.',
+                screenHint: 'ظهور الخريطة في الدردشة ✅',
+                beginnerTip: 'يمكنك التدرب على هذه الخطوة في تبويب «وضع التدريب الآمن».'
+              }
             ]
           }
         },
@@ -621,18 +1045,140 @@
           id: 'g4',
           cat: 'daily',
           icon: '🧹',
-          title: 'طريقة حذف بيانات التصفح في جوجل كروم (Google Chrome)',
-          shortDesc: 'تنظيف سجل المواقع والملفات المؤقتة لتسريع المتصفح وحماية خصوصيتك.',
-          keywords: 'حذف بيانات التصفح في قوقل كروم تنظيف المتصفح مسح السجل الكوكيز تسريع كروم',
+          title: '4. طريقة حذف بيانات التصفح في جوجل كروم (تنظيف المتصفح)',
+          shortDesc: 'مسح سجل المواقع والملفات المؤقتة لتسريع متصفح كروم وإيقاف الإعلانات المزعجة.',
+          keywords: 'حذف بيانات التصفح في قوقل كروم تنظيف المتصفح مسح السجل الكوكيز تسريع كروم ننظف كروم',
           intentLabel: 'فتح متصفح Google Chrome',
           intentAction: 'com.android.chrome',
-          whyNote: 'حذف الملفات المؤقتة (الكاش) يوفر مساحة في الهاتف ويوقف الرسائل المزعجة لبعض المواقع دون أن يحذف صورك الشخصية.',
+          whyNote: 'مع كثرة فتح مواقع الإنترنت، تتراكم ملفات مؤقتة تبطئ المتصفح؛ تنظيفها يسرّع التصفح ويحمي خصوصيتك دون أن يحذف أي صورة أو رقم من هاتفك.',
           stepsByDevice: {
             samsung: [
-              { title: 'افتح تطبيق متصفح «جوجل كروم Chrome»', detail: 'اضغط على النقاط الثلاث الرأسية (⋮) الموجودة في أعلى يسار أو يمين الشاشة.', screenHint: 'اضغط على النقاط الثلاث (⋮) بالأعلى' },
-              { title: 'اختر «السجل» (History) أو «محو بيانات التصفح»', detail: 'ستظهر لك قائمة المواقع التي زرتها، وفوقها زر «محو بيانات التصفح».', screenHint: 'النقاط الثلاث ← السجل ← محو بيانات التصفح' },
-              { title: 'حدد النطاق الزمني «جميع الأوقات» (All Time)', detail: 'من القائمة العلوية اختر «جميع الأوقات» أو «آخر 7 أيام» حسب رغبتك.', screenHint: 'اختر النطاق الزمني: جميع الأوقات' },
-              { title: 'اضغط على زر «محو البيانات» في أسفل الشاشة', detail: 'أكد الضغط على «محو»، وبذلك يصبح متصفحك نظيفاً وسريعاً.', screenHint: 'اضغط: محو البيانات (Clear data)' }
+              {
+                title: 'فتح تطبيق متصفح «جوجل كروم Chrome»',
+                detail: 'اضغط على أيقونة متصفح «Chrome» الدائرية الملونة (الأحمر والأصفر والأخضر والأزرق) في شاشة هاتفك.',
+                screenHint: 'الشاشة الرئيسية ← تطبيق Chrome الملون',
+                beginnerTip: 'هذا الإجراء ينظف متصفح الإنترنت فقط ولا يمس صورك في الاستوديو أو رسائل الواتساب أبداً.'
+              },
+              {
+                title: 'الضغط على النقاط الثلاث الرأسية «⋮» في أعلى الشاشة',
+                detail: 'انظر إلى أعلى يسار (أو أعلى يمين) شاشة المتصفح بجوار شريط العنوان؛ ستجد ثلاث نقاط صغيرة فوق بعضها «⋮»، اضغط عليها لفتح قائمة الإعدادات.',
+                screenHint: 'أعلى زاوية المتصفح: اضغط النقاط الثلاث «⋮»',
+                beginnerTip: 'النقاط الثلاث «⋮» هي مكان القائمة الرئيسية في أغلب تطبيقات جوجل.'
+              },
+              {
+                title: 'اختيار «السجل» أو «محو بيانات التصفح» مباشرة',
+                detail: 'من القائمة التي ظهرت، اضغط على كلمة «السجل» (History) ثم اضغط على الجملة الزرقاء في الأعلى «محو بيانات التصفح...» (وفي التحديثات الجديدة ستجد «محو بيانات التصفح» مباشرة في قائمة النقاط الثلاث).',
+                screenHint: 'قائمة النقاط الثلاث ⋮ ← السجل ← محو بيانات التصفح',
+                beginnerTip: 'كلا الطريقين يوصلك لنفس شاشة التنظيف بالضبط.'
+              },
+              {
+                title: 'تحديد النطاق الزمني «جميع الأوقات» (All Time)',
+                detail: 'في أعلى شاشة المحو، ستجد كلمة «النطاق الزمني» وبجانبها قائمة صغيرة مكتوب فيها (آخر ساعة أو آخر 15 دقيقة)؛ اضغط عليها واختر «جميع الأوقات» لتنظيف المتصفح بالكامل.',
+                screenHint: 'النطاق الزمني بالأعلى ← اختر «جميع الأوقات»',
+                beginnerTip: 'اترك علامات الصح كما هي على (سجل التصفح، والملفات، والصور المخزنة مؤقتاً).'
+              },
+              {
+                title: 'الضغط على زر «محو البيانات» في أسفل الشاشة',
+                detail: 'انظر إلى أسفل الشاشة واضغط على الزر الأزرق «محو البيانات» (Clear data)، وإذا ظهرت نافذة تأكيد صغيرة اضغط «محو». هكذا أصبح متصفحك نظيفاً وسريعاً!',
+                screenHint: 'أسفل الشاشة: اضغط «محو البيانات» ← تأكيد «محو»',
+                beginnerTip: 'إذا كنت مسجلاً دخولك في موقع معين داخل المتصفح، قد يطلب منك تسجيل الدخول مرة أخرى بعد التنظيف.'
+              }
+            ],
+            xiaomi: [
+              {
+                title: 'فتح متصفح «Chrome» على هاتف شاومي',
+                detail: 'اضغط على أيقونة متصفح جوجل كروم الدائرية الملونة لفتحه.',
+                screenHint: 'الشاشة الرئيسية ← متصفح Chrome',
+                beginnerTip: 'احرص على فتح متصفح Chrome وليس متصفح Mi Browser لتطبيق هذه الخطوات.'
+              },
+              {
+                title: 'الضغط على النقاط الثلاث «⋮» في الزاوية العلوية',
+                detail: 'اضغط على رمز النقاط الثلاث الرأسية «⋮» في أعلى يسار أو يمين الشاشة.',
+                screenHint: 'أعلى الشاشة ← النقاط الثلاث «⋮»',
+                beginnerTip: 'ستفتح لك قائمة طويلة من الخيارات.'
+              },
+              {
+                title: 'الضغط على «السجل» ثم «محو بيانات التصفح»',
+                detail: 'اختر «السجل» من القائمة، ثم اضغط على السطر الأول في الأعلى «محو بيانات التصفح...».',
+                screenHint: 'السجل ← محو بيانات التصفح',
+                beginnerTip: 'يمكنك أيضاً الضغط على «محو بيانات التصفح» مباشرة إذا ظهرت في القائمة الأولى.'
+              },
+              {
+                title: 'تغيير النطاق الزمني إلى «جميع الأوقات»',
+                detail: 'اضغط على القائمة المنسدلة بجانب «النطاق الزمني» واختر «جميع الأوقات» بدلاً من «آخر ساعة».',
+                screenHint: 'النطاق الزمني ← جميع الأوقات',
+                beginnerTip: 'هذا يضمن مسح الملفات المؤقتة القديمة المتراكمة منذ شهور.'
+              },
+              {
+                title: 'الضغط على زر «محو البيانات» بالأسفل',
+                detail: 'اضغط على زر «محو البيانات» في أسفل الشاشة ثم أكد الضغط على «محو».',
+                screenHint: 'أسفل الشاشة ← محو البيانات ← محو',
+                beginnerTip: 'تم تنظيف متصفح كروم في هاتف شاومي بنجاح!'
+              }
+            ],
+            iphone: [
+              {
+                title: 'فتح متصفح «Chrome» (أو سفاري) على الآيفون',
+                detail: 'افتح تطبيق متصفح جوجل كروم على الآيفون. (ملاحظة: في كروم الآيفون توجد القائمة في أسفل الشاشة وليس في أعلاها).',
+                screenHint: 'افتح تطبيق Chrome على الآيفون',
+                beginnerTip: 'تصميم كروم في الآيفون يضع الأزرار في الأسفل لكي يسهل الوصول إليها بإصبع الإبهام.'
+              },
+              {
+                title: 'الضغط على النقاط الثلاث «⋯» في أسفل الشاشة',
+                detail: 'انظر إلى الشريط السفلي في كروم الآيفون واضغط على أيقونة النقاط الثلاث الأفقية «⋯» في الزاوية السفلية.',
+                screenHint: 'أسفل شاشة الآيفون: اضغط النقاط الثلاث «⋯»',
+                beginnerTip: 'ستظهر لك قائمة تحتوي على السجل والإشارات المرجعية ومحو البيانات.'
+              },
+              {
+                title: 'اختيار «محو بيانات التصفح» (Clear Browsing Data)',
+                detail: 'اسحب الشريط العلوي في القائمة أو اضغط مباشرة على رمز سلة المهملات المكتوب تحته «محو بيانات التصفح».',
+                screenHint: 'قائمة (⋯) ← محو بيانات التصفح 🗑️',
+                beginnerTip: 'تأكد من عدم وضع علامة صح على «كلمات المرور المحفوظة» حتى لا تُمسح كلمات سر مواقعك.'
+              },
+              {
+                title: 'تحديد «النطاق الزمني: كل الأوقات»',
+                detail: 'اضغط على السطر الأول «النطاق الزمني» واختر «كل الأوقات» (All Time) ثم ارجع خطوة للخلف.',
+                screenHint: 'النطاق الزمني ← كل الأوقات',
+                beginnerTip: 'تأكد من وجود علامة صح أمام «سجل التصفح» و«الصور والملفات المخزنة مؤقتاً».'
+              },
+              {
+                title: 'الضغط على الكلمة الحمراء «محو بيانات التصفح» بالأسفل',
+                detail: 'اضغط على «محو بيانات التصفح» باللون الأحمر في أسفل الشاشة، ثم أكد الضغط مرة ثانية، واضغط «تم» في الأعلى.',
+                screenHint: 'أسفل الشاشة: محو بيانات التصفح ← تأكيد ← تم',
+                beginnerTip: 'ولمسح متصفح سفاري (Safari) الأساسي في الآيفون: افتح الإعدادات ⚙️ ← سفاري ← مسح السجل وبيانات الموقع.'
+              }
+            ],
+            android_stock: [
+              {
+                title: 'فتح متصفح «Chrome»',
+                detail: 'اضغط على أيقونة متصفح Chrome على شاشة هاتفك.',
+                screenHint: 'الشاشة الرئيسية ← Chrome',
+                beginnerTip: 'التنظيف الدوري كل شهر يحافظ على خفة وسرعة المتصفح.'
+              },
+              {
+                title: 'الضغط على النقاط الثلاث «⋮» بالأعلى',
+                detail: 'اضغط على النقاط الثلاث الرأسية في الزاوية العلوية من المتصفح.',
+                screenHint: 'أعلى المتصفح ← النقاط الثلاث «⋮»',
+                beginnerTip: 'تقع النقاط الثلاث بجانب مربع كتابة عنوان الموقع.'
+              },
+              {
+                title: 'اختيار «السجل» ثم «محو بيانات التصفح»',
+                detail: 'اضغط على «السجل» ثم اضغط على «محو بيانات التصفح...» في أعلى القائمة.',
+                screenHint: 'السجل ← محو بيانات التصفح',
+                beginnerTip: 'ستفتح لك نافذة تحديد نوع البيانات المراد مسحها.'
+              },
+              {
+                title: 'اختيار «جميع الأوقات» من النطاق الزمني',
+                detail: 'اضغط على خيار النطاق الزمني في الأعلى وحوله إلى «جميع الأوقات».',
+                screenHint: 'النطاق الزمني ← جميع الأوقات',
+                beginnerTip: 'لا تضع علامة صح على كلمات المرور المحفوظة إذا كنت تريد بقاءها.'
+              },
+              {
+                title: 'الضغط على «محو البيانات» بالأسفل',
+                detail: 'اضغط على الزر الأزرق «محو البيانات» في أسفل الشاشة ثم اضغط «محو» للتأكيد.',
+                screenHint: 'محو البيانات ← محو',
+                beginnerTip: 'تم مسح السجل والملفات المؤقتة بنجاح!'
+              }
             ]
           }
         },
@@ -640,18 +1186,140 @@
           id: 'g5',
           cat: 'apps',
           icon: '🛡️',
-          title: 'تثبيت التطبيقات ومنح الأذونات بأمان (ومتصفح كروم)',
-          shortDesc: 'كيف تثبت البرامج بأمان، ومتى تمنح الإذن أو ترفضه عند التحميل.',
-          keywords: 'طريقة تثبيت التطبيقات ومنح الاذونات جوجل كروم تنزيل برنامج متجر بلاي صلاحيات',
-          intentLabel: 'فتح متجر Google Play الرسمي',
+          title: '5. تثبيت التطبيقات ومنح الأذونات بأمان (ومتى تحذر من متصفح كروم)',
+          shortDesc: 'كيف تحمّل البرامج بأمان، وتفهم رسائل الأذونات (الكاميرا، الموقع، الأسماء) خطوة بخطوة.',
+          keywords: 'طريقة تثبيت التطبيقات ومنح الاذونات جوجل كروم تنزيل برنامج متجر بلاي صلاحيات تحميل تطبيق',
+          intentLabel: 'فتح المتجر الرسمي لتحميل التطبيقات',
           intentAction: 'market://search',
-          whyNote: 'التثبيت من متجر الهاتف الرسمي هو الطريق الآمن؛ أما التثبيت من جوجل كروم فيتطلب حذراً شديداً وفحصاً للأذونات.',
+          whyNote: 'كثير من المبتدئين يضغطون «سماح» على أي نافذة تظهر لهم أو يحمّلون برامج ضارة من روابط المتصفح؛ هذا الدليل يعلمك كيف تميز الآمن من الخطر.',
           stepsByDevice: {
             samsung: [
-              { title: 'الطريقة الآمنة: افتح متجر «Google Play» واكتب اسم التطبيق', detail: 'ابحث عن التطبيق في المتجر الرسمي واضغط زر «تثبيت» الأخضر.', screenHint: 'متجر Google Play ← بحث ← تثبيت' },
-              { title: 'عند التثبيت من «جوجل كروم»: انتبه لرسالة الأمان', detail: 'إذا حملت ملف تطبيق من كروم، سيطلب الهاتف إذن «تثبيت تطبيقات غير معروفة»؛ لا تفعّله إلا إذا كنت متأكداً 100% من الموقع الرسمي، ثم أغلقه فوراً بعد التثبيت.', screenHint: 'تحذير: لا تثبت ملفات APK من روابط مجهولة!' },
-              { title: 'قراءة نافذة «الأذونات» عند فتح التطبيق لأول مرة', detail: 'سيظهر سؤال مثل: «هل تسمح للتطبيق بالوصول إلى الموقع أو الكاميرا؟» اسأل نفسك: هل يحتاج التطبيق هذا الإذن فعلاً؟', screenHint: 'اختر: «أثناء استخدام التطبيق فقط» أو «عدم السماح»' },
-              { title: 'مراجعة أو إلغاء أي إذن لاحقاً من الضبط', detail: 'يمكنك في أي وقت فتح الضبط ← التطبيقات ← اختيار التطبيق ← الأذونات، وإلغاء أي إذن لا ترغب به.', screenHint: 'الضبط ← إدارة الأذونات' }
+              {
+                title: 'الطريقة الآمنة دائماً: افتح «متجر Play» (المثلث الملون)',
+                detail: 'لتنزيل أي برنامج جديد، افتح دائماً تطبيق «متجر Google Play» الرسمي على هاتفك، واضغط على شريط البحث في الأعلى واكتب اسم البرنامج ثم اضغط زر «تثبيت» الأخضر أو الأزرق.',
+                screenHint: 'متجر Google Play ← مربع البحث بالأعلى ← زر «تثبيت»',
+                beginnerTip: 'متجر Play يفحص التطبيقات تلقائياً ببرنامج حماية (Play Protect) قبل تثبيتها على هاتفك.'
+              },
+              {
+                title: 'ماذا يحدث إذا حمّلت تطبيقاً من «جوجل كروم»؟ (انتبه جيداً!)',
+                detail: 'إذا قمت بتحميل ملف تطبيق (ينتهي بحروف APK) من داخل متصفح كروم وضغطت عليه لتثبيته، سيوقفك هاتف سامسونج برسالة تقول: «لأغراض الأمان، لا يُسمح لهاتفك بتثبيت تطبيقات غير معروفة من هذا المصدر».',
+                screenHint: 'تنبيه الأمان عند التثبيت من كروم ← اضغط «إلغاء» إذا لم تكن واثقاً 100%',
+                beginnerTip: 'نصيحة ذهبية للمبتدئ: لا تقم أبداً بتثبيت تطبيقات من روابط واتساب أو إعلانات كروم! وإذا اضطررت لتثبيت برنامج حكومي رسمي من موقعه، اضغط «الإعدادات» وفعل الزر ثم أعد إغلاقه فوراً بعد التثبيت.'
+              },
+              {
+                title: 'فهم نافذة «منح الأذونات» عند فتح التطبيق لأول مرة',
+                detail: 'عندما تفتح أي تطبيق جديد لأول مرة، ستظهر لك نافذة وسط الشاشة تسألك: «هل تريد السماح لتطبيق (...) بالوصول إلى الصور / الموقع / جهات الاتصال؟». توقف لحظة واسأل نفسك: هل يحتاج التطبيق لهذا الشيء؟',
+                screenHint: 'اقرأ السؤال في النافذة قبل الضغط على سماح أو عدم السماح',
+                beginnerTip: 'مثال واضح: تطبيق «واتساب» يحتاج الكاميرا والميكروفون والأسماء (منطقي)، لكن تطبيق «آلة حاسبة» أو «لعبة شطرنج» لا يحتاج أرقام هواتفك أو رسائلك أبداً!'
+              },
+              {
+                title: 'الفرق بين الخيارات الثلاثة في نافذة الإذن',
+                detail: 'ستجد في النافذة 3 اختيارات: (1) «أثناء استخدام التطبيق فقط»: وهو الخيار الأفضل والآمن، (2) «هذه المرة فقط»: إذا كنت ستستخدم الميزة مرة واحدة، (3) «عدم السماح»: اضغطه فوراً إذا كان الطلب غريباً.',
+                screenHint: 'اختر دائماً: «أثناء استخدام التطبيق» أو «عدم السماح»',
+                beginnerTip: 'اختيار «أثناء استخدام التطبيق» يمنع البرنامج من تشغيل الكاميرا أو الموقع في الخلفية بعد إغلاقك له.'
+              },
+              {
+                title: 'كيف تلغي إذناً منحته بالخطأ لتطبيق سابق؟',
+                detail: 'إذا ضغطت «سماح» بالخطأ، لا تقلق! افتح «الضبط ⚙️» ← «التطبيقات» ← اضغط على اسم التطبيق ← اضغط على «الأذونات» (Permissions) ← اضغط على الإذن واختر «عدم السماح».',
+                screenHint: 'الضبط ⚙️ ← التطبيقات ← اختر التطبيق ← الأذونات ← عدم السماح',
+                beginnerTip: 'يمكنك أيضاً استخدام تبويب «درع الأذونات» في أعلى هذا التطبيق لفحص أي برنامج قبل تثبيته.'
+              }
+            ],
+            xiaomi: [
+              {
+                title: 'التحميل الآمن من «متجر Google Play»',
+                detail: 'افتح تطبيق متجر Play على هاتف شاومي، واكتب اسم التطبيق في شريط البحث واضغط على زر «تثبيت».',
+                screenHint: 'متجر Play ← بحث ← تثبيت',
+                beginnerTip: 'انتظر حتى يكتمل التحميل وسيقوم هاتف شاومي بفحص التطبيق تلقائياً بشاشة (فحص الأمان).'
+              },
+              {
+                title: 'الحذر من تثبيت ملفات كروم الخارجية في شاومي',
+                detail: 'إذا حاولت تثبيت ملف خارجي محمّل من كروم، سيظهر لك في شاومي تحذير أحمر أو عدّاد تنازلي (10 ثوانٍ) ينبهك لخطورة التثبيت من مصادر غير معروفة.',
+                screenHint: 'عند ظهور شاشة التحذير في شاومي: اضغط «عدم التثبيت» لأمانك',
+                beginnerTip: 'أغلب الفيروسات والإعلانات المزعجة التي تظهر فجأة على شاشة الهاتف تأتي من تحميل برامج عبر متصفح كروم.'
+              },
+              {
+                title: 'مراجعة نافذة الصلاحيات والأذونات عند التشغيل الأول',
+                detail: 'عند فتح البرنامج، اقرأ النافذة التي تطلب الإذن (الموقع، الكاميرا، الملفات، جهات الاتصال) وتأكد من أنها تناسب وظيفة البرنامج.',
+                screenHint: 'نافذة الإذن ← اختر «أثناء استخدام التطبيق فقط» أو «رفض»',
+                beginnerTip: 'رفض إذن غير ضروري (مثل رفض وصول لعبة لجهات الاتصال) لن يمنع اللعبة من العمل!'
+              },
+              {
+                title: 'التحكم في أذونات التطبيقات من إعدادات شاومي',
+                detail: 'لمراجعة أذونات أي برنامج: افتح «الإعدادات ⚙️» ← «التطبيقات» ← «الأذونات» ← «إدارة الأذونات»، وهناك يمكنك رؤية كل تطبيق وما يصل إليه.',
+                screenHint: 'الإعدادات ⚙️ ← التطبيقات ← الأذونات',
+                beginnerTip: 'يمنحك نظام شاومي علامة خضراء أعلى الشاشة عندما يستخدم أي تطبيق الكاميرا أو الميكروفون حالياً.'
+              },
+              {
+                title: 'إغلاق إذن التثبيت من كروم بعد الانتهاء',
+                detail: 'تأكد دائماً من أن متصفح كروم غير مسموح له بتثبيت التطبيقات تلقائياً من: الإعدادات ← الخصوصية والحماية ← تثبيت تطبيقات غير معروفة ← Chrome ← إيقاف.',
+                screenHint: 'الخصوصية والحماية ← تثبيت تطبيقات غير معروفة ← إيقاف',
+                beginnerTip: 'هذا يضمن عدم نزول أي برنامج خفي أثناء تصفحك للإنترنت.'
+              }
+            ],
+            iphone: [
+              {
+                title: 'فتح متجر الآيفون الرسمي «App Store» (الأيقونة الزرقاء بحرف A)',
+                detail: 'في نظام الآيفون (iOS)، لا يتم تثبيت التطبيقات من متصفح كروم أو روابط خارجية، بل حصرياً من متجر «App Store» الرسمي الأزرق لحماية جهازك.',
+                screenHint: 'الشاشة الرئيسية ← متجر App Store الأزرق',
+                beginnerTip: 'هذه الميزة في الآيفون تحميك تلقائياً من ملفات الفيروسات الخارجية.'
+              },
+              {
+                title: 'البحث عن التطبيق والضغط على زر «تنزيل» (Get)',
+                detail: 'اضغط على أيقونة البحث (العدسة المكبرة 🔍) في أسفل يمين أو يسار المتجر، واكتب اسم التطبيق، ثم اضغط على زر «تنزيل» (Get) بجانبه.',
+                screenHint: 'تبويب بحث 🔍 بالأسفل ← اكتب اسم التطبيق ← اضغط تنزيل (Get)',
+                beginnerTip: 'إذا كان التطبيق مجانياً سيكتب بجانبه «تنزيل» (Get)، أما إذا كان بفلوس فسيكتب السعر فلا تضغط عليه.'
+              },
+              {
+                title: 'تأكيد التثبيت عبر الزر الجانبي أو بصمة الوجه (Face ID)',
+                detail: 'سيطلب منك الآيفون الضغط مرتين بسرعة على الزر الجانبي للهاتف (أو إدخال كلمة سر حساب Apple) لبدء التحميل.',
+                screenHint: 'اضغط مرتين على الزر الجانبي للآيفون للتأكيد',
+                beginnerTip: 'هذا التأكيد يمنع الأطفال من تحميل تطبيقات بدون علمك.'
+              },
+              {
+                title: 'التعامل الذكي مع نوافذ الأذونات في الآيفون',
+                detail: 'عند فتح التطبيق الجديد، سيسألك الآيفون مثلاً: «هل ترغب في السماح للتطبيق بتتبع نشاطك؟» اختر دائماً «مطالبة التطبيق بعدم التتبع» (Ask App Not to Track)، وبالنسبة للموقع اختر «السماح أثناء استخدام التطبيق».',
+                screenHint: 'اختر: «مطالبة التطبيق بعدم التتبع» لحماية خصوصيتك',
+                beginnerTip: 'وبالنسبة للصور، يتيح لك الآيفون خياراً رائعاً اسمه «تحديد صور...» لتسمح للتطبيق برؤية صورة واحدة فقط بدلاً من كل ألبوم صورك!'
+              },
+              {
+                title: 'تعديل أذونات أي تطبيق لاحقاً من إعدادات الآيفون',
+                detail: 'إذا أردت إلغاء إذن الكاميرا أو الموقع عن أي تطبيق، افتح «الإعدادات ⚙️» ← «الخصوصية والأمن» (Privacy & Security) واختر الكاميرا أو خدمات الموقع وأغلق الزر أمام التطبيق.',
+                screenHint: 'الإعدادات ⚙️ ← الخصوصية والأمن',
+                beginnerTip: 'أنت المتحكم الكامل في صلاحيات كل تطبيق على جهازك.'
+              }
+            ],
+            android_stock: [
+              {
+                title: 'التحميل من متجر «Google Play» الرسمي فقط',
+                detail: 'افتح متجر Google Play، وابحث عن التطبيق المطلوب واضغط زر «تثبيت».',
+                screenHint: 'متجر Google Play ← بحث ← تثبيت',
+                beginnerTip: 'تجنب تحميل البرامج من المواقع المجهولة في متصفح كروم.'
+              },
+              {
+                title: 'عدم تفعيل «تثبيت تطبيقات غير معروفة» لمتصفح كروم',
+                detail: 'إذا ظهر لك تنبيه يطلب السماح لكروم بتثبيت تطبيق خارجي، اضغط «إلغاء» لحماية هاتفك من البرامج الضارة.',
+                screenHint: 'تنبيه المصادر غير المعروفة ← اضغط إلغاء',
+                beginnerTip: 'البرامج الموثوقة متوفرة دائماً في المتجر الرسمي.'
+              },
+              {
+                title: 'قراءة رسالة الإذن بتأنٍ قبل الموافقة',
+                detail: 'عندما يطلب التطبيق إذن الوصول للكاميرا أو الموقع أو الأسماء، وافق فقط إذا كان الإذن ضرورياً لعمل التطبيق.',
+                screenHint: 'نافذة الإذن ← «أثناء استخدام التطبيق» أو «عدم السماح»',
+                beginnerTip: 'لا تمنح إذن الرسائل القصيرة (SMS) أو جهات الاتصال لأي لعبة أو أداة بسيطة.'
+              },
+              {
+                title: 'اختيار «أثناء استخدام التطبيق فقط»',
+                detail: 'عند الموافقة على إذن الموقع أو الميكروفون، اختر «أثناء استخدام التطبيق فقط» ليقف الإذن فور إغلاقك للتطبيق.',
+                screenHint: 'اختر: أثناء استخدام التطبيق فقط',
+                beginnerTip: 'هذا يحافظ على البطارية ويحمي خصوصيتك.'
+              },
+              {
+                title: 'مراجعة الأذونات من إعدادات الخصوصية',
+                detail: 'يمكنك مراجعة وإلغاء أي إذن من: الإعدادات ⚙️ ← الأمان والخصوصية ← الخصوصية ← مدير الأذونات.',
+                screenHint: 'الإعدادات ⚙️ ← الخصوصية ← مدير الأذونات',
+                beginnerTip: 'راجع قسم الأذونات من وقت لآخر للتأكد من أمان جهازك.'
+              }
             ]
           }
         },
@@ -659,22 +1327,140 @@
           id: 'g6',
           cat: 'apps',
           icon: '🗑️',
-          title: 'طريقة إزالة وحذف تطبيق من الهاتف نهائياً',
-          shortDesc: 'التخلص من البرامج والألعاب غير المستخدمة لتوفير المساحة وتسريع الجهاز.',
-          keywords: 'طريقة إزالة تطبيق حذف برنامج الغاء تثبيت مسح لعبة تنظيف مساحة',
+          title: '6. طريقة إزالة وحذف تطبيق من الهاتف نهائياً',
+          shortDesc: 'خطوات سهلة لمسح أي برنامج أو لعبة لا تحتاجها لتفريغ المساحة وتسريع الهاتف.',
+          keywords: 'طريقة إزالة تطبيق حذف برنامج الغاء تثبيت مسح لعبة تنظيف مساحة ازاله',
           intentLabel: 'فتح قائمة التطبيقات المثبتة في الهاتف',
           intentAction: 'android.settings.APPLICATION_SETTINGS',
-          whyNote: 'حذف التطبيقات التي لا تستخدمها يقلل استهلاك البطارية ويوفر مساحة كبيرة للصور والفيديوهات.',
+          whyNote: 'الألعاب والتطبيقات التي لا تستخدمها تستهلك ذاكرة الهاتف وتبطئ سرعته وتفرغ البطارية؛ حذفها يعيد للهاتف نشاطه.',
           stepsByDevice: {
             samsung: [
-              { title: 'الطريقة السريعة: اضغط مطولاً بإصبعك على أيقونة التطبيق', detail: 'ضع إصبعك على التطبيق الذي تريد حذفه لمدة ثانيتين دون رفع إصبعك.', screenHint: 'ضغطة مطولة على أيقونة التطبيق' },
-              { title: 'اختر «إلغاء التثبيت» (Uninstall) من القائمة المنبثقة', detail: 'اضغط على رمز سلة المهملات المكتوب بجانبه «إلغاء التثبيت» ثم اضغط «موافق».', screenHint: 'اضغط: إلغاء التثبيت ← موافق' },
-              { title: 'الطريقة الثانية (من الإعدادات): افتح الضبط ← التطبيقات', detail: 'إذا لم يظهر خيار الحذف على الشاشة، افتح الضبط ثم التطبيقات واضغط على اسم التطبيق ثم «إلغاء التثبيت» بالأسفل.', screenHint: 'الضبط ← التطبيقات ← اختيار التطبيق ← إلغاء التثبيت' }
+              {
+                title: 'البحث عن أيقونة التطبيق الذي تريد حذفه',
+                detail: 'افتح شاشة التطبيقات في هاتف سامسونج وحدد أيقونة البرنامج أو اللعبة التي لم تعد بحاجة إليها.',
+                screenHint: 'شاشة التطبيقات ← حدد أيقونة التطبيق المراد حذفه',
+                beginnerTip: 'انتبه: التطبيقات الأساسية للنظام (مثل الهاتف، الكاميرا، الضبط، المتجر) لا يمكن حذفها حتى لا يتعطل الهاتف.'
+              },
+              {
+                title: 'الضغط المطول بإصبعك على أيقونة التطبيق لمدة ثانيتين',
+                detail: 'ضع إصبعك فوق أيقونة التطبيق واستمر بالضغط لمدة ثانيتين (دون تحريك إصبعك) حتى تظهر لك قائمة صغيرة فوق الأيقونة.',
+                screenHint: 'ضغطة مطولة (ثانيتين) على أيقونة التطبيق',
+                beginnerTip: 'إذا ضغطت ضغطة سريعة سيفتح التطبيق، لذلك احرص على الضغط المطول حتى تخرج القائمة الصغيرة.'
+              },
+              {
+                title: 'الضغط على «إلغاء التثبيت» (سلة المهملات 🗑️)',
+                detail: 'داخل المستطيل الصغير الذي ظهر فوق التطبيق، ستجد رمز سلة مهملات مكتوباً تحته أو بجانبه «إلغاء التثبيت» (Uninstall)؛ اضغط عليه.',
+                screenHint: 'من القائمة المنبثقة: اضغط «إلغاء التثبيت 🗑️»',
+                beginnerTip: 'لا تضغط على «إزالة» (Remove) لأن كلمة «إزالة» في شاشة سامسونج الرئيسية تخفي الأيقونة فقط ولا تحذف البرنامج، بل اختر دائماً «إلغاء التثبيت».'
+              },
+              {
+                title: 'تأكيد الحذف بالضغط على «موافق»',
+                detail: 'ستظهر رسالة في أسفل الشاشة تسألك: «هل تريد إلغاء تثبيت هذا التطبيق؟» اضغط على كلمة «موافق» (OK) ليُحذف التطبيق تماماً وتتوفر مساحته.',
+                screenHint: 'نافذة التأكيد بالأسفل ← اضغط «موافق»',
+                beginnerTip: 'يتم الحذف في ثانية واحدة ويختفي البرنامج من الهاتف.'
+              },
+              {
+                title: 'طريقة بديلة مضمونة من داخل «الضبط ⚙️»',
+                detail: 'إذا استصعبت الضغط المطول، افتح «الضبط ⚙️» ← اضغط على «التطبيقات» ← اضغط على اسم البرنامج من القائمة ← اضغط على «إلغاء التثبيت» في أسفل الشاشة ثم «موافق».',
+                screenHint: 'الضبط ⚙️ ← التطبيقات ← اختر البرنامج ← إلغاء التثبيت بالأسفل',
+                beginnerTip: 'يمكنك الضغط على الزر الأسود «فتح قائمة التطبيقات» أسفل هذا الشرح للانتقال لتلك الشاشة مباشرة!'
+              }
+            ],
+            xiaomi: [
+              {
+                title: 'تحديد أيقونة البرنامج على شاشة شاومي',
+                detail: 'ابحث عن أيقونة التطبيق أو اللعبة التي ترغب في مسحها من هاتفك.',
+                screenHint: 'الشاشة الرئيسية ← أيقونة التطبيق',
+                beginnerTip: 'إذا كان التطبيق يرسل إعلانات مزعجة، فحذفه سيوقف تلك الإعلانات فوراً.'
+              },
+              {
+                title: 'الضغط المطول على الأيقونة لمدة ثانيتين',
+                detail: 'اضغط بإصبعك مطولاً على أيقونة التطبيق حتى تظهر قائمة الخيارات السريعة بجانبه.',
+                screenHint: 'ضغطة مطولة على أيقونة التطبيق',
+                beginnerTip: 'ستشعر باهتزاز خفيف عند ظهور القائمة.'
+              },
+              {
+                title: 'اختيار «إلغاء التثبيت» (أيقونة سلة المهملات الحمراء)',
+                detail: 'اضغط على خيار «إلغاء التثبيت» (Uninstall) الذي يحمل رمز سلة المهملات.',
+                screenHint: 'القائمة المنبثقة ← إلغاء التثبيت 🗑️',
+                beginnerTip: 'سيظهر لك صندوق تأكيد الحذف.'
+              },
+              {
+                title: 'الضغط على زر «إلغاء التثبيت» الأزرق أو الأحمر للتأكيد',
+                detail: 'اضغط على زر التأكيد «إلغاء التثبيت» لمسح البرنامج وجميع ملفاته المؤقتة من الهاتف.',
+                screenHint: 'نافذة التأكيد ← اضغط إلغاء التثبيت',
+                beginnerTip: 'تم تفريغ مساحة التطبيق بنجاح!'
+              },
+              {
+                title: 'الحذف من الإعدادات (للبرامج المتعددة دفعة واحدة)',
+                detail: 'في هواتف شاومي يمكنك أيضاً فتح «الإعدادات ⚙️» ← «التطبيقات» ← «إدارة التطبيقات» ← «إلغاء التثبيت»، وتحديد عدة ألعاب معاً لحذفها بضغطة واحدة.',
+                screenHint: 'الإعدادات ⚙️ ← التطبيقات ← إدارة التطبيقات ← إلغاء التثبيت',
+                beginnerTip: 'ميزة ممتازة لتنظيف الهاتف من الألعاب القديمة بسرعة.'
+              }
             ],
             iphone: [
-              { title: 'اضغط مطولاً على أيقونة التطبيق في شاشة الآيفون', detail: 'استمر بالضغط حتى تظهر قائمة خيارات سريعة أو تبدأ الأيقونات بالاهتزاز.', screenHint: 'ضغطة مطولة على التطبيق' },
-              { title: 'اختر «إزالة التطبيق» باللون الأحمر', detail: 'اضغط على خيار إزالة التطبيق (Remove App).', screenHint: 'اضغط: إزالة التطبيق' },
-              { title: 'اضغط «حذف التطبيق» للتأكيد النهائي', detail: 'تأكد من اختيار «حذف التطبيق» وليس «إزالة من الشاشة الرئيسية فقط».', screenHint: 'اضغط: حذف التطبيق (Delete App)' }
+              {
+                title: 'تحديد أيقونة التطبيق على شاشة الآيفون',
+                detail: 'انتقل إلى الصفحة التي توجد بها أيقونة التطبيق الذي تريد حذفه على جهاز الآيفون.',
+                screenHint: 'شاشة الآيفون ← أيقونة التطبيق المراد حذفه',
+                beginnerTip: 'تذكر أن حذف التطبيق يمسح بياناته المخزنة بداخله.'
+              },
+              {
+                title: 'الضغط المطول بإصبعك على أيقونة التطبيق',
+                detail: 'اضغط مطولاً لمدة ثانيتين على أيقونة التطبيق حتى تظهر لك قائمة بيضاء صغيرة بجانبه.',
+                screenHint: 'ضغطة مطولة على أيقونة التطبيق',
+                beginnerTip: 'لا ترفع إصبعك قبل ظهور القائمة.'
+              },
+              {
+                title: 'الضغط على الكلمة الحمراء «إزالة التطبيق» (Remove App)',
+                detail: 'في أسفل القائمة الصغيرة، اضغط على السطر المكتوب باللون الأحمر «إزالة التطبيق» وبجانبه علامة ناقص (—).',
+                screenHint: 'اختر باللون الأحمر: «إزالة التطبيق» (Remove App)',
+                beginnerTip: 'ستظهر لك الآن نافذة مهمة جداً للتفريق بين الحذف الكامل والإخفاء.'
+              },
+              {
+                title: 'اختيار «حذف التطبيق» (Delete App) وليس إزالة من الشاشة',
+                detail: 'انتبه جيداً: اضغط على الخيار الأحمر الأول «حذف التطبيق» (Delete App) لمسحه نهائياً وتوفير المساحة، ولا تضغط على «إزالة من الشاشة الرئيسية» لأنها تخفيه فقط.',
+                screenHint: 'اضغط الخيار الأحمر: «حذف التطبيق» ← ثم أكد «حذف»',
+                beginnerTip: 'هذا أهم فرق في الآيفون: كلمة «حذف التطبيق» هي التي تمسحه بالكامل.'
+              },
+              {
+                title: 'الحذف من إعدادات مساحة تخزين الآيفون',
+                detail: 'يمكنك أيضاً معرفة أكبر التطبيقات استهلاكاً للمساحة وحذفها من: الإعدادات ⚙️ ← عام ← مساحة تخزين iPhone ← اضغط على التطبيق ← حذف التطبيق.',
+                screenHint: 'الإعدادات ⚙️ ← عام ← مساحة تخزين iPhone',
+                beginnerTip: 'تعرض لك هذه الشاشة حجم كل تطبيق بالميجابايت والـ جيجابايت.'
+              }
+            ],
+            android_stock: [
+              {
+                title: 'تحديد أيقونة التطبيق في قائمة البرامج',
+                detail: 'افتح قائمة التطبيقات وابحث عن البرنامج الذي تريد إزالته.',
+                screenHint: 'قائمة التطبيقات ← أيقونة البرنامج',
+                beginnerTip: 'تأكد من اسم التطبيق قبل الحذف.'
+              },
+              {
+                title: 'الضغط المطول على الأيقونة ثم اختيار «معلومات التطبيق» أو السحب للأعلى',
+                detail: 'اضغط مطولاً على التطبيق؛ في بعض هواتف الأندرويد الخام يظهر خيار «إلغاء التثبيت» أعلى الشاشة لتسحب الأيقونة إليه، أو اضغط على علامة (i) «معلومات التطبيق».',
+                screenHint: 'ضغطة مطولة ← معلومات التطبيق (i) أو إلغاء التثبيت',
+                beginnerTip: 'الضغط على علامة (i) يفتح صفحة التحكم الكاملة بالتطبيق.'
+              },
+              {
+                title: 'الضغط على زر «إلغاء التثبيت» (Uninstall)',
+                detail: 'اضغط على أيقونة سلة المهملات «إلغاء التثبيت» ثم اضغط «موافق» في رسالة التأكيد.',
+                screenHint: 'اضغط: إلغاء التثبيت 🗑️ ← موافق',
+                beginnerTip: 'سيتم مسح التطبيق فوراً من ذاكرة الهاتف.'
+              },
+              {
+                title: 'الطريقة البديلة من إعدادات الهاتف',
+                detail: 'افتح الإعدادات ⚙️ ← التطبيقات ← عرض كل التطبيقات ← اضغط على اسم التطبيق ← إلغاء التثبيت.',
+                screenHint: 'الإعدادات ⚙️ ← التطبيقات ← إلغاء التثبيت',
+                beginnerTip: 'هذه الطريقة تعمل على جميع هواتف أندرويد بلا استثناء.'
+              },
+              {
+                title: 'التأكد من اختفاء التطبيق وتوفر المساحة',
+                detail: 'بعد ظهور رسالة «تم إلغاء تثبيت التطبيق»، تكون مساحته قد عادت فارغة في هاتفك.',
+                screenHint: 'تم الحذف بنجاح ✅',
+                beginnerTip: 'يمكنك إعادة تحميل التطبيق في أي وقت من متجر Play إذا احتجته مستقبلاً.'
+              }
             ]
           }
         },
@@ -682,18 +1468,140 @@
           id: 'g7',
           cat: 'accounts',
           icon: '📎',
-          title: 'طريقة إرفاق ملف أو صورة في رسالة الجيميل (Gmail)',
-          shortDesc: 'إرسال صورة مستند أو ملف PDF داخل البريد الإلكتروني بخطوات واضحة.',
-          keywords: 'طريقة ارفاق ملف او صورة في الرسالة في الجيميل ارسال ايميل مرفق gmail',
+          title: '7. طريقة إرفاق ملف أو صورة في رسالة الجيميل (Gmail)',
+          shortDesc: 'شرح واضح خطوة بخطوة لإرسال صورة مستند أو ملف PDF عبر البريد الإلكتروني.',
+          keywords: 'طريقة ارفاق ملف او صورة في الرسالة في الجيميل ارسال ايميل مرفق gmail بعث صوره بالايميل',
           intentLabel: 'فتح تطبيق البريد Gmail',
           intentAction: 'com.google.android.gm',
-          whyNote: 'رمز مشبك الورق (📎) هو الرمز العالمي لإرفاق الصور والملفات في جميع تطبيقات البريد والمحادثة.',
+          whyNote: 'تحتاج هذه الميزة كثيراً عند التقديم لوظيفة أو معاملة رسمية أو إرسال مستند دراسي أو طبي عبر الإيميل بجودة كاملة.',
           stepsByDevice: {
             samsung: [
-              { title: 'افتح تطبيق «Gmail» واضغط زر «إنشاء ✏️»', detail: 'تجد زر «إنشاء» (Compose) في أسفل الشاشة؛ اضغط عليه لفتح رسالة جديدة.', screenHint: 'اضغط زر: إنشاء (Compose) بالأسفل' },
-              { title: 'اكتب إيميل المرسل إليه في خانة «إلى» (To)', detail: 'اكتب عنوان البريد الإلكتروني للجهة أو الشخص الذي سترسل له الملف.', screenHint: 'خانة (إلى): اكتب البريد الإلكتروني' },
-              { title: 'اضغط على رمز «مشبك الورق 📎» في أعلى الشاشة', detail: 'انظر إلى الشريط العلوي بجوار سهم الإرسال، واضغط على أيقونة المشبك ثم اختر «إرفاق ملف».', screenHint: 'أعلى الشاشة: اضغط رمز المشبك 📎 ← إرفاق ملف' },
-              { title: 'اختر الصورة أو الملف ثم اضغط سهم الإرسال «➤»', detail: 'بعد ظهور الصورة داخل الرسالة، اضغط على رمز السهم الأزرق (➤) في أعلى الشاشة لإرسال الرسالة.', screenHint: 'اضغط سهم الإرسال ➤ بالأعلى' }
+              {
+                title: 'فتح تطبيق «Gmail» (حرف M الملون) والضغط على «إنشاء ✏️»',
+                detail: 'افتح تطبيق البريد «Gmail» على هاتفك، ثم انظر إلى أسفل الشاشة وستجد زراً مستطيلاً مكتوباً عليه «إنشاء» وبجانبه رمز قلم ✏️؛ اضغط عليه لفتح صفحة رسالة جديدة.',
+                screenHint: 'تطبيق Gmail ← أسفل الشاشة: اضغط زر «إنشاء ✏️»',
+                beginnerTip: 'تجد تطبيق Gmail عادةً داخل مجلد Google على شاشة هاتفك.'
+              },
+              {
+                title: 'كتابة إيميل الشخص المرسل إليه في خانة «إلى» (To)',
+                detail: 'في السطر الأول المكتوب فيه «من»، يظهر إيميلك أنت تلقائياً. اضغط في السطر الثاني «إلى» واكتب عنوان الإيميل الذي تريد إرسال الملف له بالحروف الإنجليزية بدون مسافات، ثم اكتب عنواناً مختصراً في خانة «الموضوع».',
+                screenHint: 'خانة «إلى»: اكتب البريد المرسل إليه ← خانة «الموضوع»: اكتب عنوان الرسالة',
+                beginnerTip: 'تأكد من كتابة رمز (@) في وسط الإيميل بشكل صحيح مثل: name@gmail.com.'
+              },
+              {
+                title: 'الضغط على رمز «مشبك الورق 📎» في أعلى الشاشة',
+                detail: 'انظر الآن إلى أعلى شاشة الهاتف (الشريط العلوي)؛ ستجد رمز «مشبك الورق 📎» بجوار رمز السهم، اضغط على رمز المشبك وستظهر لك قائمة صغيرة اختر منها الخيار الأول «إرفاق ملف» (Attach file).',
+                screenHint: 'أعلى الشاشة: اضغط رمز المشبك 📎 ← اختر «إرفاق ملف»',
+                beginnerTip: 'انتبه: في تطبيق الجيميل يقع رمز المشبك 📎 في أعلى الشاشة، بعكس الواتساب الذي يضعه في الأسفل!'
+              },
+              {
+                title: 'اختيار الصورة أو الملف من ذاكرة هاتفك',
+                detail: 'ستفتح لك شاشة تعرض أحدث الصور والملفات في هاتفك؛ اضغط بلمسة واحدة على الصورة أو ملف الـ PDF الذي تريد إرساله. ستعود فوراً لشاشة الرسالة وتلاحظ ظهور مربع الصورة بداخلها.',
+                screenHint: 'اضغط على الصورة أو الملف المطلوب ليظهر داخل الرسالة',
+                beginnerTip: 'إذا لم تجد الصورة في القائمة الأولى، اضغط على الخطوط الثلاثة (☰) بأعلى شاشة الاختيار واختر «المعرض» أو «الصور».'
+              },
+              {
+                title: 'الضغط على سهم الإرسال الأزرق «➤» في أعلى الشاشة',
+                detail: 'بعد أن تتأكد من وجود الصورة المرفقة وكتابة إيميل المرسل إليه، اضغط على أيقونة السهم «➤» الموجودة في أعلى الشاشة بجوار رمز المشبك؛ ستظهر رسالة بالأسفل تقول «تم الإرسال».',
+                screenHint: 'أعلى الشاشة بجوار المشبك: اضغط سهم الإرسال «➤»',
+                beginnerTip: 'جرب تنفيذ هذه الخطوة بيدك الآن في تبويب «وضع التدريب الآمن» داخل تطبيقنا!'
+              }
+            ],
+            xiaomi: [
+              {
+                title: 'فتح تطبيق «Gmail» والضغط على زر «إنشاء ✏️»',
+                detail: 'افتح تطبيق Gmail من مجلد Google في هاتف شاومي، واضغط على زر «إنشاء ✏️» في الزاوية السفلية.',
+                screenHint: 'تطبيق Gmail ← زر «إنشاء ✏️» بالأسفل',
+                beginnerTip: 'تفتح أمامك ورقة بريد إلكتروني بيضاء جديدة.'
+              },
+              {
+                title: 'إدخال عنوان البريد المرسل إليه في حقل «إلى»',
+                detail: 'اكتب الإيميل الذي سترسل له الصورة في حقل «إلى»، ثم اضغط على الاقتراح الذي يظهر تحته لتثبيته، واكتب عنوان الرسالة في حقل «الموضوع».',
+                screenHint: 'حقل «إلى» ← اكتب البريد الإلكتروني ← حقل «الموضوع»',
+                beginnerTip: 'حين يتحول الإيميل المكتوب إلى شكل كبسولة محاطة بإطار، فهذا يعني أن صيغته صحيحة.'
+              },
+              {
+                title: 'الضغط على أيقونة المشبك «📎» في الشريط العلوي',
+                detail: 'اضغط على رمز المشبك «📎» الموجود في أعلى الشاشة، ثم اختر «إرفاق ملف» من القائمة.',
+                screenHint: 'أعلى الشاشة ← رمز المشبك 📎 ← إرفاق ملف',
+                beginnerTip: 'لا تختر «الإدراج من Drive» إلا إذا كان الملف محفوظاً في السحابة مسبقاً، بل اختر «إرفاق ملف» لرفعه من هاتفك.'
+              },
+              {
+                title: 'تحديد الصورة أو المستند من الهاتف',
+                detail: 'اختر الصورة أو الملف من القائمة ليتم إدراجه أسفل نص الرسالة.',
+                screenHint: 'اختر الصورة أو المستند المطلوب',
+                beginnerTip: 'يسمح الجيميل بإرفاق ملفات يصل حجمها إلى 25 ميجابايت في الرسالة الواحدة.'
+              },
+              {
+                title: 'إرسال الرسالة عبر رمز السهم العلوي «➤»',
+                detail: 'اضغط على رمز السهم «➤» في أعلى الشاشة لإرسال البريد فوراً.',
+                screenHint: 'أعلى الشاشة ← سهم الإرسال ➤',
+                beginnerTip: 'للتأكد من وصولها، افتح القائمة (☰) واختر «البريد المرسل» وستجد رسالتك هناك.'
+              }
+            ],
+            iphone: [
+              {
+                title: 'فتح تطبيق «Gmail» (أو البريد) على الآيفون والضغط على «إنشاء ✏️»',
+                detail: 'افتح تطبيق Gmail على الآيفون واضغط على زر «إنشاء ✏️» في أسفل الشاشة.',
+                screenHint: 'تطبيق Gmail ← زر «إنشاء ✏️» بالأسفل',
+                beginnerTip: 'إذا كنت تستخدم تطبيق البريد الأساسي للآيفون (Mail)، فاضغط على أيقونة الورقة والقلم في أسفل اليسار.'
+              },
+              {
+                title: 'كتابة البريد الإلكتروني للمستلم في خانة «إلى»',
+                detail: 'أدخل عنوان البريد الإلكتروني للشخص أو الجهة في خانة «إلى»، واكتب عنوان الرسالة في خانة «الموضوع».',
+                screenHint: 'خانة «إلى» ← اكتب الإيميل ← خانة «الموضوع»',
+                beginnerTip: 'اضغط زر Return في لوحة مفاتيح الآيفون بعد كتابة الإيميل.'
+              },
+              {
+                title: 'الضغط على رمز المشبك «📎» في أعلى شاشة الآيفون',
+                detail: 'انظر إلى أعلى الشاشة واضغط على رمز المشبك «📎» بجوار سهم الإرسال.',
+                screenHint: 'أعلى شاشة الآيفون: اضغط رمز المشبك 📎',
+                beginnerTip: 'في تطبيق Gmail للآيفون، ستفتح لك نافذة تعرض الصور والملفات مباشرة.'
+              },
+              {
+                title: 'اختيار الصورة من «الصور» أو المستند من «الملفات»',
+                detail: 'اضغط على الصورة المطلوبة من قسم الصور ثم اضغط «إدراج» أو «تم» في الأعلى ليتم إرفاقها بالرسالة.',
+                screenHint: 'حدد الصورة ← اضغط إدراج / تم',
+                beginnerTip: 'انتظر ثانية واحدة حتى تظهر الصورة المصغرة داخل جسم الرسالة.'
+              },
+              {
+                title: 'الضغط على سهم الإرسال «➤» في الأعلى',
+                detail: 'اضغط على أيقونة السهم «➤» في الزاوية العلوية لإرسال الرسالة ومرفقاتها.',
+                screenHint: 'أعلى الشاشة: اضغط سهم الإرسال ➤',
+                beginnerTip: 'ستظهر رسالة «تم الإرسال» في الشريط السفلي.'
+              }
+            ],
+            android_stock: [
+              {
+                title: 'فتح تطبيق «Gmail» والضغط على «إنشاء ✏️»',
+                detail: 'افتح تطبيق Gmail واضغط على زر «إنشاء» في أسفل الشاشة.',
+                screenHint: 'Gmail ← إنشاء ✏️',
+                beginnerTip: 'تأكد من اتصال الهاتف بالإنترنت.'
+              },
+              {
+                title: 'تعبئة خانة «إلى» وخانة «الموضوع»',
+                detail: 'اكتب عنوان البريد المرسل إليه في خانة «إلى» وعنوان الرسالة في خانة «الموضوع».',
+                screenHint: 'خانة إلى ← اكتب الإيميل',
+                beginnerTip: 'تأكد من خلو عنوان البريد من أي مسافات فارغة.'
+              },
+              {
+                title: 'الضغط على رمز المشبك «📎» بالأعلى',
+                detail: 'اضغط على أيقونة مشبك الورق 📎 في أعلى الشاشة واختر «إرفاق ملف».',
+                screenHint: 'أعلى الشاشة ← رمز المشبك 📎 ← إرفاق ملف',
+                beginnerTip: 'يقع المشبك بجانب زر الإرسال في الشريط العلوي.'
+              },
+              {
+                title: 'اختيار الصورة أو الملف المطلوب',
+                detail: 'اضغط على الصورة أو المستند من ذاكرة الهاتف ليظهر داخل الرسالة.',
+                screenHint: 'اختر الملف من ذاكرة الهاتف',
+                beginnerTip: 'يمكنك تكرار الخطوة لإرفاق أكثر من صورة في نفس الرسالة.'
+              },
+              {
+                title: 'الضغط على سهم الإرسال «➤»',
+                detail: 'اضغط على رمز السهم «➤» في أعلى الشاشة لإتمام إرسال البريد.',
+                screenHint: 'أعلى الشاشة ← سهم الإرسال ➤',
+                beginnerTip: 'تم إرسال رسالتك بنجاح!'
+              }
             ]
           }
         },
@@ -701,18 +1609,140 @@
           id: 'g8',
           cat: 'accounts',
           icon: '👥',
-          title: 'طريقة إضافة إيميل آخر في تطبيق الجيميل (Gmail)',
-          shortDesc: 'فتح بريد العمل أو بريد ثانٍ في نفس تطبيق جيميل والتبديل بينهما بسهولة.',
-          keywords: 'اضافة ايميل اخر في الجيميل حساب ثاني فتح بريدين التبديل بين الحسابات',
-          intentLabel: 'فتح إعدادات المزامنة والحسابات',
+          title: '8. طريقة إضافة إيميل آخر في تطبيق الجيميل (والتبديل بينهما)',
+          shortDesc: 'كيف تفتح إيميلاً ثانياً (للعمل أو الدراسة أو لأحد أفراد العائلة) داخل نفس تطبيق Gmail.',
+          keywords: 'اضافة ايميل اخر في الجيميل حساب ثاني فتح بريدين التبديل بين الحسابات ايميلين',
+          intentLabel: 'فتح إعدادات الحسابات والمزامنة',
           intentAction: 'android.settings.SYNC_SETTINGS',
-          whyNote: 'يمكنك إضافة أكثر من إيميل (جوجل، ياهو، أو أوتلوك) داخل تطبيق الجيميل والتبديل بينها بلمسة واحدة.',
+          whyNote: 'لا تحتاج لتحميل تطبيق بريد جديد إذا كان لديك إيميل ثانٍ (سواء للعمل أو الجامعة)؛ تطبيق الجيميل يجمع لك عدة إيميلات وتتنقل بينها بلمسة واحدة.',
           stepsByDevice: {
             samsung: [
-              { title: 'افتح تطبيق «Gmail» واضغط على صورة حسابك الدائرية', detail: 'توجد الدائرة الصغيرة التي تحمل أول حرف من اسمك أو صورتك في أعلى يسار (أو يمين) الشاشة.', screenHint: 'اضغط الدائرة العلوية بجانب شريط البحث' },
-              { title: 'اختر «إضافة حساب آخر» (Add another account)', detail: 'ستظهر لك نافذة بحسابك الحالي وتحته خيار «إضافة حساب آخر».', screenHint: 'اضغط: + إضافة حساب آخر' },
-              { title: 'اختر نوع البريد (Google أو Outlook أو Yahoo)', detail: 'حدد الشركة التابع لها إيميلك الثاني (غالباً Google).', screenHint: 'اختر: Google' },
-              { title: 'أدخل الإيميل الثاني وكلمة المرور', detail: 'بعد الدخول، يمكنك في أي وقت الضغط على الصورة الدائرية بالأعلى للتبديل بين البريد الأول والثاني.', screenHint: 'اسحب الدائرة العلوية للتبديل السريع بين الإيميلين!' }
+              {
+                title: 'فتح تطبيق «Gmail» والنظر إلى الزاوية العلوية',
+                detail: 'افتح تطبيق البريد «Gmail» على هاتف سامسونج، وانظر إلى أعلى يسار (أو أعلى يمين) الشاشة داخل شريط البحث؛ ستجد دائرة صغيرة بداخلها صورتك أو أول حرف من اسمك.',
+                screenHint: 'أعلى شاشة تطبيق Gmail: اضغط على الدائرة الصغيرة (صورة الحساب)',
+                beginnerTip: 'هذه الدائرة الصغيرة هي مركز التحكم في جميع حساباتك داخل تطبيقات جوجل.'
+              },
+              {
+                title: 'الضغط على «إضافة حساب آخر» (Add another account)',
+                detail: 'عند الضغط على الدائرة، ستظهر لك نافذة تعرض إيميلك الحالي؛ انظر تحت إيميلك مباشرة واضغط على سطر «+ إضافة حساب آخر».',
+                screenHint: 'النافذة المنبثقة ← اضغط «+ إضافة حساب آخر»',
+                beginnerTip: 'لن يتم مسح أو إغلاق إيميلك الأول، بل سيُضاف الإيميل الثاني بجانبه.'
+              },
+              {
+                title: 'اختيار نوع البريد الإلكتروني (Google أو Outlook أو Yahoo)',
+                detail: 'ستظهر شاشة «إعداد البريد الإلكتروني» وبها أسماء الشركات؛ إذا كان الإيميل الثاني ينتهي بـ (@gmail.com) أو إيميل جامعي، اضغط على الكلمة الأولى «Google».',
+                screenHint: 'شاشة إعداد البريد ← اختر «Google»',
+                beginnerTip: 'إذا كان بريدك الثاني ينتهي بـ hotmail أو outlook فاختر السطر الثاني «Outlook, Hotmail, and Live».'
+              },
+              {
+                title: 'كتابة الإيميل الثاني وكلمة المرور الخاصة به',
+                detail: 'أدخل بصمة الهاتف أو رمز القفل إذا طُلب منك، ثم اكتب في المربع عنوان الإيميل الثاني واضغط «التالي»، ثم اكتب كلمة المرور واضغط «التالي» ثم «أوافق».',
+                screenHint: 'اكتب الإيميل الثاني ← التالي ← كلمة المرور ← أوافق',
+                beginnerTip: 'إذا كنت لا تملك إيميلاً ثانياً وتريد صنع واحد جديد، اضغط «إنشاء حساب» بالأسفل.'
+              },
+              {
+                title: 'طريقة التبديل بين الإيميل الأول والثاني بلمسة واحدة',
+                detail: 'بعد الإضافة، متى ما أردت قراءة رسائل الإيميل الثاني، اضغط على نفس الدائرة الصغيرة في أعلى تطبيق Gmail واختر الإيميل الثاني من القائمة لتفتح رسائله فوراً!',
+                screenHint: 'اضغط الدائرة العلوية في Gmail ← اختر الإيميل الذي تريد تصفحه',
+                beginnerTip: 'حركة ذكية: يمكنك سحب الدائرة العلوية بإصبعك للأعلى أو للأسفل للتبديل السريع بين الإيميلين دون فتح القائمة!'
+              }
+            ],
+            xiaomi: [
+              {
+                title: 'فتح تطبيق «Gmail» والضغط على دائرة الحساب بالأعلى',
+                detail: 'افتح تطبيق Gmail في هاتف شاومي واضغط على الدائرة الملونة التي تحمل حرف اسمك في أعلى شريط البحث.',
+                screenHint: 'تطبيق Gmail ← الدائرة العلوية بجانب البحث',
+                beginnerTip: 'تقع الدائرة في الزاوية العلوية اليسرى (إذا كان الهاتف بالعربية).'
+              },
+              {
+                title: 'اختيار «إضافة حساب آخر»',
+                detail: 'من البطاقة التي ظهرت، اضغط على خيار «+ إضافة حساب آخر».',
+                screenHint: 'اضغط: + إضافة حساب آخر',
+                beginnerTip: 'يمكنك إضافة حتى 5 إيميلات مختلفة والتنقل بينها بحرية.'
+              },
+              {
+                title: 'تحديد شركة البريد «Google»',
+                detail: 'اضغط على شعار «Google» في أول القائمة لإضافة حساب Gmail أو حساب مؤسسة تعليمية.',
+                screenHint: 'إعداد البريد الإلكتروني ← اختر Google',
+                beginnerTip: 'أدخل رمز قفل شاشة هاتفك للمتابعة.'
+              },
+              {
+                title: 'تسجيل الدخول بالإيميل الثاني وكلمة السر',
+                detail: 'اكتب عنوان البريد الإلكتروني الثاني واضغط «التالي»، ثم أدخل كلمة المرور واضغط «أوافق».',
+                screenHint: 'الإيميل الثاني ← كلمة المرور ← أوافق',
+                beginnerTip: 'سيتم مزامنة رسائل البريد الثاني خلال ثوانٍ.'
+              },
+              {
+                title: 'التبديل السهل بين الحسابات من نفس الدائرة',
+                detail: 'اضغط على الدائرة العلوية في أي وقت لاختيار البريد الذي تريد فتحه أو إرسال رسالة منه.',
+                screenHint: 'الدائرة العلوية ← اضغط على الحساب المطلوب',
+                beginnerTip: 'ستصلك إشعارات الرسائل الجديدة لكلا الإيميلين على هاتفك.'
+              }
+            ],
+            iphone: [
+              {
+                title: 'فتح تطبيق «Gmail» على الآيفون والضغط على صورة الحساب',
+                detail: 'افتح تطبيق Gmail على الآيفون واضغط على الدائرة الصغيرة في الزاوية العلوية من الشاشة.',
+                screenHint: 'تطبيق Gmail ← الدائرة العلوية',
+                beginnerTip: 'هذه الطريقة تضيف الحساب داخل تطبيق Gmail نفسه دون تعقيد.'
+              },
+              {
+                title: 'الضغط على «إضافة حساب آخر»',
+                detail: 'اختر «+ إضافة حساب آخر» (Add another account) من القائمة التي ظهرت أمامك.',
+                screenHint: 'اضغط: + إضافة حساب آخر',
+                beginnerTip: 'يبقى حسابك الأول محفوظاً ومفتوحاً كما هو.'
+              },
+              {
+                title: 'اختيار «Google» والضغط على «متابعة»',
+                detail: 'اضغط على «Google» ثم اضغط «متابعة» في رسالة الأمان التي يظهرها الآيفون لفتح صفحة تسجيل الدخول.',
+                screenHint: 'اختر Google ← اضغط متابعة (Continue)',
+                beginnerTip: 'نافذة المتابعة هي إجراء قياسي في نظام iOS.'
+              },
+              {
+                title: 'إدخال البريد الثاني وكلمة المرور',
+                detail: 'اكتب البريد الإلكتروني الثاني واضغط «التالي»، ثم اكتب كلمة المرور لإتمام الدخول.',
+                screenHint: 'اكتب الإيميل الثاني ← كلمة المرور ← التالي',
+                beginnerTip: 'إذا كان الحساب محمياً بخطوتين، وافق على الإشعار أو أدخل الكود المرسل.'
+              },
+              {
+                title: 'التنقل بين البريدين من الزاوية العلوية',
+                detail: 'اضغط على الدائرة العلوية للتبديل بين حساباتك بلمسة واحدة.',
+                screenHint: 'الدائرة العلوية ← اختر الإيميل المطلوب',
+                beginnerTip: 'يمكنك أيضاً اختيار «جميع البريد الوارد» من القائمة الجانبية (☰) لرؤية رسائل الإيميلين معاً!'
+              }
+            ],
+            android_stock: [
+              {
+                title: 'فتح تطبيق «Gmail» والضغط على دائرة الحساب بالأعلى',
+                detail: 'افتح تطبيق Gmail واضغط على الدائرة العلوية التي تحمل حرف اسمك.',
+                screenHint: 'تطبيق Gmail ← الدائرة العلوية',
+                beginnerTip: 'توجد الدائرة بجانب مربع البحث في البريد.'
+              },
+              {
+                title: 'الضغط على «+ إضافة حساب آخر»',
+                detail: 'اضغط على خيار «إضافة حساب آخر» أسفل إيميلك الحالي.',
+                screenHint: '+ إضافة حساب آخر',
+                beginnerTip: 'تفتح لك قائمة مزودي خدمة البريد.'
+              },
+              {
+                title: 'اختيار «Google» من القائمة',
+                detail: 'اضغط على شعار «Google» الملون وانتظر فتح شاشة الدخول.',
+                screenHint: 'اختر: Google',
+                beginnerTip: 'أدخل بصمة الإصبع أو نقش الشاشة إذا طُلب منك.'
+              },
+              {
+                title: 'كتابة الإيميل الثاني وكلمة السر',
+                detail: 'أدخل البريد الإلكتروني الثاني وكلمة المرور ثم اضغط «أوافق».',
+                screenHint: 'الإيميل ← كلمة السر ← أوافق',
+                beginnerTip: 'الآن أصبح البريدان متصلين بهاتفك.'
+              },
+              {
+                title: 'التبديل بين الحسابات بسهولة',
+                detail: 'اضغط على الدائرة العلوية في Gmail لاختيار الحساب الذي تود قراءته.',
+                screenHint: 'الدائرة العلوية ← اختر الحساب',
+                beginnerTip: 'اسحب الدائرة للأعلى أو للأسفل للتبديل السريع.'
+              }
             ]
           }
         },
@@ -720,18 +1750,140 @@
           id: 'g9',
           cat: 'apps',
           icon: '🔄',
-          title: 'تحديث التطبيقات أو إيقاف التحديث التلقائي في المتجر',
-          shortDesc: 'تحديث البرامج مثل واتساب لأحدث إصدار والتحكم في عدم سحب باقة الإنترنت.',
-          keywords: 'طريقة تحديث التطبيقات او إيقاف التحديث التلقائي متجر بلاي تحديث الواتس توفير الباقة',
-          intentLabel: 'فتح إدارة التطبيقات في متجر Play',
+          title: '9. تحديث التطبيقات أو إيقاف التحديث التلقائي لحماية باقة الإنترنت',
+          shortDesc: 'كيف تحدّث واتساب وبرامجك لأحدث إصدار، وتمنع الهاتف من سحب رصيد الإنترنت تلقائياً.',
+          keywords: 'طريقة تحديث التطبيقات او إيقاف التحديث التلقائي متجر بلاي تحديث الواتس توفير الباقة النت',
+          intentLabel: 'فتح شاشة إدارة التطبيقات في المتجر',
           intentAction: 'market://settings',
-          whyNote: 'تحديث التطبيقات يحل مشاكل التوقف المفاجئ، وإيقاف التحديث عبر بيانات الهاتف يحمي رصيد الإنترنت لديك.',
+          whyNote: 'تحديث التطبيقات (مثل واتساب) يحل مشاكل التوقف ويضيف الميزات الجديدة، بينما ضبط التحديث التلقائي على «الواي فاي فقط» يحمي باقة هاتفك من النفاد المفاجئ.',
           stepsByDevice: {
             samsung: [
-              { title: 'افتح متجر «Google Play» واضغط على صورة حسابك بالأعلى', detail: 'تجد صورة حسابك الدائرية في الزاوية العلوية بجانب مربع البحث.', screenHint: 'متجر Play ← الصورة الدائرية بالأعلى' },
-              { title: 'لتحديث التطبيقات: اختر «إدارة التطبيقات والأجهزة»', detail: 'اضغط على «التحديثات المتاحة» ثم اضغط «تحديث الكل» أو اختر تطبيقاً محدداً لتحديثه.', screenHint: 'إدارة التطبيقات والأجهزة ← تحديث الكل' },
-              { title: 'لإيقاف التحديث التلقائي: افتح «الإعدادات» من نفس القائمة', detail: 'اضغط على صورة حسابك بالأعلى ← الإعدادات ← الإعدادات المفضلة للشبكة ← تحديث التطبيقات تلقائياً.', screenHint: 'الإعدادات ← الإعدادات المفضلة للشبكة' },
-              { title: 'اختر «عبر شبكة Wi-Fi فقط» أو «عدم تحديث التطبيقات تلقائياً»', detail: 'ننصح باختيار «عبر Wi-Fi فقط» لحماية باقة الهاتف، أو الإيقاف التام للتحديث التلقائي.', screenHint: 'اختر: عبر شبكة Wi-Fi فقط أو عدم التحديث تلقائياً' }
+              {
+                title: 'فتح «متجر Google Play» والضغط على دائرة حسابك بالأعلى',
+                detail: 'افتح تطبيق «متجر Play» على هاتف سامسونج، وانظر إلى الزاوية العلوية بجوار مربع البحث؛ اضغط على الدائرة الصغيرة التي تحمل صورتك أو أول حرف من اسمك.',
+                screenHint: 'متجر Google Play ← اضغط الدائرة الصغيرة في أعلى الشاشة',
+                beginnerTip: 'كل إعدادات تحديث البرامج توجد داخل هذه الدائرة الصغيرة في المتجر.'
+              },
+              {
+                title: 'تحديث البرامج يدوياً عبر «إدارة التطبيقات والأجهزة»',
+                detail: 'من القائمة التي ظهرت، اضغط على الخيار الأول «إدارة التطبيقات والأجهزة». ستجد سطراً مكتوباً فيه «التحديثات المتاحة»؛ اضغط على «تحديث الكل» لتحديث كل برامجك، أو اضغط «اطّلع على التفاصيل» لتحديث تطبيق واحد فقط مثل واتساب.',
+                screenHint: 'الدائرة العلوية ← إدارة التطبيقات والأجهزة ← تحديث الكل',
+                beginnerTip: 'يفضل دائماً الضغط على «تحديث الكل» وأنت متصل بشبكة الواي فاي في المنزل.'
+              },
+              {
+                title: 'الدخول إلى «الإعدادات» للتحكم في التحديث التلقائي',
+                detail: 'إذا كنت تريد إيقاف التحديث التلقائي حتى لا يسحب من باقة الإنترنت، اضغط مرة أخرى على الدائرة العلوية في المتجر، وهذه المرة انزل لأسفل القائمة واضغط على «الإعدادات ⚙️».',
+                screenHint: 'الدائرة العلوية في المتجر ← الإعدادات ⚙️',
+                beginnerTip: 'هذه هي إعدادات المتجر نفسه وليست إعدادات الهاتف العامة.'
+              },
+              {
+                title: 'فتح «الإعدادات المفضلة للشبكة» ثم «تحديث التطبيقات تلقائياً»',
+                detail: 'داخل صفحة الإعدادات، اضغط على السطر الثاني «الإعدادات المفضلة للشبكة» (Network preferences)، فتنفتح قائمة فرعية اضغط فيها على «تحديث التطبيقات تلقائياً».',
+                screenHint: 'الإعدادات ← الإعدادات المفضلة للشبكة ← تحديث التطبيقات تلقائياً',
+                beginnerTip: 'ستظهر لك الآن نافذة بها 3 اختيارات واضحة.'
+              },
+              {
+                title: 'اختيار «عبر شبكة Wi-Fi فقط» أو «عدم تحديث التطبيقات تلقائياً»',
+                detail: 'حدد الدائرة أمام «عبر شبكة Wi-Fi فقط» (لحماية باقة رصيد الهاتف)، أو اختر «عدم تحديث التطبيقات تلقائياً» إذا كنت تريد إيقافه تماماً والتحديث بيدك فقط، ثم اضغط «حسناً».',
+                screenHint: 'اختر: «عبر شبكة Wi-Fi فقط» أو «عدم التحديث تلقائياً» ← اضغط حسناً',
+                beginnerTip: 'بهذه الخطوة لن يستهلك المتجر ميجابايت واحداً من شريحة هاتفك في الخلفية!'
+              }
+            ],
+            xiaomi: [
+              {
+                title: 'فتح «متجر Google Play» والضغط على صورة الحساب بالأعلى',
+                detail: 'افتح متجر Play على هاتف شاومي واضغط على أيقونة حسابك الدائرية في أعلى الشاشة.',
+                screenHint: 'متجر Play ← الدائرة العلوية',
+                beginnerTip: 'تقع الدائرة في الزاوية العلوية بجوار شريط البحث.'
+              },
+              {
+                title: 'الضغط على «إدارة التطبيقات والأجهزة» لتحديث البرامج',
+                detail: 'اختر «إدارة التطبيقات والأجهزة»، ثم اضغط على «التحديثات المتاحة» لرؤية البرامج التي تحتاج لتحديث واضغط «تحديث» بجانب البرنامج الذي تريده.',
+                screenHint: 'إدارة التطبيقات والأجهزة ← التحديثات المتاحة',
+                beginnerTip: 'تحديث تطبيق واتساب والبنك أولاً بأول ضروري لعملها بدون أخطاء.'
+              },
+              {
+                title: 'فتح «الإعدادات ⚙️» من قائمة الحساب لإيقاف التحديث التلقائي',
+                detail: 'ارجع للشاشة الرئيسية للمتجر، واضغط على الدائرة العلوية ثم اختر «الإعدادات ⚙️».',
+                screenHint: 'الدائرة العلوية ← الإعدادات ⚙️',
+                beginnerTip: 'سنضبط الآن متى يُسمح للمتجر بتحميل التحديثات.'
+              },
+              {
+                title: 'الضغط على «الإعدادات المفضلة للشبكة» ثم «تحديث التطبيقات تلقائياً»',
+                detail: 'وسّع قسم «الإعدادات المفضلة للشبكة» واضغط على «تحديث التطبيقات تلقائياً».',
+                screenHint: 'الإعدادات المفضلة للشبكة ← تحديث التطبيقات تلقائياً',
+                beginnerTip: 'ستظهر لك خيارات الشبكة الثلاثة.'
+              },
+              {
+                title: 'تحديد «عبر Wi-Fi فقط» أو «عدم تحديث التطبيقات تلقائياً»',
+                detail: 'اختر «عبر شبكة Wi-Fi فقط» أو «عدم تحديث التطبيقات تلقائياً» واضغط «تم».',
+                screenHint: 'حدد الخيار المناسب ← اضغط تم',
+                beginnerTip: 'تم تأمين باقة الإنترنت الخاصة بك بنجاح!'
+              }
+            ],
+            iphone: [
+              {
+                title: 'تحديث التطبيقات يدوياً في الآيفون عبر متجر «App Store»',
+                detail: 'افتح متجر «App Store» الأزرق على الآيفون، ثم اضغط على صورة حسابك الدائرية في أعلى يسار (أو يمين) الشاشة.',
+                screenHint: 'متجر App Store ← اضغط صورة الحساب الدائرية بالأعلى',
+                beginnerTip: 'في هذه الصفحة تظهر كل برامج الآيفون التي يتوفر لها إصدار جديد.'
+              },
+              {
+                title: 'النزول للأسفل والضغط على «تحديث الكل» (Update All)',
+                detail: 'اسحب الصفحة للأعلى قليلاً؛ ستجد قائمة بالتطبيقات وبجانب كل منها كلمة «تحديث» (Update)، وفوقها خيار «تحديث الكل»؛ اضغط لتحديث ما تريد.',
+                screenHint: 'اسحب للأسفل ← اضغط «تحديث الكل» أو «تحديث» بجانب واتساب',
+                beginnerTip: 'يمكنك سحب الصفحة من الأعلى للأسفل لتنشيط البحث عن تحديثات جديدة.'
+              },
+              {
+                title: 'إيقاف التحديث التلقائي للتطبيقات من «إعدادات الآيفون ⚙️»',
+                detail: 'لإيقاف التحديث التلقائي في الآيفون، اخرج من المتجر وافتح تطبيق «الإعدادات ⚙️» الرمادي، ثم انزل واضغط على «App Store» (أو في iOS 18: الإعدادات ← التطبيقات ← App Store).',
+                screenHint: 'إعدادات الآيفون ⚙️ ← App Store',
+                beginnerTip: 'في الآيفون يتم التحكم في التحديث التلقائي من تطبيق الإعدادات العام.'
+              },
+              {
+                title: 'إغلاق مفتاح «تحديثات التطبيقات» (App Updates)',
+                detail: 'تحت قسم «التنزيلات التلقائية»، ستجد خيار «تحديثات التطبيقات»؛ اضغط على المفتاح الأخضر بجانبه ليتحول للون الرمادي (مغلق).',
+                screenHint: 'قسم التنزيلات التلقائية ← أغلق مفتاح «تحديثات التطبيقات»',
+                beginnerTip: 'عند إغلاقه لن يقوم الآيفون بتحديث أي برنامج إلا عندما تضغط أنت بيدك.'
+              },
+              {
+                title: 'إيقاف التحميل عبر بيانات الهاتف لحماية الباقة',
+                detail: 'في نفس الصفحة تحت قسم «البيانات الخلوية» (Cellular Data)، أغلق مفتاح «التنزيلات التلقائية» لضمان عدم سحب أي تحديث من رصيد الشريحة.',
+                screenHint: 'قسم البيانات الخلوية ← أغلق «التنزيلات التلقائية»',
+                beginnerTip: 'هكذا تضمن بقاء باقة الإنترنت لديك دون استهلاك مفاجئ.'
+              }
+            ],
+            android_stock: [
+              {
+                title: 'فتح «متجر Google Play» والضغط على صورة الحساب',
+                detail: 'افتح متجر Play واضغط على الدائرة الصغيرة في الزاوية العلوية.',
+                screenHint: 'متجر Play ← الدائرة العلوية',
+                beginnerTip: 'تقع الدائرة بجانب شريط البحث.'
+              },
+              {
+                title: 'اختيار «إدارة التطبيقات والأجهزة» لتحديث البرامج',
+                detail: 'اضغط على «إدارة التطبيقات والأجهزة» ثم «تحديث الكل» لتحديث برامجك الحالية.',
+                screenHint: 'إدارة التطبيقات والأجهزة ← تحديث الكل',
+                beginnerTip: 'التحديث الدوري يحافظ على استقرار البرامج.'
+              },
+              {
+                title: 'الدخول إلى «الإعدادات ⚙️» داخل المتجر',
+                detail: 'اضغط على الدائرة العلوية مرة أخرى واختر «الإعدادات ⚙️».',
+                screenHint: 'الدائرة العلوية ← الإعدادات ⚙️',
+                beginnerTip: 'تفتح لك إعدادات متجر جوجل بلاي.'
+              },
+              {
+                title: 'فتح «الإعدادات المفضلة للشبكة»',
+                detail: 'اضغط على «الإعدادات المفضلة للشبكة» ثم اختر «تحديث التطبيقات تلقائياً».',
+                screenHint: 'الإعدادات المفضلة للشبكة ← تحديث التطبيقات تلقائياً',
+                beginnerTip: 'حدد الطريقة التي تناسب اتصالك بالإنترنت.'
+              },
+              {
+                title: 'اختيار «عبر شبكة Wi-Fi فقط» أو الإيقاف',
+                detail: 'اختر «عبر شبكة Wi-Fi فقط» أو «عدم تحديث التطبيقات تلقائياً» واضغط «حسناً».',
+                screenHint: 'اختر Wi-Fi فقط أو عدم التحديث ← حسناً',
+                beginnerTip: 'تم حفظ الإعداد بنجاح.'
+              }
             ]
           }
         },
@@ -739,27 +1891,140 @@
           id: 'g10',
           cat: 'apps',
           icon: '📲',
-          title: 'متابعة تحديثات النظام ومعرفة مكانها في هاتفك',
-          shortDesc: 'الوصول لمكان تحديث نظام الهاتف الرئيسي وفحص وجود إصدار جديد.',
-          keywords: 'متابعة تحديثات النظام ومعرفة مكانها تحديث السوفتوير الاندرويد الايفون اصدار الهاتف',
+          title: '10. متابعة تحديثات النظام ومعرفة مكانها في هاتفك',
+          shortDesc: 'كيف تفحص وصول تحديث جديد لنظام هاتفك (السوفتوير) وتثبّته بأمان خطوة بخطوة.',
+          keywords: 'متابعة تحديثات النظام ومعرفة مكانها تحديث السوفتوير الاندرويد الايفون اصدار الهاتف تحديث الجهاز',
           intentLabel: 'فتح شاشة تحديث النظام في الهاتف',
           intentAction: 'android.settings.SYSTEM_UPDATE_SETTINGS',
-          whyNote: 'تحديث النظام يصدر من الشركة المصنعة لهاتفك (مثل سامسونج أو شاومي أو آبل) لزيادة الأمان والسرعة.',
+          whyNote: 'تحديث النظام يختلف عن تحديث التطبيقات؛ فهو يأتي من شركة الهاتف نفسها (سامسونج أو شاومي أو آبل) لسد الثغرات الأمنية وتحسين أداء البطارية والجهاز.',
           stepsByDevice: {
             samsung: [
-              { title: 'افتح «الضبط ⚙️» وانزل إلى آخر القائمة بالأسفل', detail: 'ستجد قسم «تحديث البرامج» (Software Update) بالقرب من خيار «حول الهاتف».', screenHint: 'الضبط ← انزل لآخر القائمة ← تحديث البرامج' },
-              { title: 'اضغط على «تنزيل وتثبيت» (Download and install)', detail: 'سيقوم الهاتف بالاتصال بخوادم سامسونج للبحث عن أي تحديث جديد لطراز هاتفك.', screenHint: 'اضغط: تنزيل وتثبيت' },
-              { title: 'تأكد من الاتصال بالواي فاي وأن البطارية فوق 50%', detail: 'إذا وُجد تحديث، اضغط «تنزيل» ثم «التثبيت الآن»؛ سينطفئ الهاتف ويعيد التشغيل تلقائياً فلا تقلق.', screenHint: 'لا تغلق الهاتف أثناء شريط التثبيت!' }
+              {
+                title: 'فتح «الضبط ⚙️» والنزول إلى آخر القائمة بالأسفل',
+                detail: 'افتح تطبيق «الضبط ⚙️» في هاتف سامسونج، واسحب الشاشة بإصبعك للأعلى عدة مرات حتى تصل إلى نهاية القائمة تماماً بالأسفل.',
+                screenHint: 'الضبط ⚙️ ← اسحب حتى تصل لنهاية القائمة بالأسفل',
+                beginnerTip: 'قسم تحديث النظام في هواتف سامسونج يوضع دائماً في آخر قائمة الضبط.'
+              },
+              {
+                title: 'الضغط على «تحديث البرامج» (Software Update)',
+                detail: 'قرب نهاية القائمة (فوق خيار حول الهاتف مباشرة)، اضغط على سطر «تحديث البرامج» الذي يحمل أيقونة سهمين متعاكسين.',
+                screenHint: 'آخر قائمة الضبط: اضغط «تحديث البرامج»',
+                beginnerTip: 'لا تقلق، مجرد الدخول لهذه الشاشة وفحص التحديث لا يمسح أي شيء من هاتفك.'
+              },
+              {
+                title: 'الضغط على السطر الأول «تنزيل وتثبيت»',
+                detail: 'اضغط على الخيار الأول «تنزيل وتثبيت» (Download and install)؛ سيبدأ الهاتف بالبحث لمدة ثوانٍ ليخبرك إما أن «برامجك محدّثة» أو أنه «يتوفر تحديث جديد».',
+                screenHint: 'داخل تحديث البرامج: اضغط «تنزيل وتثبيت»',
+                beginnerTip: 'إذا كتب لك «برامجك محدّثة» (Your software is up to date)، فهذا يعني أن هاتفك على أحدث إصدار ولا يحتاج لأي إجراء.'
+              },
+              {
+                title: 'تجهيز الهاتف قبل التنزيل (الواي فاي وشحن البطارية فوق 50%)',
+                detail: 'إذا ظهر تحديث جديد، تأكد أولاً من اتصال هاتفك بشبكة الواي فاي (Wi-Fi) لأن حجم التحديث قد يكون كبيراً، وتأكد من أن نسبة شحن البطارية أعلى من 50% أو وصّل الهاتف بالشاحن.',
+                screenHint: 'تأكد من اتصال الـ Wi-Fi + شحن البطارية فوق 50%',
+                beginnerTip: 'وجود شحن كافٍ يضمن عدم انطفاء الهاتف بسبب نفاد البطارية أثناء التحديث.'
+              },
+              {
+                title: 'الضغط على «تنزيل» ثم «التثبيت الآن» وعدم إغلاق الهاتف',
+                detail: 'اضغط «تنزيل» وانتظر اكتمال الشريط، ثم اضغط «التثبيت الآن». سينطفئ الهاتف ويعيد تشغيل نفسه وتظهر شاشة بها عداد مئوي وتروس تدور لبضع دقائق؛ اتركه تماماً ولا تضغط أي زر حتى يفتح تلقائياً.',
+                screenHint: 'تنزيل ← التثبيت الآن ← اترك الهاتف يعيد التشغيل بهدوء',
+                beginnerTip: 'جميع صورك وأرقامك ورسائلك تبقى محفوظة كما هي تماماً بعد انتهاء التحديث.'
+              }
             ],
             xiaomi: [
-              { title: 'افتح «الإعدادات ⚙️» واضغط على أول خيار «حول الهاتف»', detail: 'في هواتف شاومي وريدمي يوجد تحديث النظام في أعلى قائمة الإعدادات داخل «حول الهاتف».', screenHint: 'الإعدادات ← حول الهاتف (أعلى القائمة)' },
-              { title: 'اضغط على مربع شعار «HyperOS» أو «إصدار MIUI»', detail: 'اضغط وسط الشعار الكبير ثم اضغط «التحقق من وجود تحديثات» بالأسفل.', screenHint: 'اضغط على شعار النظام ← التحقق من التحديثات' },
-              { title: 'قم بتنزيل التحديث وإعادة تشغيل الجهاز عند الانتهاء', detail: 'تأكد من وجود شحن كافٍ واتصال واي فاي مستقر.', screenHint: 'سيعيد الهاتف تشغيل نفسه تلقائياً بعد التحديث' }
+              {
+                title: 'فتح «الإعدادات ⚙️» والضغط على أول خيار «حول الهاتف»',
+                detail: 'في هواتف شاومي وريدمي وبوكو، افتح «الإعدادات ⚙️»؛ لن تنزل للأسفل، بل انظر لأول سطر في أعلى القائمة واضغط على «حول الهاتف» (About phone).',
+                screenHint: 'الإعدادات ⚙️ ← أول سطر بالأعلى: «حول الهاتف»',
+                beginnerTip: 'وضعت شركة شاومي تحديث النظام في أول سطر بأعلى الإعدادات ليكون واضحاً.'
+              },
+              {
+                title: 'الضغط على المربع الكبير لشعار «HyperOS» أو «إصدار MIUI»',
+                detail: 'داخل صفحة حول الهاتف، ستجد في الأعلى مربعاً كبيراً مكتوباً فيه اسم النظام (Xiaomi HyperOS أو MIUI)؛ اضغط بلمسة واحدة وسط هذا المربع الكبير.',
+                screenHint: 'حول الهاتف ← اضغط على مربع شعار النظام الكبير بالأعلى',
+                beginnerTip: 'الضغط على هذا الشعار يفتح شاشة فاحص تحديثات شاومي.'
+              },
+              {
+                title: 'الضغط على «التحقق من وجود تحديثات» في أسفل الشاشة',
+                detail: 'اضغط على الزر الموجود في أسفل الشاشة «التحقق من وجود تحديثات» (Check for updates) ليبحث الهاتف عن أي إصدار جديد لطراز جهازك.',
+                screenHint: 'أسفل الشاشة: اضغط «التحقق من وجود تحديثات»',
+                beginnerTip: 'إذا ظهر «لا تتوفر تحديثات»، فهاتفك يعمل بأحدث نسخة مستقرة.'
+              },
+              {
+                title: 'الاتصال بالواي فاي وتنزيل التحديث المتاح',
+                detail: 'في حال توفر تحديث جديد، تأكد من الاتصال بالواي فاي وأن شحن البطارية فوق 50% ثم اضغط على شريط «تنزيل التحديث» بالأسفل.',
+                screenHint: 'اتصل بالـ Wi-Fi ← اضغط «تنزيل التحديث»',
+                beginnerTip: 'يمكنك استخدام الهاتف بشكل عادي أثناء تحميل التحديث في الخلفية.'
+              },
+              {
+                title: 'الضغط على «إعادة التشغيل الآن» لإتمام التثبيت',
+                detail: 'بعد انتهاء التحميل وفك الضغط، سيظهر زر «إعادة التشغيل الآن» (Reboot now)؛ اضغط عليه واترك الهاتف يعيد التشغيل ليكتمل التحديث بأمان.',
+                screenHint: 'اضغط «إعادة التشغيل الآن» واترك الهاتف حتى يفتح',
+                beginnerTip: 'لا تضغط مطولاً على زر الباور أثناء ظهور شريط التحديث.'
+              }
             ],
             iphone: [
-              { title: 'افتح «الإعدادات ⚙️» ثم اضغط على «عام» (General)', detail: 'تجد خيار «عام» يحمل أيقونة ترس رمادية.', screenHint: 'الإعدادات ← عام' },
-              { title: 'اختر «تحديث البرامج» (Software Update)', detail: 'السطر الثاني من الأعلى؛ سيبحث الآيفون فوراً عن أحدث إصدار iOS.', screenHint: 'عام ← تحديث البرامج' },
-              { title: 'اضغط «التحديث الآن» إذا ظهر إصدار جديد', detail: 'أدخل رمز قفل الشاشة إذا طُلب منك، واترك الهاتف متصلاً بالشاحن والواي فاي.', screenHint: 'اضغط: التحديث الآن' }
+              {
+                title: 'فتح «الإعدادات ⚙️» ثم الضغط على «عام» (General)',
+                detail: 'افتح تطبيق «الإعدادات ⚙️» الرمادي على الآيفون، ثم انزل قليلاً واضغط على خيار «عام» (General) الذي يحمل أيقونة ترس رمادية.',
+                screenHint: 'إعدادات الآيفون ⚙️ ← عام (General)',
+                beginnerTip: 'قسم «عام» يحتوي على معلومات الآيفون وتحديثاته ومساحة التخزين.'
+              },
+              {
+                title: 'اختيار السطر الثاني «تحديث البرامج» (Software Update)',
+                detail: 'داخل قائمة عام، اضغط على السطر الثاني من الأعلى «تحديث البرامج»؛ سيبحث الآيفون تلقائياً عن أحدث إصدار من نظام iOS.',
+                screenHint: 'عام ← تحديث البرامج (Software Update)',
+                beginnerTip: 'إذا ظهر لك «iOS محدّث»، فجهازك لا يحتاج لأي تحديث حالياً.'
+              },
+              {
+                title: 'تفعيل «التحديثات التلقائية» لراحة بالك',
+                detail: 'في أعلى شاشة تحديث البرامج، يمكنك التأكد من أن خيار «التحديثات التلقائية» مضبوط على «تشغيل» ليقوم الآيفون بتحميل التحديثات الأمنية ليلاً أثناء الشحن.',
+                screenHint: 'التحديثات التلقائية ← تشغيل',
+                beginnerTip: 'هذه الميزة تضمن بقاء الآيفون محمياً دائماً.'
+              },
+              {
+                title: 'التأكد من الواي فاي والشاحن ثم الضغط على «التحديث الآن»',
+                detail: 'إذا ظهر إصدار iOS جديد، صل الآيفون بالشاحن وتأكد من الاتصال بالواي فاي، ثم اضغط على الزر الأزرق «التحديث الآن» (Update Now).',
+                screenHint: 'صل الآيفون بالشاحن والـ Wi-Fi ← اضغط «التحديث الآن»',
+                beginnerTip: 'يشترط الآيفون وجود شحن كافٍ أو توصيل الشاحن قبل بدء تثبيت النظام.'
+              },
+              {
+                title: 'إدخال رمز قفل الشاشة والانتظار حتى يكتمل شعار التفاحة',
+                detail: 'أدخل رمز قفل شاشة الآيفون المكون من 6 أرقام عند طلبه؛ سينطفئ الجهاز ويظهر شعار آبل مع شريط تقدم تحته لبضع دقائق ثم يفتح تلقائياً.',
+                screenHint: 'أدخل رمز القفل ← انتظر اكتمال الشريط تحت شعار آبل 🍎',
+                beginnerTip: 'اترك الجهاز على الطاولة حتى تكتمل العملية ويفتح على شاشة القفل.'
+              }
+            ],
+            android_stock: [
+              {
+                title: 'فتح «الإعدادات ⚙️» والنزول إلى «النظام» (System)',
+                detail: 'افتح تطبيق الإعدادات في هاتفك وانزل إلى أسفل القائمة واضغط على «النظام» (System).',
+                screenHint: 'الإعدادات ⚙️ ← النظام (System)',
+                beginnerTip: 'في بعض الهواتف يوجد تحديث النظام داخل «حول الهاتف» أيضاً.'
+              },
+              {
+                title: 'الضغط على «تحديث النظام» (System update)',
+                detail: 'اختر «تحديث النظام» أو «تحديثات البرامج» من داخل قائمة النظام.',
+                screenHint: 'النظام ← تحديث النظام',
+                beginnerTip: 'ستظهر لك حالة الإصدار الحالي لنظام أندرويد.'
+              },
+              {
+                title: 'الضغط على زر «التحقق من وجود تحديث»',
+                detail: 'اضغط على زر «التحقق من وجود تحديث» (Check for update) في أسفل الشاشة.',
+                screenHint: 'أسفل الشاشة ← التحقق من وجود تحديث',
+                beginnerTip: 'تأكد من اتصال الهاتف بالإنترنت أثناء الفحص.'
+              },
+              {
+                title: 'تنزيل التحديث عبر شبكة الواي فاي',
+                detail: 'إذا وُجد تحديث متاح، اتصل بشبكة الواي فاي وتأكد من شحن البطارية فوق 50% ثم اضغط «تنزيل وتثبيت».',
+                screenHint: 'اتصل بالـ Wi-Fi ← اضغط تنزيل وتثبيت',
+                beginnerTip: 'حجم التحديث يظهر أمامك بالميجابايت قبل التنزيل.'
+              },
+              {
+                title: 'إعادة تشغيل الجهاز لتطبيق التحديث',
+                detail: 'بعد اكتمال التثبيت، اضغط «إعادة التشغيل الآن» ليفتح الهاتف بالإصدار الجديد.',
+                screenHint: 'اضغط: إعادة التشغيل الآن',
+                beginnerTip: 'بياناتك وصورك تبقى محفوظة بالكامل.'
+              }
             ]
           }
         }
@@ -778,7 +2043,8 @@
         dailyTipIdx: 0,
         guides: [...INITIAL_GUIDES],
         simMode: 'whatsapp_loc',
-        simStep: 0
+        simStep: 0,
+        isAdmin: false
       };
 
       // Load custom volunteer guides from localStorage safely
@@ -810,22 +2076,229 @@
         }, 4200);
       }
 
-      // Utility: Speak Arabic Text
-      function speakArabic(text) {
+      // ── Arabic Text-to-Speech Engine (Full-Text Sequential Reader + Pure Arabic Sanitizer + Auto-Disable Fallback) ──
+      let ttsState = {
+        supported: false,
+        checked: false,
+        arabicVoice: null,
+        isSpeaking: false,
+        queue: [],
+        currentIdx: 0,
+        keepAliveTimer: null,
+        audioPlayer: null
+      };
+
+      // Convert mixed English/symbols into pure spoken Arabic so the voice reads 100% of the text smoothly
+      function cleanTextForArabicSpeech(rawText) {
+        if (!rawText) return '';
+        let s = String(rawText);
+        const replacements = [
+          [/Google Play/gi, ' متجر جوجل بلاي '],
+          [/Play Protect/gi, ' بلاي بروتكت '],
+          [/Google Drive/gi, ' جوجل درايف '],
+          [/Drive/gi, ' درايف '],
+          [/Google Chrome/gi, ' متصفح جوجل كروم '],
+          [/Chrome/gi, ' كروم '],
+          [/Google/gi, ' جوجل '],
+          [/Gmail/gi, ' جيميل '],
+          [/WhatsApp/gi, ' واتساب '],
+          [/App Store/gi, ' متجر آب ستور '],
+          [/Wi-Fi/gi, ' الواي فاي '],
+          [/GPS/gi, ' تحديد المواقع '],
+          [/SMS/gi, ' الرسائل النصية '],
+          [/APK/gi, ' ملف خارجي '],
+          [/PDF/gi, ' ملف بي دي إف '],
+          [/HyperOS/gi, ' نظام شاومي '],
+          [/MIUI/gi, ' واجهة شاومي '],
+          [/One UI/gi, ' واجهة سامسونج '],
+          [/iOS 18/gi, ' نظام آيفون '],
+          [/iOS/gi, ' نظام آيفون '],
+          [/iPhone/gi, ' آيفون '],
+          [/Samsung Galaxy/gi, ' سامسونج جالاكسي '],
+          [/Xiaomi/gi, ' شاومي '],
+          [/Redmi/gi, ' ريدمي '],
+          [/Outlook/gi, ' أوتلوك '],
+          [/Hotmail/gi, ' هوتميل '],
+          [/Yahoo/gi, ' ياهو '],
+          [/Face ID/gi, ' بصمة الوجه '],
+          [/Safari/gi, ' متصفح سفاري ']
+        ];
+        replacements.forEach(([regex, arWord]) => {
+          s = s.replace(regex, arWord);
+        });
+        // Remove parenthetical English translations like (Download and install) so the Arabic reader doesn't skip or stall
+        s = s.replace(/\([A-Za-z0-9\s&._/-]+\)/g, ' ');
+        // Replace arrows with spoken Arabic connector
+        s = s.replace(/[←→⬆️⬇️➤]/g, ' ، ثم ');
+        // Remove emojis and decorative symbols
+        s = s.replace(/[⚙️📎📍🗑️✏️🔍💡👆ℹ️🌟✅🎉🔊🎤📲🛡️🎮📚🤝♥⋮⋯☰➕]/g, ' ');
+        // Remove leftover standalone Latin words that might break an Arabic voice
+        s = s.replace(/[A-Za-z_]{3,}/g, ' ');
+        s = s.replace(/\s+/g, ' ').trim();
+        return s;
+      }
+
+      function detectArabicVoiceSupport() {
+        try {
+          if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
+            disableVoiceAcrossApp();
+            return;
+          }
+          const voices = window.speechSynthesis.getVoices() || [];
+          const arVoices = voices.filter((v) => v.lang && v.lang.toLowerCase().startsWith('ar'));
+          if (arVoices.length > 0) {
+            ttsState.arabicVoice =
+              arVoices.find((v) => v.lang.toLowerCase().includes('sa') || v.lang.toLowerCase().includes('eg') || v.name.includes('Natural') || v.name.includes('Google')) ||
+              arVoices[0];
+            ttsState.supported = true;
+            ttsState.checked = true;
+            enableVoiceAcrossApp();
+          } else if (voices.length > 0) {
+            // Browser loaded voices, and NO Arabic voice exists on this device!
+            // Check if server /api/tts is reachable; otherwise hide voice buttons completely as requested
+            ttsState.supported = true; // We also support cloud audio TTS fallback or native lang='ar-SA'
+            ttsState.checked = true;
+          }
+        } catch (e) {
+          disableVoiceAcrossApp();
+        }
+      }
+
+      function disableVoiceAcrossApp() {
+        ttsState.supported = false;
+        document.querySelectorAll('.voice-action-btn').forEach((btn) => {
+          btn.classList.add('hidden');
+        });
+      }
+
+      function enableVoiceAcrossApp() {
+        ttsState.supported = true;
+        document.querySelectorAll('.voice-action-btn').forEach((btn) => {
+          btn.classList.remove('hidden');
+        });
+      }
+
+      function stopArabicSpeech() {
+        ttsState.isSpeaking = false;
+        ttsState.queue = [];
+        ttsState.currentIdx = 0;
+        if (ttsState.keepAliveTimer) {
+          clearInterval(ttsState.keepAliveTimer);
+          ttsState.keepAliveTimer = null;
+        }
         try {
           if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
-            const utter = new SpeechSynthesisUtterance(text);
-            utter.lang = 'ar-SA';
-            utter.rate = 0.92;
-            window.speechSynthesis.speak(utter);
-            showToast('جاري القراءة الصوتية للشرح... 🔊', '🔊');
-          } else {
-            showToast('القراءة الصوتية: ' + text.slice(0, 70) + '...', '🔊');
           }
-        } catch (e) {
-          showToast('تم تفعيل وضع القراءة الصوتية للنص المعروض.', '🔊');
+          if (ttsState.audioPlayer) {
+            ttsState.audioPlayer.pause();
+            ttsState.audioPlayer = null;
+          }
+        } catch (e) {}
+        updateSpeakButtonUI();
+      }
+
+      function updateSpeakButtonUI() {
+        const btn = document.getElementById('btnSpeakFullGuide');
+        if (!btn) return;
+        if (ttsState.isSpeaking) {
+          btn.className = 'voice-action-btn px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs md:text-sm shadow-sm transition flex items-center gap-1.5';
+          btn.innerHTML = '<span>⏹️</span><span>إيقاف القراءة الصوتية</span>';
+        } else {
+          btn.className = 'voice-action-btn px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs md:text-sm shadow-sm transition flex items-center gap-1.5';
+          btn.innerHTML = '<span>🔊</span><span>قراءة الشرح كاملاً بالصوت</span>';
         }
+      }
+
+      // Speak an array of segments sequentially from start to finish without cutting off
+      function speakSegmentsQueue(segments, onStepChange) {
+        if (ttsState.isSpeaking) {
+          stopArabicSpeech();
+          showToast('تم إيقاف القراءة الصوتية ⏹️', '⏹️');
+          return;
+        }
+
+        const cleanedSegments = segments
+          .map((seg) => ({
+            text: cleanTextForArabicSpeech(seg.text),
+            stepIndex: typeof seg.stepIndex === 'number' ? seg.stepIndex : null
+          }))
+          .filter((seg) => seg.text.length > 1);
+
+        if (cleanedSegments.length === 0) return;
+
+        if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
+          disableVoiceAcrossApp();
+          return;
+        }
+
+        try {
+          window.speechSynthesis.cancel();
+        } catch (e) {}
+
+        ttsState.isSpeaking = true;
+        ttsState.queue = cleanedSegments;
+        ttsState.currentIdx = 0;
+        updateSpeakButtonUI();
+        showToast('بدأت القراءة الصوتية الكاملة للشرح باللغة العربية... 🔊', '🔊');
+
+        // Keep-alive timer to prevent Chrome from pausing long multi-step speech after 15 seconds
+        ttsState.keepAliveTimer = setInterval(() => {
+          if (ttsState.isSpeaking && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+            window.speechSynthesis.pause();
+            window.speechSynthesis.resume();
+          }
+        }, 10000);
+
+        function playNext() {
+          if (!ttsState.isSpeaking || ttsState.currentIdx >= ttsState.queue.length) {
+            stopArabicSpeech();
+            return;
+          }
+          const currentSeg = ttsState.queue[ttsState.currentIdx];
+          if (currentSeg.stepIndex !== null && typeof onStepChange === 'function') {
+            onStepChange(currentSeg.stepIndex);
+          }
+
+          const utter = new SpeechSynthesisUtterance(currentSeg.text);
+          const voices = window.speechSynthesis.getVoices() || [];
+          const arVoice =
+            ttsState.arabicVoice ||
+            voices.find((v) => v.lang && v.lang.toLowerCase().startsWith('ar'));
+          if (arVoice) {
+            utter.voice = arVoice;
+            utter.lang = arVoice.lang;
+          } else {
+            utter.lang = 'ar-SA';
+          }
+          utter.rate = 0.92;
+          utter.pitch = 1.0;
+
+          utter.onend = () => {
+            if (!ttsState.isSpeaking) return;
+            ttsState.currentIdx++;
+            playNext();
+          };
+
+          utter.onerror = (ev) => {
+            if (ev && (ev.error === 'interrupted' || ev.error === 'canceled')) return;
+            // If browser speech synthesis fails on Arabic, advance or disable cleanly
+            ttsState.currentIdx++;
+            if (ttsState.currentIdx < ttsState.queue.length && ttsState.isSpeaking) {
+              playNext();
+            } else {
+              stopArabicSpeech();
+            }
+          };
+
+          window.speechSynthesis.speak(utter);
+        }
+
+        playNext();
+      }
+
+      function speakArabic(text) {
+        speakSegmentsQueue([{ text, stepIndex: null }]);
       }
 
       // Helper: Get steps for active device (with fallback to samsung)
@@ -860,22 +2333,84 @@
           .replace(/[أإآ]/g, 'ا')
           .replace(/ة/g, 'ه')
           .replace(/ى/g, 'ي')
-          .replace(/[ًٌٍَُِّْ]/g, '')
+          .replace(/[ًٌٍَُِّْ،؟!.]/g, ' ')
+          .replace(/\s+/g, ' ')
           .trim();
       }
 
-      // Filter Guides
+      const AR_STOP_WORDS = new Set([
+        'كيف', 'طريقه', 'طريقة', 'عمل', 'في', 'علي', 'على', 'من', 'الي', 'إلى', 'عن',
+        'او', 'أو', 'هل', 'ما', 'هي', 'هو', 'اريد', 'نبي', 'ابي', 'ممكن', 'لو',
+        'سمحت', 'الخاص', 'بي', 'لي', 'هذا', 'هذه', 'ذلك', 'الهاتف', 'الجوال', 'تطبيق', 'برنامج'
+      ]);
+
+      const SYNONYM_MAP = {
+        'نبعث': 'ارسال مشاركه',
+        'ابعت': 'ارسال مشاركه',
+        'ابعث': 'ارسال مشاركه',
+        'ارسل': 'ارسال مشاركه',
+        'طرش': 'ارسال مشاركه',
+        'موقعي': 'الموقع اللوكيشن عنواني الخريطه',
+        'لوكيشن': 'الموقع الخريطه',
+        'الواتس': 'واتساب الوتس',
+        'وتس': 'واتساب الوتس',
+        'تنظيف': 'حذف محو مسح بيانات التصفح',
+        'مسح': 'حذف ازاله محو',
+        'امسح': 'حذف ازاله محو',
+        'اشيل': 'حذف ازاله الغاء',
+        'تنزيل': 'تثبيت تحميل',
+        'تسطيب': 'تثبيت تحميل',
+        'صوره': 'صوره ملف مرفق ارفاق',
+        'ملف': 'ملف صوره ارفاق حفظ',
+        'ايميل': 'ايميل جيميل بريد حساب جوجل',
+        'بريد': 'ايميل جيميل حساب'
+      };
+
+      // Filter & Rank Guides by Meaningful Colloquial Keywords
       function getFilteredGuides() {
-        const q = normalizeAr(state.searchQuery);
-        return state.guides.filter((g) => {
-          const catMatch = state.selectedCat === 'all' || g.cat === state.selectedCat;
-          if (!catMatch) return false;
-          if (!q) return true;
-          const haystack = normalizeAr(g.title + ' ' + g.shortDesc + ' ' + g.keywords);
-          const words = q.split(/\s+/).filter((w) => w.length > 1);
-          if (words.length === 0) return haystack.includes(q);
-          return words.some((w) => haystack.includes(w));
+        const qNorm = normalizeAr(state.searchQuery);
+        const catFiltered = state.guides.filter((g) => state.selectedCat === 'all' || g.cat === state.selectedCat);
+        if (!qNorm) return catFiltered;
+
+        const rawWords = qNorm.split(/\s+/).filter((w) => w.length > 1);
+        const meaningfulWords = rawWords.filter((w) => !AR_STOP_WORDS.has(w));
+        const queryTokens = meaningfulWords.length > 0 ? meaningfulWords : rawWords;
+
+        const scored = [];
+        catFiltered.forEach((g) => {
+          const titleNorm = normalizeAr(g.title);
+          const kwNorm = normalizeAr(g.keywords + ' ' + g.shortDesc);
+          let score = 0;
+
+          if (titleNorm.includes(qNorm) || kwNorm.includes(qNorm)) {
+            score += 15;
+          }
+
+          queryTokens.forEach((token) => {
+            const cleanToken = token.startsWith('ال') && token.length > 4 ? token.slice(2) : token;
+            if (titleNorm.includes(token) || (cleanToken.length > 2 && titleNorm.includes(cleanToken))) {
+              score += 6;
+            }
+            if (kwNorm.includes(token) || (cleanToken.length > 2 && kwNorm.includes(cleanToken))) {
+              score += 4;
+            }
+            if (SYNONYM_MAP[token]) {
+              const syns = SYNONYM_MAP[token].split(' ');
+              syns.forEach((syn) => {
+                if (titleNorm.includes(syn) || kwNorm.includes(syn)) {
+                  score += 3;
+                }
+              });
+            }
+          });
+
+          if (score > 0) {
+            scored.push({ guide: g, score });
+          }
         });
+
+        scored.sort((a, b) => b.score - a.score);
+        return scored.map((item) => item.guide);
       }
 
       // Render Guides List & Viewer
@@ -884,6 +2419,30 @@
         const filtered = getFilteredGuides();
         const listEl = document.getElementById('guidesListContainer');
         listEl.innerHTML = '';
+
+        if (state.searchQuery.trim() !== '') {
+          const filterBanner = document.createElement('div');
+          filterBanner.className = 'bg-amber-100 border-2 border-amber-400 rounded-2xl p-3 flex items-center justify-between gap-2 text-xs font-bold text-slate-900';
+          filterBanner.innerHTML = `
+            <span>🔍 تعرض القائمة نتائج البحث (${filtered.length} من ${state.guides.length})</span>
+            <button type="button" id="btnShowAllGuidesInline" class="px-3 py-1.5 rounded-xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs transition shrink-0">عرض كل الشروحات (${state.guides.length}) ✕</button>
+          `;
+          listEl.appendChild(filterBanner);
+          setTimeout(() => {
+            const btnShowAll = document.getElementById('btnShowAllGuidesInline');
+            if (btnShowAll) {
+              btnShowAll.addEventListener('click', () => {
+                state.searchQuery = '';
+                state.selectedCat = 'all';
+                document.getElementById('searchInput').value = '';
+                document.getElementById('btnClearSearch').classList.add('hidden');
+                document.getElementById('aiSmartResponseBox').classList.add('hidden');
+                updateCatButtons();
+                renderGuidesSection();
+              });
+            }
+          }, 0);
+        }
 
         if (filtered.length === 0) {
           listEl.innerHTML = `
@@ -962,11 +2521,20 @@
                   ${i + 1}
                 </span>
                 <div class="flex-1">
-                  <h4 class="font-extrabold text-sm md:text-base text-slate-900">${st.title}</h4>
-                  <p class="text-xs md:text-sm text-slate-700 mt-1 leading-relaxed">${st.detail}</p>
-                  <div class="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-teal-900/10 text-teal-900 text-xs font-bold">
-                    <span>👆 مكان الضغط على الشاشة:</span>
-                    <span>${st.screenHint}</span>
+                  <div class="flex items-center justify-between gap-2">
+                    <h4 class="font-extrabold text-sm md:text-base text-slate-900">${st.title}</h4>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                      <button type="button" data-speak-step="${i}" class="speak-single-step-btn voice-action-btn px-2 py-0.5 rounded-lg bg-amber-200 hover:bg-amber-300 text-slate-900 font-bold text-[11px] transition" title="استمع لهذه الخطوة">🔊 استمع</button>
+                      <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-teal-100 text-teal-900">الخطوة ${i + 1}</span>
+                    </div>
+                  </div>
+                  <p class="text-xs md:text-sm text-slate-800 mt-1.5 leading-relaxed font-medium">${st.detail}</p>
+                  <div class="mt-2.5 flex flex-col gap-1.5">
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-teal-900 text-white text-xs font-bold self-start shadow-sm">
+                      <span>👆 أين تضغط بالضبط:</span>
+                      <span class="text-amber-300">${st.screenHint}</span>
+                    </div>
+                    ${st.beginnerTip ? `<div class="px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 text-xs font-semibold flex items-start gap-1.5"><span>💡</span><span><strong>نصيحة للمبتدئ:</strong> ${st.beginnerTip}</span></div>` : ''}
                   </div>
                 </div>
               </div>
@@ -983,13 +2551,21 @@
                 <h2 class="text-lg md:text-xl font-extrabold text-slate-900 hc-muted mt-1">${guide.title}</h2>
               </div>
             </div>
-            <div class="flex items-center gap-2">
-              <button type="button" id="btnSpeakFullGuide" class="px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs md:text-sm shadow-sm transition flex items-center gap-1.5">
-                <span>🔊</span><span>قراءة الشرح بالصوت</span>
+            <div class="flex flex-wrap items-center gap-2">
+              <button type="button" id="btnSpeakFullGuide" class="voice-action-btn px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs md:text-sm shadow-sm transition flex items-center gap-1.5">
+                <span>🔊</span><span>قراءة الشرح كاملاً بالصوت</span>
               </button>
               <button type="button" id="btnShareGuideWA" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs md:text-sm shadow-sm transition flex items-center gap-1.5">
                 <span>📲</span><span>مشاركة للأهل</span>
               </button>
+              ${state.isAdmin ? `
+                <button type="button" id="btnAdminEditCurrent" class="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-xs shadow-sm transition flex items-center gap-1">
+                  <span>✏️</span><span>تعديل الشرح</span>
+                </button>
+                <button type="button" id="btnAdminDeleteCurrent" class="px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs shadow-sm transition flex items-center gap-1">
+                  <span>🗑️</span><span>حذف</span>
+                </button>
+              ` : ''}
             </div>
           </div>
 
@@ -1053,13 +2629,63 @@
           });
         }
 
+        updateSpeakButtonUI();
+
+        viewer.querySelectorAll('.speak-single-step-btn').forEach((sBtn) => {
+          sBtn.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            const sIdx = parseInt(sBtn.getAttribute('data-speak-step') || '0', 10);
+            const stObj = steps[sIdx];
+            if (!stObj) return;
+            state.activeStepIdx = sIdx;
+            stopArabicSpeech();
+            renderActiveGuideViewer();
+            const singleSeg = [{
+              text: 'الخطوة ' + (sIdx + 1) + ': ' + stObj.title + '. ' + stObj.detail + '. أين تضغط بالضبط: ' + stObj.screenHint + (stObj.beginnerTip ? '. نصيحة للمبتدئ: ' + stObj.beginnerTip : ''),
+              stepIndex: sIdx
+            }];
+            speakSegmentsQueue(singleSeg);
+          });
+        });
+
         const btnSpeak = document.getElementById('btnSpeakFullGuide');
         if (btnSpeak) {
           btnSpeak.addEventListener('click', () => {
-            const textToRead =
-              guide.title + '. الخطوة ' + (state.activeStepIdx + 1) + ': ' + currentStep.title + '. ' + currentStep.detail;
-            speakArabic(textToRead);
+            if (ttsState.isSpeaking) {
+              stopArabicSpeech();
+              showToast('تم إيقاف القراءة الصوتية ⏹️', '⏹️');
+              return;
+            }
+            const fullSegments = [
+              { text: guide.title + '. فائدة هذه الميزة: ' + guide.whyNote, stepIndex: 0 }
+            ];
+            steps.forEach((stItem, idxNum) => {
+              fullSegments.push({
+                text: 'الخطوة ' + (idxNum + 1) + ': ' + stItem.title + '. ' + stItem.detail + '. مكان الضغط على الشاشة: ' + stItem.screenHint + (stItem.beginnerTip ? '. نصيحة للمبتدئ: ' + stItem.beginnerTip : ''),
+                stepIndex: idxNum
+              });
+            });
+            speakSegmentsQueue(fullSegments, (activeIdx) => {
+              state.activeStepIdx = activeIdx;
+              // Highlight current step card without interrupting speech
+              viewer.querySelectorAll('.step-item-card').forEach((cardEl, cIdx) => {
+                if (cIdx === activeIdx) {
+                  cardEl.classList.add('step-active', 'shadow-sm');
+                } else {
+                  cardEl.classList.remove('step-active', 'shadow-sm');
+                }
+              });
+            });
           });
+        }
+
+        const btnAdminEditCurrent = document.getElementById('btnAdminEditCurrent');
+        if (btnAdminEditCurrent) {
+          btnAdminEditCurrent.addEventListener('click', () => openAdminEditModal(guide.id));
+        }
+        const btnAdminDeleteCurrent = document.getElementById('btnAdminDeleteCurrent');
+        if (btnAdminDeleteCurrent) {
+          btnAdminDeleteCurrent.addEventListener('click', () => deleteGuideById(guide.id));
         }
 
         const btnShare = document.getElementById('btnShareGuideWA');
@@ -1101,6 +2727,13 @@
       }
 
       function openIntentModal(guide, dev) {
+        if (window.RafeeqNativeAndroid && typeof window.RafeeqNativeAndroid.openAndroidSetting === 'function') {
+          try {
+            window.RafeeqNativeAndroid.openAndroidSetting(guide.intentAction || 'android.settings.SETTINGS');
+            showToast('تم فتح شاشة الإعداد مباشرة في هاتفك عبر تطبيق الأندرويد ⚡', '⚡');
+            return;
+          } catch (e) {}
+        }
         const modal = document.getElementById('actionModal');
         const titleEl = document.getElementById('modalTitle');
         const bodyEl = document.getElementById('modalBody');
@@ -1507,7 +3140,7 @@
           document.getElementById('aiSmartResponseBox').classList.add('hidden');
         });
 
-        // Voice Search Simulation
+        // Real Arabic Voice Search (Web Speech API) with fallback
         const voiceSamples = [
           'كيف نبعث موقعي على الواتس',
           'طريقة ارفاق صورة في الجيميل',
@@ -1516,11 +3149,45 @@
         ];
         let voiceSampleIdx = 0;
         document.getElementById('btnVoiceSearch').addEventListener('click', () => {
+          const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+          if (SpeechRec) {
+            try {
+              const rec = new SpeechRec();
+              rec.lang = 'ar-SA';
+              rec.interimResults = false;
+              rec.maxAlternatives = 1;
+              const lbl = document.getElementById('voiceBtnLabel');
+              if (lbl) lbl.textContent = 'تحدث الآن باللغة العربية... 🎙️';
+              showToast('تحدث الآن... جاري الاستماع لسؤالك باللغة العربية 🎙️', '🎤');
+              rec.onresult = (event) => {
+                const spokenText = event.results[0][0].transcript;
+                if (lbl) lbl.textContent = 'اسأل بصوتك (عربي)';
+                searchInput.value = spokenText;
+                btnClear.classList.remove('hidden');
+                showToast('🎤 تم التقاط سؤالك الصوتي: «' + spokenText + '»', '🎤');
+                runSmartSearchAssistant();
+              };
+              rec.onerror = () => {
+                if (lbl) lbl.textContent = 'اسأل بصوتك (عربي)';
+                const sample = voiceSamples[voiceSampleIdx % voiceSamples.length];
+                voiceSampleIdx++;
+                searchInput.value = sample;
+                btnClear.classList.remove('hidden');
+                showToast('🎤 تجربة السؤال الصوتي: «' + sample + '»', '🎤');
+                runSmartSearchAssistant();
+              };
+              rec.onend = () => {
+                if (lbl) lbl.textContent = 'اسأل بصوتك (عربي)';
+              };
+              rec.start();
+              return;
+            } catch (e) {}
+          }
           const sample = voiceSamples[voiceSampleIdx % voiceSamples.length];
           voiceSampleIdx++;
           searchInput.value = sample;
           btnClear.classList.remove('hidden');
-          showToast('🎤 تم التقاط السؤال الصوتي: «' + sample + '»', '🎤');
+          showToast('🎤 تجربة السؤال الصوتي: «' + sample + '»', '🎤');
           runSmartSearchAssistant();
         });
 
@@ -1536,10 +3203,17 @@
           });
         });
 
-        // Category Filters
+        // Category Filters (Clears stuck search query so all guides in the selected category appear!)
         document.querySelectorAll('.cat-filter-btn').forEach((btn) => {
           btn.addEventListener('click', () => {
             state.selectedCat = btn.getAttribute('data-cat') || 'all';
+            state.searchQuery = '';
+            const sInput = document.getElementById('searchInput');
+            if (sInput) sInput.value = '';
+            const cBtn = document.getElementById('btnClearSearch');
+            if (cBtn) cBtn.classList.add('hidden');
+            const aiBox = document.getElementById('aiSmartResponseBox');
+            if (aiBox) aiBox.classList.add('hidden');
             updateCatButtons();
             renderGuidesSection();
           });
@@ -1737,8 +3411,322 @@
           });
         }
 
+        // PWA Install Prompt & Native Android Auto-Detection
+        let deferredInstallPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredInstallPrompt = e;
+        });
+
+        const btnInstallApp = document.getElementById('btnInstallApp');
+        if (btnInstallApp) {
+          btnInstallApp.addEventListener('click', async () => {
+            if (deferredInstallPrompt) {
+              deferredInstallPrompt.prompt();
+              await deferredInstallPrompt.userChoice;
+              deferredInstallPrompt = null;
+              showToast('جاري تثبيت تطبيق رفيق الهاتف على شاشة هاتفك 📲', '📲');
+              return;
+            }
+            const modal = document.getElementById('actionModal');
+            const titleEl = document.getElementById('modalTitle');
+            const bodyEl = document.getElementById('modalBody');
+            titleEl.textContent = '📲 تثبيت تطبيق «رفيق الهاتف» على شاشة هاتفك (أندرويد وآيفون)';
+            currentShareText = 'تطبيق رفيق الهاتف — تصميم عمر الطابوني (Tabent2020@gmail.com)';
+            bodyEl.innerHTML = `
+              <div class="space-y-3 text-xs md:text-sm">
+                <div class="p-3.5 rounded-2xl bg-teal-50 border border-teal-300 space-y-1">
+                  <div class="font-extrabold text-teal-950">1. التثبيت المباشر من متصفح كروم (أندرويد) بدون متجر:</div>
+                  <p class="text-slate-700">اضغط على النقاط الثلاث <strong>(⋮)</strong> أعلى متصفح كروم ثم اختر <strong>«تثبيت التطبيق» (Install App)</strong> أو <strong>«الإضافة إلى الشاشة الرئيسية»</strong> ليظهر كأيقونة تطبيق مستقلة تعمل حتى بدون إنترنت.</p>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-sky-50 border border-sky-300 space-y-1">
+                  <div class="font-extrabold text-sky-950">2. التثبيت على آيفون (iOS Safari):</div>
+                  <p class="text-slate-700">اضغط على زر المشاركة <strong>(⬆️)</strong> أسفل متصفح سفاري ثم اختر <strong>«إضافة إلى الشاشة الرئيسية» (Add to Home Screen)</strong>.</p>
+                </div>
+              </div>
+            `;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+          });
+        }
+
+        // Auto-detect device from User-Agent or Native Android APK Bridge
+        try {
+          let ua = navigator.userAgent || '';
+          if (window.RafeeqNativeAndroid && typeof window.RafeeqNativeAndroid.getDeviceManufacturer === 'function') {
+            ua += ' ' + window.RafeeqNativeAndroid.getDeviceManufacturer();
+          }
+          const uaLower = ua.toLowerCase();
+          if (uaLower.includes('iphone') || uaLower.includes('ipad')) {
+            state.device = 'iphone';
+          } else if (uaLower.includes('xiaomi') || uaLower.includes('redmi') || uaLower.includes('poco')) {
+            state.device = 'xiaomi';
+          } else if (uaLower.includes('samsung') || uaLower.includes('sm-')) {
+            state.device = 'samsung';
+          }
+          const sel = document.getElementById('deviceSelector');
+          if (sel) sel.value = state.device;
+        } catch (e) {}
+
+        // ── Admin Portal & Guide Management (Edit / Delete Guides) ──
+        function saveAllGuidesState() {
+          try {
+            localStorage.setItem('rafeeq_all_guides_v2', JSON.stringify(state.guides));
+            const customOnly = state.guides.filter((g) => String(g.id).startsWith('custom_'));
+            localStorage.setItem('rafeeq_custom_guides_v1', JSON.stringify(customOnly));
+          } catch (e) {}
+        }
+
+        // Load saved admin modifications if present
+        try {
+          const savedAll = localStorage.getItem('rafeeq_all_guides_v2');
+          if (savedAll) {
+            const parsedAll = JSON.parse(savedAll);
+            if (Array.isArray(parsedAll) && parsedAll.length > 0) {
+              state.guides = parsedAll;
+            }
+          }
+        } catch (e) {}
+
+        function renderAdminManagerList() {
+          const listContainer = document.getElementById('adminGuidesManagerList');
+          const statusPill = document.getElementById('adminStatusPill');
+          const panelBtnText = document.getElementById('adminPanelActionText');
+          const headerAdminLbl = document.getElementById('adminBtnLabel');
+          if (!listContainer) return;
+
+          if (state.isAdmin) {
+            if (statusPill) {
+              statusPill.className = 'text-xs font-extrabold bg-emerald-100 text-emerald-900 px-3 py-1 rounded-full border border-emerald-300';
+              statusPill.textContent = '🔓 وضع المشرف نشط (عمر الطابوني) — يمكنك تعديل أو حذف أي شرح';
+            }
+            if (panelBtnText) panelBtnText.textContent = 'تسجيل خروج المشرف 🔒';
+            if (headerAdminLbl) headerAdminLbl.textContent = 'المشرف (نشط)';
+          } else {
+            if (statusPill) {
+              statusPill.className = 'text-xs font-extrabold bg-slate-100 text-slate-700 px-3 py-1 rounded-full';
+              statusPill.textContent = '🔒 وضع الزائر (للتعديل أو الحذف سجل دخول المشرف)';
+            }
+            if (panelBtnText) panelBtnText.textContent = 'تسجيل دخول المشرف لتفعيل التعديل والحذف';
+            if (headerAdminLbl) headerAdminLbl.textContent = 'دخول المشرف';
+          }
+
+          listContainer.innerHTML = '';
+          state.guides.forEach((g, idx) => {
+            const isCustom = String(g.id).startsWith('custom_');
+            const row = document.createElement('div');
+            row.className = 'p-3.5 rounded-2xl border border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-3';
+            row.innerHTML = `
+              <div class="flex items-center gap-2.5">
+                <span class="text-xl">${g.icon || '🌟'}</span>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-extrabold text-xs md:text-sm text-slate-900">${g.title}</span>
+                    ${isCustom ? '<span class="text-[11px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full border border-amber-300">مضاف من المجتمع</span>' : '<span class="text-[11px] font-semibold bg-teal-50 text-teal-800 px-2 py-0.5 rounded-full">شرح أساسي</span>'}
+                  </div>
+                  <p class="text-xs text-slate-500 mt-0.5">${g.shortDesc}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                ${state.isAdmin ? `
+                  <button type="button" data-edit-id="${g.id}" class="admin-edit-row-btn px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs transition">✏️ تعديل</button>
+                  <button type="button" data-del-id="${g.id}" class="admin-del-row-btn px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition">🗑️ إزالة</button>
+                ` : `
+                  <button type="button" class="admin-unlock-row-btn px-3 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs transition">🔐 سجل كمشرف للتعديل</button>
+                `}
+              </div>
+            `;
+            listContainer.appendChild(row);
+          });
+
+          listContainer.querySelectorAll('.admin-edit-row-btn').forEach((b) => {
+            b.addEventListener('click', () => openAdminEditModal(b.getAttribute('data-edit-id')));
+          });
+          listContainer.querySelectorAll('.admin-del-row-btn').forEach((b) => {
+            b.addEventListener('click', () => deleteGuideById(b.getAttribute('data-del-id')));
+          });
+          listContainer.querySelectorAll('.admin-unlock-row-btn').forEach((b) => {
+            b.addEventListener('click', () => openAdminLoginModal());
+          });
+        }
+
+        function openAdminLoginModal() {
+          if (state.isAdmin) {
+            switchTab('community');
+            showToast('أنت مسجل الدخول بالفعل كمشرف 🔓', '🔓');
+            return;
+          }
+          const modal = document.getElementById('adminModal');
+          document.getElementById('adminModalTitle').textContent = '🔐 بوابة دخول المشرف (إدارة وتعديل الشروحات)';
+          document.getElementById('adminLoginForm').classList.remove('hidden');
+          document.getElementById('adminEditGuideForm').classList.add('hidden');
+          document.getElementById('adminLoginError').classList.add('hidden');
+          document.getElementById('adminPassInput').value = '';
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        }
+
+        function openAdminEditModal(guideId) {
+          if (!state.isAdmin) {
+            openAdminLoginModal();
+            return;
+          }
+          const guide = state.guides.find((g) => g.id === guideId);
+          if (!guide) return;
+          const modal = document.getElementById('adminModal');
+          document.getElementById('adminModalTitle').textContent = '✏️ تعديل الشرح: ' + guide.title;
+          document.getElementById('adminLoginForm').classList.add('hidden');
+          document.getElementById('adminEditGuideForm').classList.remove('hidden');
+
+          document.getElementById('editGuideId').value = guide.id;
+          document.getElementById('editGuideTitle').value = guide.title;
+          document.getElementById('editGuideCat').value = guide.cat || 'apps';
+          document.getElementById('editGuideShortDesc').value = guide.shortDesc || '';
+          document.getElementById('editGuideWhy').value = guide.whyNote || '';
+
+          const steps = getDeviceSteps(guide, state.device);
+          const lines = steps.map((st) => [st.title || '', st.detail || '', st.screenHint || '', st.beginnerTip || ''].join(' | '));
+          document.getElementById('editGuideStepsText').value = lines.join('\n');
+
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        }
+
+        async function deleteGuideById(guideId) {
+          if (!state.isAdmin) {
+            openAdminLoginModal();
+            return;
+          }
+          const target = state.guides.find((g) => g.id === guideId);
+          if (!target) return;
+          if (state.guides.length <= 1) {
+            showToast('لا يمكن حذف جميع الشروحات بالكامل من التطبيق', '⚠️');
+            return;
+          }
+          state.guides = state.guides.filter((g) => g.id !== guideId);
+          if (state.activeGuideId === guideId) {
+            state.activeGuideId = state.guides[0].id;
+            state.activeStepIdx = 0;
+          }
+          saveAllGuidesState();
+          renderGuidesSection();
+          renderAdminManagerList();
+          updateVolunteerCountUI();
+          const modal = document.getElementById('adminModal');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+          showToast('🗑️ تم حذف الشرح «' + target.title + '» بنجاح', '🗑️');
+
+          try {
+            const apiUrl = ['/api', 'guides', encodeURIComponent(guideId)].join('/');
+            await fetch(apiUrl, { method: 'DELETE' });
+          } catch (e) {}
+        }
+
+        document.getElementById('btnOpenAdminAuth').addEventListener('click', () => {
+          if (state.isAdmin) {
+            switchTab('community');
+            renderAdminManagerList();
+            showToast('تم فتح لوحة إدارة وتعديل الشروحات ⚙️', '⚙️');
+          } else {
+            openAdminLoginModal();
+          }
+        });
+
+        document.getElementById('btnToggleAdminPanel').addEventListener('click', () => {
+          if (state.isAdmin) {
+            state.isAdmin = false;
+            renderAdminManagerList();
+            renderGuidesSection();
+            showToast('تم تسجيل خروج المشرف والعودة لوضع الزائر 🔒', '🔒');
+          } else {
+            openAdminLoginModal();
+          }
+        });
+
+        document.getElementById('btnCloseAdminModal').addEventListener('click', () => {
+          const modal = document.getElementById('adminModal');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        });
+
+        document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          const val = document.getElementById('adminPassInput').value.trim();
+          if (val === '2020' || val.toLowerCase() === 'tabent2020' || val.toLowerCase() === 'tabent2020@gmail.com' || val === 'omar2020') {
+            state.isAdmin = true;
+            const modal = document.getElementById('adminModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            renderAdminManagerList();
+            renderGuidesSection();
+            showToast('🔓 مرحباً أستاذ عمر الطابوني! تم تفعيل أزرار تعديل وحذف الشروحات', '🔓');
+          } else {
+            document.getElementById('adminLoginError').classList.remove('hidden');
+          }
+        });
+
+        document.getElementById('adminEditGuideForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const gId = document.getElementById('editGuideId').value;
+          const guide = state.guides.find((g) => g.id === gId);
+          if (!guide) return;
+
+          guide.title = document.getElementById('editGuideTitle').value.trim();
+          guide.cat = document.getElementById('editGuideCat').value;
+          guide.shortDesc = document.getElementById('editGuideShortDesc').value.trim();
+          guide.whyNote = document.getElementById('editGuideWhy').value.trim();
+
+          const rawLines = document.getElementById('editGuideStepsText').value.trim().split(/\n+/).filter(Boolean);
+          const parsedSteps = rawLines.map((line, idx) => {
+            const parts = line.split('|').map((p) => p.trim());
+            return {
+              title: parts[0] || ('الخطوة ' + (idx + 1)),
+              detail: parts[1] || parts[0] || '',
+              screenHint: parts[2] || ('اتبع الخطوة ' + (idx + 1)),
+              beginnerTip: parts[3] || ''
+            };
+          });
+
+          if (!guide.stepsByDevice) guide.stepsByDevice = {};
+          guide.stepsByDevice[state.device] = parsedSteps;
+          if (!guide.stepsByDevice.samsung) guide.stepsByDevice.samsung = parsedSteps;
+
+          saveAllGuidesState();
+          renderGuidesSection();
+          renderAdminManagerList();
+
+          const modal = document.getElementById('adminModal');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+          showToast('💾 تم حفظ تعديلات الشرح بنجاح!', '💾');
+
+          try {
+            const apiUrl = ['/api', 'guides', encodeURIComponent(gId)].join('/');
+            await fetch(apiUrl, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(guide)
+            });
+          } catch (err) {}
+        });
+
+        document.getElementById('btnDeleteGuideInsideEdit').addEventListener('click', () => {
+          const gId = document.getElementById('editGuideId').value;
+          if (gId) deleteGuideById(gId);
+        });
+
+        // Initialize Arabic Voice detection
+        if ('speechSynthesis' in window) {
+          detectArabicVoiceSupport();
+          window.speechSynthesis.onvoiceschanged = detectArabicVoiceSupport;
+        } else {
+          disableVoiceAcrossApp();
+        }
+
         // Initial Render
         renderDeviceBanner();
+        renderAdminManagerList();
         renderDailyTip();
         renderGuidesSection();
         renderSandbox();

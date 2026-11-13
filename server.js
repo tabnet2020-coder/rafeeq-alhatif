@@ -1,7 +1,10 @@
 /**
- * خادم تطبيق «رفيق الهاتف» (server.js)
+ * خادم تطبيق «رفيق الهاتف» (server.js) — الإصدار الكامل والنهائي
  * المصمم: عمر الطابوني (Tabent2020@gmail.com)
- * انسخ هذا الملف بالكامل وضعه داخل ملف server.js في مستودع GitHub
+ * يشمل:
+ * 1. عرض الواجهة المحدثة وأيقونة Tabony القياسية بجميع أبعادها.
+ * 2. مسارات الإضافة والتعديل والحذف للمشرف (GET / POST / PUT / DELETE /api/guides).
+ * 3. التوافق التام مع قاعدة بيانات Render PostgreSQL والتخزين الاحتياطي JSON.
  */
 const express = require('express');
 const path = require('path');
@@ -17,10 +20,10 @@ const DATA_FILE = path.join(__dirname, 'data', 'community_guides.json');
 
 app.use(cors());
 app.use(compression());
-app.use(express.json({ limit: '256kb' }));
+app.use(express.json({ limit: '512kb' }));
 
-// دالة مدمجة خفيفة لتوليد صور PNG قياسية بأي مقاس في الذاكرة مباشرة (لإرضاء فحص PWABuilder 100%)
-function createPngBuffer(width, height) {
+// توليد صورة PNG احتياطية في الذاكرة فقط في حال لم يكن ملف الأيقونة مرفوعاً في public/assets
+function createFallbackPng(width, height) {
   const crcTable = new Uint32Array(256);
   for (let n = 0; n < 256; n++) {
     let c = n;
@@ -44,45 +47,30 @@ function createPngBuffer(width, height) {
     crcBuf.writeUInt32BE(crc32(Buffer.concat([typeBuf, data])), 0);
     return Buffer.concat([len, typeBuf, data, crcBuf]);
   }
-
   const ihdr = Buffer.alloc(13);
   ihdr.writeUInt32BE(width, 0);
   ihdr.writeUInt32BE(height, 4);
-  ihdr[8] = 8; // bit depth
-  ihdr[9] = 2; // color type RGB
-
+  ihdr[8] = 8;
+  ihdr[9] = 2;
   const rowSize = width * 3 + 1;
   const raw = Buffer.alloc(rowSize * height);
   for (let y = 0; y < height; y++) {
     const rowStart = y * rowSize;
-    raw[rowStart] = 0; // filter type 0
+    raw[rowStart] = 0;
     const isBorder = y < 12 || y >= height - 12;
     for (let x = 0; x < width; x++) {
       const p = rowStart + 1 + x * 3;
       if (isBorder || x < 12 || x >= width - 12) {
-        // إطار ذهبي (#FBBF24)
         raw[p] = 251; raw[p + 1] = 191; raw[p + 2] = 36;
       } else {
-        // خلفية خضراء داكنة (#0F766E)
-        raw[p] = 15; raw[p + 1] = 118; raw[p + 2] = 110;
+        raw[p] = 8; raw[p + 1] = 61; raw[p + 2] = 155;
       }
     }
   }
-
   const idat = zlib.deflateSync(raw);
-  const signature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
-  return Buffer.concat([
-    signature,
-    makeChunk('IHDR', ihdr),
-    makeChunk('IDAT', idat),
-    makeChunk('IEND', Buffer.alloc(0))
-  ]);
+  const sig = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
+  return Buffer.concat([sig, makeChunk('IHDR', ihdr), makeChunk('IDAT', idat), makeChunk('IEND', Buffer.alloc(0))]);
 }
-
-const ICON_192 = createPngBuffer(192, 192);
-const ICON_512 = createPngBuffer(512, 512);
-const SCREEN_MOBILE = createPngBuffer(540, 720);
-const SCREEN_WIDE = createPngBuffer(1280, 720);
 
 const MANIFEST_OBJECT = {
   id: '/',
@@ -100,9 +88,9 @@ const MANIFEST_OBJECT = {
   categories: ['education', 'utilities', 'productivity'],
   icons: [
     { src: '/assets/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
-    { src: '/assets/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
+    { src: '/assets/icon-192-maskable.png', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
     { src: '/assets/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
-    { src: '/assets/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+    { src: '/assets/icon-512-maskable.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
   ],
   screenshots: [
     {
@@ -122,29 +110,39 @@ const MANIFEST_OBJECT = {
   ]
 };
 
-// مسارات PWA القياسية المعتمدة لفحص PWABuilder
+// تقديم ملفات public أولاً (بما فيها أيقونات Tabony في public/assets)
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('/manifest.json', (req, res) => {
   res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
   res.send(JSON.stringify(MANIFEST_OBJECT, null, 2));
 });
+
+// مسارات احتياطية للأيقونات ولقطات الشاشة في حال لم يُرفع مجلد public/assets
 app.get('/assets/icon-192.png', (req, res) => {
   res.setHeader('Content-Type', 'image/png');
-  res.send(ICON_192);
+  res.send(createFallbackPng(192, 192));
+});
+app.get('/assets/icon-192-maskable.png', (req, res) => {
+  res.setHeader('Content-Type', 'image/png');
+  res.send(createFallbackPng(192, 192));
 });
 app.get('/assets/icon-512.png', (req, res) => {
   res.setHeader('Content-Type', 'image/png');
-  res.send(ICON_512);
+  res.send(createFallbackPng(512, 512));
+});
+app.get('/assets/icon-512-maskable.png', (req, res) => {
+  res.setHeader('Content-Type', 'image/png');
+  res.send(createFallbackPng(512, 512));
 });
 app.get('/assets/screenshot-mobile.png', (req, res) => {
   res.setHeader('Content-Type', 'image/png');
-  res.send(SCREEN_MOBILE);
+  res.send(createFallbackPng(540, 720));
 });
 app.get('/assets/screenshot-wide.png', (req, res) => {
   res.setHeader('Content-Type', 'image/png');
-  res.send(SCREEN_WIDE);
+  res.send(createFallbackPng(1280, 720));
 });
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 // إعداد قاعدة البيانات PostgreSQL على Render (مع بديل تلقائي JSON)
 let pool = null;
@@ -264,7 +262,13 @@ app.post('/api/guides', async (req, res) => {
         `INSERT INTO volunteer_guides
          (id, cat, icon, title, short_desc, keywords, intent_label, intent_action, why_note, steps_by_device)
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-         ON CONFLICT (id) DO NOTHING`,
+         ON CONFLICT (id) DO UPDATE SET
+           cat = EXCLUDED.cat,
+           title = EXCLUDED.title,
+           short_desc = EXCLUDED.short_desc,
+           keywords = EXCLUDED.keywords,
+           why_note = EXCLUDED.why_note,
+           steps_by_device = EXCLUDED.steps_by_device`,
         [
           newGuide.id, newGuide.cat, newGuide.icon, newGuide.title, newGuide.shortDesc,
           newGuide.keywords, newGuide.intentLabel, newGuide.intentAction, newGuide.whyNote,
@@ -280,6 +284,86 @@ app.post('/api/guides', async (req, res) => {
     return res.status(201).json({ status: 'created', storage: 'JSON File', guide: newGuide });
   } catch (err) {
     return res.status(500).json({ status: 'error', message: 'تعذر حفظ الشرح الجديد' });
+  }
+});
+
+// 4. تعديل شرح بواسطة المشرف (PUT /api/guides/:id)
+app.put('/api/guides/:id', async (req, res) => {
+  try {
+    const guideId = String(req.params.id || '').trim();
+    const body = req.body || {};
+    const title = String(body.title || '').trim().slice(0, 200);
+    const cat = ['accounts', 'apps', 'daily'].includes(body.cat) ? body.cat : 'apps';
+    const stepsByDevice = body.stepsByDevice && typeof body.stepsByDevice === 'object' ? body.stepsByDevice : {};
+
+    if (!guideId || !title) {
+      return res.status(400).json({ status: 'error', message: 'بيانات التعديل غير مكتملة' });
+    }
+
+    if (dbReady && pool) {
+      await pool.query(
+        `INSERT INTO volunteer_guides
+         (id, cat, icon, title, short_desc, keywords, intent_label, intent_action, why_note, steps_by_device)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+         ON CONFLICT (id) DO UPDATE SET
+           cat = EXCLUDED.cat,
+           title = EXCLUDED.title,
+           short_desc = EXCLUDED.short_desc,
+           keywords = EXCLUDED.keywords,
+           why_note = EXCLUDED.why_note,
+           steps_by_device = EXCLUDED.steps_by_device`,
+        [
+          guideId, cat, String(body.icon || '🌟').slice(0, 10), title,
+          String(body.shortDesc || '').slice(0, 300),
+          String(body.keywords || title).slice(0, 300),
+          String(body.intentLabel || 'فتح إعدادات الهاتف').slice(0, 150),
+          String(body.intentAction || 'android.settings.SETTINGS').slice(0, 150),
+          String(body.whyNote || '').slice(0, 350),
+          JSON.stringify(stepsByDevice)
+        ]
+      );
+      return res.json({ status: 'updated', storage: 'PostgreSQL', id: guideId });
+    }
+
+    const current = readLocalGuides();
+    const idx = current.findIndex((g) => g.id === guideId);
+    const updatedObj = {
+      id: guideId,
+      cat,
+      icon: String(body.icon || '🌟').slice(0, 10),
+      title,
+      shortDesc: String(body.shortDesc || '').slice(0, 300),
+      keywords: String(body.keywords || title).slice(0, 300),
+      intentLabel: String(body.intentLabel || 'فتح إعدادات الهاتف').slice(0, 150),
+      intentAction: String(body.intentAction || 'android.settings.SETTINGS').slice(0, 150),
+      whyNote: String(body.whyNote || '').slice(0, 350),
+      stepsByDevice
+    };
+    if (idx >= 0) current[idx] = updatedObj;
+    else current.unshift(updatedObj);
+    writeLocalGuides(current);
+    return res.json({ status: 'updated', storage: 'JSON File', id: guideId });
+  } catch (err) {
+    return res.status(500).json({ status: 'error', message: 'تعذر تحديث الشرح' });
+  }
+});
+
+// 5. حذف شرح بواسطة المشرف (DELETE /api/guides/:id)
+app.delete('/api/guides/:id', async (req, res) => {
+  try {
+    const guideId = String(req.params.id || '').trim();
+    if (!guideId) return res.status(400).json({ status: 'error', message: 'معرف الشرح مفقود' });
+
+    if (dbReady && pool) {
+      await pool.query('DELETE FROM volunteer_guides WHERE id = $1', [guideId]);
+      return res.json({ status: 'deleted', storage: 'PostgreSQL', id: guideId });
+    }
+
+    const current = readLocalGuides().filter((g) => g.id !== guideId);
+    writeLocalGuides(current);
+    return res.json({ status: 'deleted', storage: 'JSON File', id: guideId });
+  } catch (err) {
+    return res.status(500).json({ status: 'error', message: 'تعذر حذف الشرح' });
   }
 });
 
