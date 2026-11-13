@@ -1,10 +1,6 @@
 /**
- * خادم تطبيق «رفيق الهاتف» (server.js) — الإصدار الكامل والنهائي
+ * خادم تطبيق «رفيق الهاتف» (server.js) — الإصدار المطور مع منع تعليق الكاش القديم
  * المصمم: عمر الطابوني (Tabent2020@gmail.com)
- * يشمل:
- * 1. عرض الواجهة المحدثة وأيقونة Tabony القياسية بجميع أبعادها.
- * 2. مسارات الإضافة والتعديل والحذف للمشرف (GET / POST / PUT / DELETE /api/guides).
- * 3. التوافق التام مع قاعدة بيانات Render PostgreSQL والتخزين الاحتياطي JSON.
  */
 const express = require('express');
 const path = require('path');
@@ -21,6 +17,72 @@ const DATA_FILE = path.join(__dirname, 'data', 'community_guides.json');
 app.use(cors());
 app.use(compression());
 app.use(express.json({ limit: '512kb' }));
+
+// دالة ذكية لاختيار أحدث ملف index.html سواء تم رفعه في المجلد الرئيسي أو داخل مجلد public/
+function resolveBestIndexHtmlPath() {
+  const rootIndex = path.join(__dirname, 'index.html');
+  const publicIndex = path.join(__dirname, 'public', 'index.html');
+  const candidates = [rootIndex, publicIndex].filter((p) => fs.existsSync(p));
+  if (candidates.length === 0) return publicIndex;
+  // تفضيل الملف الذي يحتوي على بوابة المشرف المحدثة (btnOpenAdminAuth)
+  for (const p of candidates) {
+    try {
+      const content = fs.readFileSync(p, 'utf8');
+      if (content.includes('btnOpenAdminAuth')) return p;
+    } catch (e) {}
+  }
+  // أو اختيار الأحدث تعديلاً
+  candidates.sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs);
+  return candidates[0];
+}
+
+// تقديم الصفحة الرئيسية مع منع المتصفح من عرض النسخة القديمة المخزنة
+function sendFreshIndexHtml(req, res) {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  const targetFile = resolveBestIndexHtmlPath();
+  if (fs.existsSync(targetFile)) {
+    return res.sendFile(targetFile);
+  }
+  return res.status(404).send('index.html not found');
+}
+
+app.get('/', sendFreshIndexHtml);
+app.get('/index.html', sendFreshIndexHtml);
+
+// تقديم ملف Service Worker محدث (Network-First) يقوم بمسح الكاش القديم rafeeq-alhatif-v1 تلقائياً!
+const NETWORK_FIRST_SW = `
+const CACHE_NAME = 'rafeeq-alhatif-v4';
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
+});
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  );
+});
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+  event.respondWith(
+    fetch(event.request)
+      .then((networkRes) => {
+        const resClone = networkRes.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, resClone)).catch(() => {});
+        return networkRes;
+      })
+      .catch(() => caches.match(event.request))
+  );
+});
+`;
+
+app.get('/sw.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.send(NETWORK_FIRST_SW.trim());
+});
 
 // توليد صورة PNG احتياطية في الذاكرة فقط في حال لم يكن ملف الأيقونة مرفوعاً في public/assets
 function createFallbackPng(width, height) {
@@ -110,15 +172,15 @@ const MANIFEST_OBJECT = {
   ]
 };
 
-// تقديم ملفات public أولاً (بما فيها أيقونات Tabony في public/assets)
-app.use(express.static(path.join(__dirname, 'public')));
-
 app.get('/manifest.json', (req, res) => {
   res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-cache');
   res.send(JSON.stringify(MANIFEST_OBJECT, null, 2));
 });
 
-// مسارات احتياطية للأيقونات ولقطات الشاشة في حال لم يُرفع مجلد public/assets
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
 app.get('/assets/icon-192.png', (req, res) => {
   res.setHeader('Content-Type', 'image/png');
   res.send(createFallbackPng(192, 192));
@@ -144,7 +206,6 @@ app.get('/assets/screenshot-wide.png', (req, res) => {
   res.send(createFallbackPng(1280, 720));
 });
 
-// إعداد قاعدة البيانات PostgreSQL على Render (مع بديل تلقائي JSON)
 let pool = null;
 let dbReady = false;
 
@@ -203,8 +264,10 @@ function writeLocalGuides(guides) {
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
+    version: 'v4-final',
     designer: 'عمر الطابوني (Tabent2020@gmail.com)',
     storage: dbReady ? 'PostgreSQL' : 'Local-JSON',
+    activeIndexFile: resolveBestIndexHtmlPath(),
     timestamp: new Date().toISOString()
   });
 });
@@ -287,7 +350,6 @@ app.post('/api/guides', async (req, res) => {
   }
 });
 
-// 4. تعديل شرح بواسطة المشرف (PUT /api/guides/:id)
 app.put('/api/guides/:id', async (req, res) => {
   try {
     const guideId = String(req.params.id || '').trim();
@@ -348,7 +410,6 @@ app.put('/api/guides/:id', async (req, res) => {
   }
 });
 
-// 5. حذف شرح بواسطة المشرف (DELETE /api/guides/:id)
 app.delete('/api/guides/:id', async (req, res) => {
   try {
     const guideId = String(req.params.id || '').trim();
@@ -367,9 +428,7 @@ app.delete('/api/guides/:id', async (req, res) => {
   }
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+app.get('*', sendFreshIndexHtml);
 
 initDatabase().then(() => {
   app.listen(PORT, () => {
