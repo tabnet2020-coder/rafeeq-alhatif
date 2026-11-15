@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rafeeq-alhatif-v4';
+const CACHE_NAME = 'rafeeq-alhatif-v5';
 self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
