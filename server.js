@@ -28,7 +28,7 @@ function resolveBestIndexHtmlPath() {
   for (const p of candidates) {
     try {
       const content = fs.readFileSync(p, 'utf8');
-      if (content.includes('rafeeq_cache_v5_cleaned')) return p;
+      if (content.includes('rafeeq_cache_v6_cleaned')) return p;
       if (content.includes('btnOpenAdminAuth')) return p;
     } catch (e) {}
   }
@@ -54,7 +54,7 @@ app.get('/index.html', sendFreshIndexHtml);
 
 // تقديم ملف Service Worker محدث (Network-First) يقوم بمسح الكاش القديم rafeeq-alhatif-v1 تلقائياً!
 const NETWORK_FIRST_SW = `
-const CACHE_NAME = 'rafeeq-alhatif-v5';
+const CACHE_NAME = 'rafeeq-alhatif-v6';
 self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
@@ -265,7 +265,7 @@ function writeLocalGuides(guides) {
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
-    version: 'v5-final',
+    version: 'v6-final',
     designer: 'عمر الطابوني (Tabent2020@gmail.com)',
     storage: dbReady ? 'PostgreSQL' : 'Local-JSON',
     activeIndexFile: resolveBestIndexHtmlPath(),
